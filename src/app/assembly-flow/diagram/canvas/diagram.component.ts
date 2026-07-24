@@ -17,6 +17,7 @@ import {
   NgDiagramEdgeTemplateMap,
   NgDiagramModelService,
   NgDiagramNodeTemplateMap,
+  NgDiagramViewportService,
   type Edge,
   type GroupMembershipChangedEvent,
   type Middleware,
@@ -92,6 +93,7 @@ export class DiagramComponent {
   private readonly selection = inject(SelectionService);
   private readonly modelService = inject(NgDiagramModelService);
   private readonly groupsService = inject(NgDiagramGroupsService);
+  private readonly viewport = inject(NgDiagramViewportService);
   protected readonly mode = inject(ModeService).mode;
   private readonly dataConnection = inject(DataConnectionService);
   private readonly history = inject(HistoryService);
@@ -123,6 +125,7 @@ export class DiagramComponent {
     // GRID=8 reshape snap.)
     const CANVAS_SNAP_PX = 20;
     const background = { dotSpacing: CANVAS_SNAP_PX };
+    const zoom = { zoomToFit: { onInit: true } };
     const snapping = {
       shouldSnapDragForNode: () => true,
       computeSnapForNodeDrag: () => ({ width: CANVAS_SNAP_PX, height: CANVAS_SNAP_PX }),
@@ -137,12 +140,14 @@ export class DiagramComponent {
         linking: { validateConnection: () => false },
         edgeRouting,
         background,
+        zoom,
       };
     }
     return {
       edgeRouting,
       background,
       snapping,
+      zoom,
       linking: {
         finalEdgeDataBuilder: (edge: Edge) => {
           if (edge.sourcePort === 'port-rework') {
@@ -206,6 +211,16 @@ export class DiagramComponent {
         this.feedSub = this.dataConnection
           .updatesFor(nodeIds)
           .subscribe((update) => this.applyUpdate(update));
+      });
+    });
+
+    effect(() => {
+      const monitoring = this.mode() === 'monitor';
+      untracked(() => {
+        if (monitoring) {
+          // use requestAnimationFrame so that diagram viewport is updated after palette gets hidden
+          requestAnimationFrame(() => this.viewport.zoomToFit());
+        }
       });
     });
 
