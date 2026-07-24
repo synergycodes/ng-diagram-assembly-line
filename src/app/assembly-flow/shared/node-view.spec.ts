@@ -47,6 +47,7 @@ describe('statusFooter', () => {
 
   it('has a glyph for every status', () => {
     expect(STATUS_GLYPH.working).toBe('✓');
+    expect(STATUS_GLYPH.disconnected).toBe('∅');
     expect(Object.keys(STATUS_GLYPH).sort()).toEqual(['disconnected', 'error', 'idle', 'working']);
   });
 });

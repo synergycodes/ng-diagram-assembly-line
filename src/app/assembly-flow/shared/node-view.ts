@@ -15,7 +15,7 @@ import {
 } from '../services/view-config.service';
 
 export const STATUS_GLYPH: Record<ModuleStatus, string> = {
-  disconnected: '–',
+  disconnected: '∅',
   working: '✓',
   idle: '!',
   error: '✕',
