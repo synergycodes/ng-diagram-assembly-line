@@ -357,11 +357,10 @@ describe('reshapeAnchoredSegment', () => {
         const a = points[i];
         const b = points[i + 1];
         const orthogonal = Math.abs(a.x - b.x) < 0.5 || Math.abs(a.y - b.y) < 0.5;
-        expect(orthogonal)
-          .withContext(
-            `segment ${i}: (${a.x},${a.y}) → (${b.x},${b.y}) in ${JSON.stringify(points)}`,
-          )
-          .toBe(true);
+        expect(
+          orthogonal,
+          `segment ${i}: (${a.x},${a.y}) → (${b.x},${b.y}) in ${JSON.stringify(points)}`,
+        ).toBe(true);
       }
     }
   });
