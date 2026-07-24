@@ -1,0 +1,51 @@
+# See https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
+
+# Compiled output
+/dist
+/tmp
+/out-tsc
+
+# Dependencies
+/node_modules
+
+# Angular & build caches
+.angular/
+.sass-cache/
+*.tsbuildinfo
+
+# Testing
+/coverage
+__screenshots__/
+vite.config.*.timestamp*
+vitest.config.*.timestamp*
+
+# Logs
+*.log
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+
+# IDEs and editors
+/.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+.history/*
+
+# Visual Studio Code — ignore local settings but keep the shared, recommended files
+.vscode/*
+!.vscode/extensions.json
+!.vscode/launch.json
+!.vscode/settings.json
+!.vscode/tasks.json
+
+# System files
+.DS_Store
+Thumbs.db
+
+.claude/

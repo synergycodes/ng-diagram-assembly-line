@@ -1,0 +1,115 @@
+<aside class="panel">
+  @if (data(); as d) {
+    <div class="panel-body">
+      <header class="head">
+        <span class="kicker">SELECTED NODE</span>
+        <div class="title-row">
+          <span class="status-badge" [attr.data-status]="d.status">{{ statusGlyph() }}</span>
+          <h2 class="name">{{ d.name }}</h2>
+        </div>
+        <div class="sub">
+          <span class="type">{{ d.type }}</span>
+          <span class="code">{{ shortId() }}</span>
+        </div>
+        @if (footer(); as f) {
+          <div class="state-line" [attr.data-tone]="f.tone">{{ f.text }}</div>
+        }
+        @if (inAlarm()) {
+          <span class="alarm-badge">IN ALARM</span>
+        }
+      </header>
+
+      @if (paint(); as p) {
+        <section class="section">
+          <h4 class="section-title">PAINT LEVELS</h4>
+          @for (tank of p.paintLevels ?? []; track tank.name) {
+            <div class="tank-row">
+              <span class="tank-name">{{ tank.name }}</span>
+              <span class="tank-pct" [style.color]="tank.color"
+                >{{ tank.level ?? 'N/A' }}{{ tank.level === undefined ? '' : '%' }}</span
+              >
+              <div class="bar">
+                <div
+                  class="bar-fill"
+                  [style.background]="tank.color"
+                  [style.width.%]="tank.level ?? 0"
+                ></div>
+              </div>
+            </div>
+          }
+        </section>
+      }
+
+      @if (buffer(); as b) {
+        <section class="metric">
+          <div class="metric-head">
+            <span class="metric-label">CAPACITY</span>
+            <span class="metric-value" [style.color]="b.valueColor">{{ b.text }}</span>
+          </div>
+          <div class="bar">
+            <div class="bar-fill" [style.width.%]="b.pct" [style.background]="b.color"></div>
+          </div>
+        </section>
+      } @else if (metrics().length) {
+        <section class="metrics">
+          @for (m of metrics(); track m.key) {
+            <div class="metric">
+              <div class="metric-head">
+                <span class="metric-label">{{ m.label }}</span>
+                <span class="metric-value" [style.color]="m.valueColor">
+                  {{ m.value }}
+                  @if (m.unit) {
+                    <span class="unit">{{ m.unit }}</span>
+                  }
+                </span>
+              </div>
+              @if (m.chartable && m.series.length > 1) {
+                <app-sparkline class="chart" [data]="m.series" [color]="m.color" [height]="28" />
+              }
+            </div>
+          }
+        </section>
+      }
+
+      @if (paint(); as p) {
+        @if (p.reworkQueue?.length) {
+          <section class="section">
+            <h4 class="section-title">REPAINT QUEUE</h4>
+            @for (item of p.reworkQueue ?? []; track item.partName) {
+              <div class="rework-item">
+                <span class="rework-part">{{ item.partName }}</span>
+                <span class="rework-defect">{{ item.defect }}</span>
+              </div>
+            }
+          </section>
+        }
+      }
+
+      @if (assembly(); as a) {
+        @if (a.currentTasks?.length) {
+          <section class="section">
+            <h4 class="section-title">CURRENT TASKS</h4>
+            @for (task of a.currentTasks ?? []; track task.description) {
+              <div class="task-item" [attr.data-status]="task.status">
+                <span class="task-dot" aria-hidden="true"></span>
+                <span class="task-text">{{ task.description }}</span>
+              </div>
+            }
+          </section>
+        }
+      }
+
+      @if (isArea()) {
+        <p class="empty">Grouping container — no live metrics.</p>
+      }
+    </div>
+  } @else {
+    <div class="panel-body">
+      <header class="head">
+        <span class="kicker">SELECTED NODE</span>
+        <h2 class="name">No selection</h2>
+      </header>
+      <p class="empty">Select a node on the canvas to inspect its live readings.</p>
+    </div>
+  }
+</aside>

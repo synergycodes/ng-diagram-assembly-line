@@ -1,0 +1,100 @@
+:host {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.reshape-overlay__layer {
+  position: absolute;
+  inset: 0;
+  transform-origin: 0 0;
+  will-change: transform;
+}
+
+// NOTE: colour literals are placeholders; Phase 5 re-tokenises these to the
+// three-tier design tokens.
+.reshape-overlay__handle {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  background: transparent;
+  color: var(--ngd-sem-color-text-primary, #e6e8ef); // arrow stroke (currentColor)
+  pointer-events: auto;
+  transform: translate(-50%, -50%);
+  touch-action: none;
+
+  &.is-horizontal {
+    cursor: ns-resize;
+  }
+  &.is-vertical {
+    cursor: ew-resize;
+  }
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    background: var(--ngd-color-purple-400, #8b93ff);
+    border-radius: 9999px;
+    transition: opacity 120ms ease;
+  }
+
+  // Each bar is centred on the midpoint (translate -50%/-50%), then nudged
+  // ±5px perpendicular — so the edge passes exactly between the pair.
+  &.is-horizontal::before,
+  &.is-horizontal::after {
+    top: 50%;
+    left: 50%;
+    width: 14px;
+    height: 2px;
+  }
+  &.is-horizontal::before {
+    transform: translate(-50%, -50%) translateY(-5px);
+  }
+  &.is-horizontal::after {
+    transform: translate(-50%, -50%) translateY(5px);
+  }
+
+  &.is-vertical::before,
+  &.is-vertical::after {
+    top: 50%;
+    left: 50%;
+    width: 2px;
+    height: 14px;
+  }
+  &.is-vertical::before {
+    transform: translate(-50%, -50%) translateX(-5px);
+  }
+  &.is-vertical::after {
+    transform: translate(-50%, -50%) translateX(5px);
+  }
+
+  .reshape-overlay__arrow {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 120ms ease;
+    pointer-events: none;
+    // Halo keeps the arrow legible over the selected edge.
+    filter: drop-shadow(0 0 1.5px var(--ngd-color-gray-900, #0b0b0f));
+  }
+  // Vertical segment drags horizontally → rotate the ↕ glyph to ↔.
+  &.is-vertical .reshape-overlay__arrow {
+    transform: rotate(90deg);
+  }
+
+  &:hover,
+  &.is-dragging {
+    &::before,
+    &::after {
+      opacity: 0;
+    }
+
+    .reshape-overlay__arrow {
+      opacity: 1;
+    }
+  }
+}

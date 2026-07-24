@@ -1,0 +1,9 @@
+<svg
+  class="sparkline"
+  [attr.viewBox]="'0 0 ' + width() + ' ' + height()"
+  preserveAspectRatio="none"
+>
+  @if (path(); as p) {
+    <path class="line" [attr.d]="p" [attr.stroke]="color()" />
+  }
+</svg>

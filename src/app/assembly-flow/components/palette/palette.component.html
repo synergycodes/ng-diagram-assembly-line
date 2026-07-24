@@ -1,0 +1,70 @@
+<aside class="palette">
+  <section class="section">
+    <h3>AREAS</h3>
+    @for (item of areas(); track item.type) {
+      <ng-diagram-palette-item [item]="paletteItemFor(item.type)">
+        <div class="item">
+          <span class="icon">
+            @if (fallbackIcons[item.type]; as glyph) {
+              {{ glyph }}
+            } @else {
+              <app-node-icon [type]="item.type" [active]="false" pose="mid" />
+            }
+          </span>
+          <span class="label">{{ item.label }}</span>
+        </div>
+        <ng-diagram-palette-item-preview>
+          <div class="item preview">
+            <span class="icon">
+              @if (fallbackIcons[item.type]; as glyph) {
+                {{ glyph }}
+              } @else {
+                <app-node-icon [type]="item.type" [active]="false" pose="mid" />
+              }
+            </span>
+            <span class="label">{{ item.label }}</span>
+          </div>
+        </ng-diagram-palette-item-preview>
+      </ng-diagram-palette-item>
+    }
+  </section>
+
+  <section class="section">
+    <h3>NODES</h3>
+    @for (item of nodes(); track item.type) {
+      <ng-diagram-palette-item [item]="paletteItemFor(item.type)">
+        <div class="item">
+          <span class="icon">
+            @if (fallbackIcons[item.type]; as glyph) {
+              {{ glyph }}
+            } @else {
+              <app-node-icon [type]="item.type" [active]="false" pose="mid" />
+            }
+          </span>
+          <span class="label">{{ item.label }}</span>
+        </div>
+        <ng-diagram-palette-item-preview>
+          <div class="item preview">
+            <span class="icon">
+              @if (fallbackIcons[item.type]; as glyph) {
+                {{ glyph }}
+              } @else {
+                <app-node-icon [type]="item.type" [active]="false" pose="mid" />
+              }
+            </span>
+            <span class="label">{{ item.label }}</span>
+          </div>
+        </ng-diagram-palette-item-preview>
+      </ng-diagram-palette-item>
+    }
+  </section>
+
+  <section class="section">
+    <h3>LINKS</h3>
+    <div class="item static">
+      <span class="icon">→</span>
+      <span class="label">Conveyor</span>
+    </div>
+    <p class="hint">Drag from a node port to create a conveyor link.</p>
+  </section>
+</aside>

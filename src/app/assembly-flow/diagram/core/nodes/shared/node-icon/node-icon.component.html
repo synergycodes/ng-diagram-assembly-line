@@ -1,0 +1,50 @@
+<span
+  class="icon"
+  [attr.data-type]="type()"
+  [attr.data-active]="active()"
+  [attr.data-pose]="pose()"
+>
+  @switch (type()) {
+    @case ('servo-press') {
+      <span class="rail rail-l"></span>
+      <span class="rail rail-r"></span>
+      <span class="bar"></span>
+      <span class="ram"></span>
+      <span class="spark"></span>
+      <span class="anvil"></span>
+      <span class="base"></span>
+    }
+    @case ('buffer') {
+      <span class="bin"></span>
+      <span class="box box-1"></span>
+      <span class="box box-2"></span>
+      <span class="box box-3"></span>
+    }
+    @case ('welding-cell') {
+      <span class="torch"></span>
+      <span class="arc arc-1"></span>
+      <span class="arc arc-2"></span>
+      <span class="arc arc-3"></span>
+      <span class="workpiece"></span>
+    }
+    @case ('auto-assembly') {
+      <span class="base"></span>
+      <span class="arm-1"></span>
+      <span class="joint"></span>
+      <span class="arm-2"></span>
+      <span class="grip"></span>
+    }
+    @case ('paint-shop') {
+      <span class="nozzle"></span>
+      <span class="spray spray-1"></span>
+      <span class="spray spray-2"></span>
+      <span class="spray spray-3"></span>
+      <span class="surface"></span>
+    }
+    @case ('quality-control') {
+      <span class="frame"></span>
+      <span class="part"></span>
+      <span class="beam"></span>
+    }
+  }
+</span>

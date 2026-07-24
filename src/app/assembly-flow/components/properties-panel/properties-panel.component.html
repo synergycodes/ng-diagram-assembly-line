@@ -1,0 +1,35 @@
+<aside class="panel">
+  @if (selectedData(); as data) {
+    <div class="panel-body">
+      <header class="head">
+        <span class="kicker">SELECTED NODE</span>
+        <span class="type">{{ data.type }}</span>
+      </header>
+
+      <formly-form
+        [form]="form()"
+        [fields]="fields()"
+        [model]="model()"
+        (modelChange)="onModelChange($event)"
+      />
+
+      @if (!hasThresholds()) {
+        <p class="empty">No threshold widgets configurable for this node type.</p>
+      }
+    </div>
+
+    @if (hasThresholds()) {
+      <div class="panel-foot">
+        <button type="button" class="reset" (click)="resetAll()">Reset to defaults</button>
+      </div>
+    }
+  } @else {
+    <div class="panel-body">
+      <header class="head">
+        <span class="kicker">SELECTED NODE</span>
+        <h2>No selection</h2>
+      </header>
+      <p class="empty">Select a node on the canvas to configure its appearance.</p>
+    </div>
+  }
+</aside>

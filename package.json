@@ -1,0 +1,51 @@
+{
+  "name": "assembly-flow",
+  "version": "1.0.0",
+  "description": "Assembly-line production monitor / diagram editor built with Angular and ng-diagram",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve",
+    "build": "ng build",
+    "watch": "ng build --watch --configuration development",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "ng lint",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "dependencies": {
+    "@angular/common": "21.2.9",
+    "@angular/compiler": "21.2.9",
+    "@angular/core": "21.2.9",
+    "@angular/forms": "21.2.9",
+    "@angular/platform-browser": "21.2.9",
+    "@angular/router": "21.2.9",
+    "@ngx-formly/core": "^7.1.0",
+    "ng-diagram": "^1.2.3",
+    "rxjs": "~7.8.0",
+    "tslib": "^2.3.0",
+    "zone.js": "0.16.0"
+  },
+  "devDependencies": {
+    "@analogjs/vite-plugin-angular": "2.2.0",
+    "@analogjs/vitest-angular": "2.2.0",
+    "@angular/build": "21.2.7",
+    "@angular/cli": "21.2.7",
+    "@angular/compiler-cli": "21.2.9",
+    "@angular/language-service": "21.2.9",
+    "@eslint/js": "^9.8.0",
+    "@types/node": "20.19.9",
+    "@vitest/coverage-v8": "4.0.9",
+    "angular-eslint": "21.3.1",
+    "eslint": "^9.8.0",
+    "eslint-config-prettier": "^10.0.0",
+    "jsdom": "~22.1.0",
+    "prettier": "^3.8.1",
+    "typescript": "~5.9.2",
+    "typescript-eslint": "^8.40.0",
+    "vite": "^7.3.2",
+    "vitest": "4.0.9"
+  }
+}

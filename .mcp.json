@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "ng-diagram-docs": {
+      "command": "npx",
+      "args": ["-y", "@ng-diagram/mcp"]
+    }
+  }
+}

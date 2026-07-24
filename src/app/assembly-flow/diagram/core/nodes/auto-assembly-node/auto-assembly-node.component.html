@@ -1,0 +1,110 @@
+<ng-diagram-port id="port-left" side="left" type="both" />
+<ng-diagram-port id="port-right" side="right" type="both" />
+<div class="card">
+  <span class="status-badge" [attr.data-status]="data().status">{{ statusGlyph() }}</span>
+
+  <header class="head">
+    <app-node-icon [type]="data().type" [active]="data().status === 'working'" />
+    <span class="name">{{ data().name }}</span>
+    <span class="code">{{ shortId() }}</span>
+  </header>
+
+  <section class="section">
+    <div class="pill-bar">
+      <span class="pill pill-auto">AUTO</span>
+      <span class="pill-marker"></span>
+    </div>
+    @if (visible('partsRemaining') || visible('partsToLoad')) {
+      <div class="kpi-row">
+        @if (visible('partsRemaining')) {
+          <div class="kpi">
+            <span class="kpi-num" [style.color]="metricColor('partsRemaining')">{{
+              formattedRemaining()
+            }}</span>
+            <span class="kpi-label">PARTS<br />REMAINING</span>
+          </div>
+        }
+        @if (visible('partsToLoad')) {
+          <div class="kpi">
+            <span class="kpi-num" [style.color]="metricColor('partsToLoad')">{{
+              data().partsToLoad ?? 'N/A'
+            }}</span>
+            <span class="kpi-label">TO<br />LOAD</span>
+          </div>
+        }
+      </div>
+    }
+    @if (visible('cycleTimeSec')) {
+      <div class="detail-row">
+        <span class="detail-label">Cycle time</span>
+        <span class="detail-value" [style.color]="metricColor('cycleTimeSec')">
+          {{ formatDuration(data().cycleTimeSec) }}
+          @if (visible('targetCycleTimeSec')) {
+            <span class="detail-target"
+              >/ target {{ formatDuration(data().targetCycleTimeSec) }}</span
+            >
+          }
+        </span>
+      </div>
+    }
+    @if (visible('nextRefillMin')) {
+      <div class="detail-row">
+        <span class="detail-label">Next refill</span>
+        <span class="detail-value" [style.color]="metricColor('nextRefillMin')">{{
+          data().nextRefillMin === undefined ? 'N/A' : '~' + data().nextRefillMin + ' min'
+        }}</span>
+      </div>
+    }
+  </section>
+
+  <section class="section">
+    <div class="pill-bar">
+      <span class="pill pill-manual">MANUAL</span>
+    </div>
+    @if (visible('manualWorkers') || visible('inspectionTimeMin')) {
+      <div class="kpi-row">
+        @if (visible('manualWorkers')) {
+          <div class="kpi">
+            <span class="kpi-num" [style.color]="metricColor('manualWorkers')">{{
+              data().manualWorkers ?? 'N/A'
+            }}</span>
+            <span class="kpi-label">ACTIVE<br />WORKERS</span>
+          </div>
+        }
+        @if (visible('inspectionTimeMin')) {
+          <div class="kpi">
+            <span class="kpi-num kpi-num-sm" [style.color]="metricColor('inspectionTimeMin')">{{
+              formatHoursMinutes(data().inspectionTimeMin)
+            }}</span>
+            <span class="kpi-label">EST. INSPECTION<br />TIME</span>
+          </div>
+        }
+      </div>
+    }
+  </section>
+
+  @if (data().currentTasks?.length) {
+    <section class="section">
+      <h4 class="section-title">CURRENT TASKS</h4>
+      @for (task of data().currentTasks ?? []; track task.description) {
+        <div class="task-item" [attr.data-status]="task.status">
+          <span class="task-dot" aria-hidden="true"></span>
+          <span class="task-text">{{ task.description }}</span>
+        </div>
+      }
+    </section>
+  }
+</div>
+@if (isDimmed()) {
+  <button
+    type="button"
+    class="reveal-btn"
+    data-no-pan="true"
+    data-no-drag="true"
+    (click)="reveal($event)"
+    title="Show this node"
+    aria-label="Show this node"
+  >
+    <i class="ph-bold ph-eye-slash" aria-hidden="true"></i>
+  </button>
+}

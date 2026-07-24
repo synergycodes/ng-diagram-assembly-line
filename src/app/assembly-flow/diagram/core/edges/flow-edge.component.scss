@@ -1,0 +1,17 @@
+.rework-marker {
+  display: inline-grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--ngd-color-gray-900, #070708);
+  border: 2px solid #f4b942;
+  color: #f4b942;
+  line-height: 1;
+  user-select: none;
+  pointer-events: none;
+  box-shadow: 0 0 0 3px rgba(7, 7, 8, 0.85);
+}
+.rework-marker svg {
+  display: block;
+}

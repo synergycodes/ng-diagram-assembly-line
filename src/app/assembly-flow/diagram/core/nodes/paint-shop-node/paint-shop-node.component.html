@@ -1,0 +1,105 @@
+<ng-diagram-port id="port-left" side="left" type="both" />
+<ng-diagram-port id="port-right" side="right" type="both" />
+<div class="card">
+  <span class="status-badge" [attr.data-status]="data().status">{{ statusGlyph() }}</span>
+
+  <header class="head">
+    <app-node-icon [type]="data().type" [active]="data().status === 'working'" />
+    <span class="name">{{ data().name }}</span>
+    <span class="code">{{ shortId() }}</span>
+  </header>
+
+  <section class="section">
+    <h4 class="section-title">PAINT LEVELS</h4>
+    @for (paint of data().paintLevels ?? []; track paint.name) {
+      <div class="paint-row">
+        <span class="paint-name">{{ paint.name }}</span>
+        <span class="paint-pct" [style.color]="paint.color">
+          {{ paint.level ?? 'N/A' }}{{ paint.level === undefined ? '' : '%' }}
+        </span>
+        <div class="bar">
+          <div
+            class="bar-fill"
+            [style.background]="paint.color"
+            [style.width.%]="paint.level ?? 0"
+          ></div>
+        </div>
+      </div>
+    }
+  </section>
+
+  <section class="section section-shift">
+    <h4 class="section-title">
+      SHIFT RESULTS&nbsp;&nbsp;—&nbsp;&nbsp;SHIFT {{ data().shiftLabel ?? '—' }} ({{
+        data().shiftRange ?? 'N/A'
+      }})
+    </h4>
+    @if (visible('unitsPassed') || visible('unitsRework') || visible('unitsTotal')) {
+      <div class="kpi-row">
+        @if (visible('unitsPassed')) {
+          <div class="kpi">
+            <span class="kpi-num">{{ formattedPassed() }}</span>
+            <span class="kpi-label">PASSED</span>
+          </div>
+        }
+        @if (visible('unitsRework')) {
+          <div class="kpi">
+            <span class="kpi-num" [style.color]="reworkColor()">{{
+              data().unitsRework ?? 'N/A'
+            }}</span>
+            <span class="kpi-label">REWORK</span>
+          </div>
+        }
+        @if (visible('unitsTotal')) {
+          <div class="kpi" data-tone="muted">
+            <span class="kpi-num">{{ formattedTotal() }}</span>
+            <span class="kpi-label">TOTAL</span>
+          </div>
+        }
+      </div>
+    }
+    @if (visible('firstPassYieldPct')) {
+      <div class="yield-row">
+        <span class="yield-label">First Pass Yield</span>
+        <span class="yield-pct" [style.color]="yieldColor()"
+          >{{ formattedYield() }}{{ data().firstPassYieldPct === undefined ? '' : '%' }}</span
+        >
+        <div class="bar">
+          <div
+            class="bar-fill bar-fill-yield"
+            [style.width.%]="data().firstPassYieldPct ?? 0"
+            [style.background]="yieldColor()"
+          ></div>
+        </div>
+      </div>
+    }
+  </section>
+
+  @if (data().reworkQueue?.length) {
+    <section class="section">
+      <h4 class="section-title">REPAINT QUEUE</h4>
+      @for (item of data().reworkQueue ?? []; track item.partName) {
+        <div class="rework-item">
+          <div class="rework-text">
+            <span class="rework-part">{{ item.partName }}</span>
+            <span class="rework-color">{{ item.color }}</span>
+          </div>
+          <span class="rework-defect">{{ item.defect }}</span>
+        </div>
+      }
+    </section>
+  }
+</div>
+@if (isDimmed()) {
+  <button
+    type="button"
+    class="reveal-btn"
+    data-no-pan="true"
+    data-no-drag="true"
+    (click)="reveal($event)"
+    title="Show this node"
+    aria-label="Show this node"
+  >
+    <i class="ph-bold ph-eye-slash" aria-hidden="true"></i>
+  </button>
+}

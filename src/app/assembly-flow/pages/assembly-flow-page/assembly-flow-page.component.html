@@ -1,0 +1,131 @@
+<div class="shell">
+  <header class="topbar">
+    <div class="brand">
+      <span class="mark">ND</span>
+      <span class="title">Production Monitor</span>
+      <span class="subtitle">PLANT WROCŁAW · LINE 2</span>
+    </div>
+
+    <div class="persona">
+      <span class="avatar"></span>
+      <span>Operator</span>
+    </div>
+
+    <div class="modes">
+      <button
+        type="button"
+        class="mode-btn"
+        [class.active]="mode() === 'edit'"
+        (click)="setMode('edit')"
+      >
+        Edit
+      </button>
+      <button
+        type="button"
+        class="mode-btn"
+        [class.active]="mode() === 'monitor'"
+        (click)="setMode('monitor')"
+      >
+        Monitor
+      </button>
+    </div>
+
+    <div class="spacer"></div>
+
+    @if (mode() === 'monitor') {
+      <div class="status-pill" [class.connected]="connected()">
+        <span class="dot"></span>
+        <span>{{ connected() ? 'CONNECTED' : 'CONNECTING…' }}</span>
+      </div>
+    }
+    <app-theme-toggle />
+    <div class="alarm-cluster">
+      <button
+        type="button"
+        class="alarm-pill"
+        [class.active]="alarmFilterActive()"
+        [attr.aria-pressed]="alarmFilterActive()"
+        (click)="toggleAlarmFilter()"
+      >
+        <span class="dot"></span>
+        <span>{{ alarmCount() }} ACTIVE ALARM{{ alarmCount() === 1 ? '' : 'S' }}</span>
+      </button>
+
+      @if (alarmFilterActive()) {
+        <button
+          type="button"
+          class="alarm-filter-btn"
+          [class.open]="filterMenuOpen()"
+          [attr.aria-expanded]="filterMenuOpen()"
+          (click)="toggleFilterMenu($event)"
+          title="Alarm categories"
+        >
+          <svg
+            viewBox="0 0 16 16"
+            width="14"
+            height="14"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M2 4h12M4 8h8M6 12h4" />
+          </svg>
+        </button>
+      }
+
+      @if (alarmFilterActive() && filterMenuOpen()) {
+        <div
+          class="alarm-filter-menu"
+          role="menu"
+          tabindex="-1"
+          (click)="$event.stopPropagation()"
+          (keydown)="$event.stopPropagation()"
+        >
+          <div class="menu-kicker">ALARM CATEGORIES</div>
+          <div class="menu-row">
+            <span class="menu-dot" data-tone="error"></span>
+            <span class="menu-label">Errors</span>
+            <button
+              type="button"
+              class="menu-switch"
+              [class.on]="errorsEnabled()"
+              [attr.aria-pressed]="errorsEnabled()"
+              aria-label="Toggle error alarms"
+              (click)="toggleErrors($event)"
+            >
+              <span class="thumb"></span>
+            </button>
+          </div>
+          <div class="menu-row">
+            <span class="menu-dot" data-tone="warning"></span>
+            <span class="menu-label">Warnings</span>
+            <button
+              type="button"
+              class="menu-switch"
+              [class.on]="warningsEnabled()"
+              [attr.aria-pressed]="warningsEnabled()"
+              aria-label="Toggle warning alarms"
+              (click)="toggleWarnings($event)"
+            >
+              <span class="thumb"></span>
+            </button>
+          </div>
+        </div>
+      }
+    </div>
+  </header>
+
+  <div class="layout" [attr.data-mode]="mode()">
+    @if (mode() === 'edit') {
+      <app-palette class="left" />
+    }
+    <app-diagram class="center" />
+    @if (mode() === 'edit') {
+      <app-properties-panel class="right" />
+    } @else {
+      <app-node-inspector class="right" />
+    }
+  </div>
+</div>

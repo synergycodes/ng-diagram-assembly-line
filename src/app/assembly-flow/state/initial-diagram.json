@@ -1,0 +1,303 @@
+{
+  "nodes": [
+    {
+      "id": "area-stamping",
+      "type": "area",
+      "position": { "x": 0, "y": 0 },
+      "isGroup": true,
+      "autoSize": false,
+      "size": { "width": 640, "height": 800 },
+      "data": {
+        "id": "area-stamping",
+        "type": "area",
+        "name": "Stamping",
+        "status": "disconnected",
+        "isGroup": true
+      }
+    },
+    {
+      "id": "press-bodyside",
+      "type": "module",
+      "position": { "x": 40, "y": 40 },
+      "groupId": "area-stamping",
+      "size": { "width": 240, "height": 300 },
+      "data": {
+        "id": "press-bodyside",
+        "type": "servo-press",
+        "name": "Bodyside Press",
+        "status": "disconnected"
+      }
+    },
+    {
+      "id": "press-floorpan",
+      "type": "module",
+      "position": { "x": 40, "y": 420 },
+      "groupId": "area-stamping",
+      "size": { "width": 240, "height": 300 },
+      "data": {
+        "id": "press-floorpan",
+        "type": "servo-press",
+        "name": "Floor Pan Press",
+        "status": "disconnected"
+      }
+    },
+    {
+      "id": "buffer-bodyside",
+      "type": "module",
+      "position": { "x": 360, "y": 200 },
+      "groupId": "area-stamping",
+      "size": { "width": 260, "height": 120 },
+      "data": {
+        "id": "buffer-bodyside",
+        "type": "buffer",
+        "name": "Bodyside Panel Store",
+        "status": "disconnected",
+        "capacity": 30
+      }
+    },
+    {
+      "id": "buffer-floorpan",
+      "type": "module",
+      "position": { "x": 360, "y": 480 },
+      "groupId": "area-stamping",
+      "size": { "width": 260, "height": 120 },
+      "data": {
+        "id": "buffer-floorpan",
+        "type": "buffer",
+        "name": "Floor Pan Store",
+        "status": "disconnected",
+        "capacity": 30
+      }
+    },
+    {
+      "id": "area-body",
+      "type": "area",
+      "position": { "x": 680, "y": 220 },
+      "isGroup": true,
+      "autoSize": false,
+      "size": { "width": 640, "height": 360 },
+      "data": {
+        "id": "area-body",
+        "type": "area",
+        "name": "Body Shop (BIW)",
+        "status": "disconnected",
+        "isGroup": true
+      }
+    },
+    {
+      "id": "weld-underbody",
+      "type": "module",
+      "position": { "x": 720, "y": 260 },
+      "groupId": "area-body",
+      "size": { "width": 240, "height": 240 },
+      "data": {
+        "id": "weld-underbody",
+        "type": "welding-cell",
+        "name": "Underbody Cell",
+        "status": "disconnected"
+      }
+    },
+    {
+      "id": "weld-framing",
+      "type": "module",
+      "position": { "x": 1040, "y": 260 },
+      "groupId": "area-body",
+      "size": { "width": 240, "height": 240 },
+      "data": {
+        "id": "weld-framing",
+        "type": "welding-cell",
+        "name": "Framing Station",
+        "status": "disconnected"
+      }
+    },
+    {
+      "id": "area-paint",
+      "type": "area",
+      "position": { "x": 1360, "y": 160 },
+      "isGroup": true,
+      "autoSize": false,
+      "size": { "width": 720, "height": 500 },
+      "data": {
+        "id": "area-paint",
+        "type": "area",
+        "name": "Paint Shop",
+        "status": "disconnected",
+        "isGroup": true
+      }
+    },
+    {
+      "id": "paint-booth",
+      "type": "paint-shop",
+      "position": { "x": 1400, "y": 200 },
+      "groupId": "area-paint",
+      "size": { "width": 340, "height": 560 },
+      "data": {
+        "id": "paint-booth",
+        "type": "paint-shop",
+        "name": "Paint Booth",
+        "status": "disconnected",
+        "paintLevels": [
+          { "name": "Pearl White", "color": "#e8e6e0" },
+          { "name": "Graphite Grey", "color": "#4a4d52" },
+          { "name": "Racing Red", "color": "#c0392b" }
+        ]
+      }
+    },
+    {
+      "id": "qc-paint",
+      "type": "module",
+      "position": { "x": 1800, "y": 380 },
+      "groupId": "area-paint",
+      "size": { "width": 240, "height": 200 },
+      "data": {
+        "id": "qc-paint",
+        "type": "quality-control",
+        "name": "Paint Inspection",
+        "status": "disconnected"
+      }
+    },
+    {
+      "id": "area-assembly",
+      "type": "area",
+      "position": { "x": 2120, "y": 160 },
+      "isGroup": true,
+      "autoSize": false,
+      "size": { "width": 720, "height": 500 },
+      "data": {
+        "id": "area-assembly",
+        "type": "area",
+        "name": "General Assembly",
+        "status": "disconnected",
+        "isGroup": true
+      }
+    },
+    {
+      "id": "assembly-final",
+      "type": "auto-assembly",
+      "position": { "x": 2160, "y": 200 },
+      "groupId": "area-assembly",
+      "size": { "width": 340, "height": 560 },
+      "data": {
+        "id": "assembly-final",
+        "type": "auto-assembly",
+        "name": "Assembly Line",
+        "status": "disconnected"
+      }
+    },
+    {
+      "id": "qc-final",
+      "type": "module",
+      "position": { "x": 2560, "y": 380 },
+      "groupId": "area-assembly",
+      "size": { "width": 240, "height": 200 },
+      "data": {
+        "id": "qc-final",
+        "type": "quality-control",
+        "name": "Final Inspection",
+        "status": "disconnected"
+      }
+    }
+  ],
+
+  "edges": [
+    {
+      "id": "e-bodyside-buffer",
+      "source": "press-bodyside",
+      "target": "buffer-bodyside",
+      "sourcePort": "port-right",
+      "targetPort": "port-left",
+      "type": "flow",
+      "data": { "kind": "flow" }
+    },
+    {
+      "id": "e-floorpan-buffer",
+      "source": "press-floorpan",
+      "target": "buffer-floorpan",
+      "sourcePort": "port-right",
+      "targetPort": "port-left",
+      "type": "flow",
+      "data": { "kind": "flow" }
+    },
+    {
+      "id": "e-bodyside-underbody",
+      "source": "buffer-bodyside",
+      "target": "weld-underbody",
+      "sourcePort": "port-right",
+      "targetPort": "port-left",
+      "type": "flow",
+      "data": { "kind": "flow" }
+    },
+    {
+      "id": "e-floorpan-underbody",
+      "source": "buffer-floorpan",
+      "target": "weld-underbody",
+      "sourcePort": "port-right",
+      "targetPort": "port-left",
+      "type": "flow",
+      "data": { "kind": "flow" }
+    },
+    {
+      "id": "e-underbody-framing",
+      "source": "weld-underbody",
+      "target": "weld-framing",
+      "sourcePort": "port-right",
+      "targetPort": "port-left",
+      "type": "flow",
+      "data": { "kind": "flow" }
+    },
+    {
+      "id": "e-framing-paint",
+      "source": "weld-framing",
+      "target": "paint-booth",
+      "sourcePort": "port-right",
+      "targetPort": "port-left",
+      "type": "flow",
+      "data": { "kind": "flow" }
+    },
+    {
+      "id": "e-paint-qcpaint",
+      "source": "paint-booth",
+      "target": "qc-paint",
+      "sourcePort": "port-right",
+      "targetPort": "port-left",
+      "type": "flow",
+      "data": { "kind": "flow" }
+    },
+    {
+      "id": "e-qcpaint-rework",
+      "source": "qc-paint",
+      "target": "paint-booth",
+      "sourcePort": "port-rework",
+      "targetPort": "port-left",
+      "type": "flow",
+      "data": { "kind": "rework" }
+    },
+    {
+      "id": "e-qcpaint-assembly",
+      "source": "qc-paint",
+      "target": "assembly-final",
+      "sourcePort": "port-right",
+      "targetPort": "port-left",
+      "type": "flow",
+      "data": { "kind": "flow" }
+    },
+    {
+      "id": "e-assembly-qcfinal",
+      "source": "assembly-final",
+      "target": "qc-final",
+      "sourcePort": "port-right",
+      "targetPort": "port-left",
+      "type": "flow",
+      "data": { "kind": "flow" }
+    },
+    {
+      "id": "e-qcfinal-rework",
+      "source": "qc-final",
+      "target": "assembly-final",
+      "sourcePort": "port-rework",
+      "targetPort": "port-left",
+      "type": "flow",
+      "data": { "kind": "rework" }
+    }
+  ]
+}

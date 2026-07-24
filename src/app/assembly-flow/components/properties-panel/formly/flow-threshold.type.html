@@ -1,0 +1,201 @@
+<section
+  class="section"
+  [class.section-disabled]="!cfg().visible"
+  [class.section-collapsed]="!expanded()"
+>
+  <header class="section-head">
+    <button
+      type="button"
+      class="section-toggle"
+      [attr.aria-expanded]="expanded()"
+      (click)="toggleExpanded()"
+    >
+      <svg class="chevron" width="10" height="10" viewBox="0 0 10 10" aria-hidden="true">
+        <path
+          d="M2 3.5L5 6.5L8 3.5"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </svg>
+      <h3>{{ props.label }}</h3>
+    </button>
+    @if (!alwaysVisible) {
+      <button
+        type="button"
+        class="switch"
+        [class.on]="cfg().visible"
+        [attr.aria-pressed]="cfg().visible"
+        [attr.aria-label]="'Show ' + props.label + ' widget'"
+        (click)="toggleWidget(!cfg().visible); $event.stopPropagation()"
+      >
+        <span class="thumb"></span>
+      </button>
+    }
+  </header>
+
+  @if (expanded()) {
+    <div class="threshold">
+      <div class="threshold-head">
+        <span class="threshold-label">Current {{ props.label }}</span>
+        <span class="threshold-status" [style.color]="zoneColor()">
+          {{ current() }}{{ unit ? ' ' + unit : '' }} · {{ zoneLabel() }}
+        </span>
+      </div>
+
+      <div #bar class="bar" [attr.data-direction]="direction">
+        @if (direction === 'lower-is-worse') {
+          <span
+            class="zone"
+            [style.background]="rgba(cfg().dangerColor, 0.7)"
+            [style.width.%]="pct(cfg().criticalAt)"
+          ></span>
+          <span
+            class="zone"
+            [style.background]="rgba(cfg().warnColor, 0.7)"
+            [style.left.%]="pct(cfg().criticalAt)"
+            [style.width.%]="pct(cfg().warnAt) - pct(cfg().criticalAt)"
+          ></span>
+          <span
+            class="zone"
+            [style.background]="rgba(cfg().okColor, 0.5)"
+            [style.left.%]="pct(cfg().warnAt)"
+            [style.width.%]="100 - pct(cfg().warnAt)"
+          ></span>
+        } @else {
+          <span
+            class="zone"
+            [style.background]="rgba(cfg().okColor, 0.5)"
+            [style.width.%]="pct(cfg().warnAt)"
+          ></span>
+          <span
+            class="zone"
+            [style.background]="rgba(cfg().warnColor, 0.7)"
+            [style.left.%]="pct(cfg().warnAt)"
+            [style.width.%]="pct(cfg().criticalAt) - pct(cfg().warnAt)"
+          ></span>
+          <span
+            class="zone"
+            [style.background]="rgba(cfg().dangerColor, 0.7)"
+            [style.left.%]="pct(cfg().criticalAt)"
+            [style.width.%]="100 - pct(cfg().criticalAt)"
+          ></span>
+        }
+        <span
+          class="thumb-handle"
+          [style.left.%]="pct(cfg().warnAt)"
+          [style.borderColor]="cfg().warnColor"
+          (pointerdown)="startDrag($event, 'warn')"
+          title="Warning threshold"
+        ></span>
+        <span
+          class="thumb-handle"
+          [style.left.%]="pct(cfg().criticalAt)"
+          [style.borderColor]="cfg().dangerColor"
+          (pointerdown)="startDrag($event, 'critical')"
+          title="Critical threshold"
+        ></span>
+        <span class="callout" [style.left.%]="pct(current())" [style.background]="zoneColor()"
+          >{{ current() }}{{ unit ? ' ' + unit : '' }}</span
+        >
+      </div>
+
+      <div class="bar-axis">
+        <span>{{ meta.min }}</span>
+        <span>{{ midOf() }}</span>
+        <span>{{ meta.max }}{{ unit ? ' ' + unit : '' }}</span>
+      </div>
+
+      <div class="threshold-inputs">
+        <label>
+          <span>Warning at</span>
+          <input
+            type="number"
+            [ngModel]="cfg().warnAt"
+            [min]="meta.min ?? 0"
+            [max]="meta.max ?? 100"
+            (ngModelChange)="setWarn(+$event)"
+          />
+        </label>
+        <label>
+          <span>Critical at</span>
+          <input
+            type="number"
+            [ngModel]="cfg().criticalAt"
+            [min]="meta.min ?? 0"
+            [max]="meta.max ?? 100"
+            (ngModelChange)="setCritical(+$event)"
+          />
+        </label>
+      </div>
+
+      <ul class="legend">
+        @if (direction === 'lower-is-worse') {
+          <li>
+            <button
+              type="button"
+              class="dot-btn"
+              [style.background]="rgba(cfg().dangerColor, 0.7)"
+              (click)="pickColor('danger', $event)"
+              aria-label="Pick critical zone colour"
+            ></button>
+            Critical (≤ {{ cfg().criticalAt }}{{ unit ? ' ' + unit : '' }})
+          </li>
+          <li>
+            <button
+              type="button"
+              class="dot-btn"
+              [style.background]="rgba(cfg().warnColor, 0.7)"
+              (click)="pickColor('warn', $event)"
+              aria-label="Pick warning zone colour"
+            ></button>
+            Warning (≤ {{ cfg().warnAt }}{{ unit ? ' ' + unit : '' }})
+          </li>
+          <li>
+            <button
+              type="button"
+              class="dot-btn"
+              [style.background]="rgba(cfg().okColor, 0.5)"
+              (click)="pickColor('ok', $event)"
+              aria-label="Pick OK zone colour"
+            ></button>
+            OK (&gt; {{ cfg().warnAt }}{{ unit ? ' ' + unit : '' }})
+          </li>
+        } @else {
+          <li>
+            <button
+              type="button"
+              class="dot-btn"
+              [style.background]="rgba(cfg().okColor, 0.5)"
+              (click)="pickColor('ok', $event)"
+              aria-label="Pick OK zone colour"
+            ></button>
+            OK (&lt; {{ cfg().warnAt }}{{ unit ? ' ' + unit : '' }})
+          </li>
+          <li>
+            <button
+              type="button"
+              class="dot-btn"
+              [style.background]="rgba(cfg().warnColor, 0.7)"
+              (click)="pickColor('warn', $event)"
+              aria-label="Pick warning zone colour"
+            ></button>
+            Warning (≥ {{ cfg().warnAt }}{{ unit ? ' ' + unit : '' }})
+          </li>
+          <li>
+            <button
+              type="button"
+              class="dot-btn"
+              [style.background]="rgba(cfg().dangerColor, 0.7)"
+              (click)="pickColor('danger', $event)"
+              aria-label="Pick critical zone colour"
+            ></button>
+            Critical (≥ {{ cfg().criticalAt }}{{ unit ? ' ' + unit : '' }})
+          </li>
+        }
+      </ul>
+    </div>
+  }
+</section>
