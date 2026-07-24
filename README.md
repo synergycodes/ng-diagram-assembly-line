@@ -2,6 +2,8 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
+**Live demo:** https://synergycodes.github.io/ng-diagram-assembly-flow/
+
 Interactive production-line monitor for automotive assembly plants. A starter kit
 for building your own domain-specific live monitoring dashboard. Lay out servo
 presses, buffers, welding cells, paint booths, and QC stations, connect them with
