@@ -6,7 +6,7 @@ import {
   type GroupNode,
   type NgDiagramGroupNodeTemplate,
 } from 'ng-diagram';
-import type { AreaModule } from '../../../../model';
+import type { AreaNodeData } from '../../../../model';
 
 // Area nodes are pure visual containers for grouping — they have no ports and
 // cannot be linked; only the modules inside them carry flow/rework connections.
@@ -21,6 +21,6 @@ import type { AreaModule } from '../../../../model';
   templateUrl: './area-node.component.html',
   styleUrl: './area-node.component.scss',
 })
-export class AreaNodeComponent implements NgDiagramGroupNodeTemplate<AreaModule> {
-  node = input.required<GroupNode<AreaModule>>();
+export class AreaNodeComponent implements NgDiagramGroupNodeTemplate<AreaNodeData> {
+  node = input.required<GroupNode<AreaNodeData>>();
 }

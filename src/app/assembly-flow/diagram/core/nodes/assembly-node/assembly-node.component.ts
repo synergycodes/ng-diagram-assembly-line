@@ -3,17 +3,17 @@ import {
   NgDiagramNodeSelectedDirective,
   NgDiagramPortComponent,
   type NgDiagramNodeTemplate,
-  type Node,
+  type SimpleNode,
 } from 'ng-diagram';
-import { MODULE_TYPES, type Module } from '../../../../model';
+import { NODE_TYPES, type AssemblyNodeData } from '../../../../model';
 import { HistoryService } from '../../../../services/history.service';
 import { deriveBufferLevel, deriveMetrics, statusFooter } from '../../../../shared/node-view';
-import { BaseModuleNode } from '../shared/base-module-node';
+import { BaseNode } from '../shared/base-node';
 import { SparklineComponent } from '../shared/sparkline/sparkline.component';
 import { NodeIconComponent } from '../shared/node-icon/node-icon.component';
 
 @Component({
-  selector: 'app-module-node',
+  selector: 'app-assembly-node',
   imports: [NgDiagramPortComponent, SparklineComponent, NodeIconComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   hostDirectives: [{ directive: NgDiagramNodeSelectedDirective, inputs: ['node'] }],
@@ -21,28 +21,32 @@ import { NodeIconComponent } from '../shared/node-icon/node-icon.component';
     '[class.ng-diagram-port-hoverable-over-node]': 'true',
     '[class.dimmed]': 'isDimmed()',
     '[attr.data-status]': 'data().status',
-    '[attr.data-type]': 'data().type',
+    '[attr.data-type]': 'type()',
   },
-  templateUrl: './module-node.component.html',
-  styleUrl: './module-node.component.scss',
+  templateUrl: './assembly-node.component.html',
+  styleUrl: './assembly-node.component.scss',
 })
-export class ModuleNodeComponent
-  extends BaseModuleNode<Module>
-  implements NgDiagramNodeTemplate<Module>
+export class AssemblyNodeComponent
+  extends BaseNode<AssemblyNodeData>
+  implements NgDiagramNodeTemplate<AssemblyNodeData>
 {
   private readonly history = inject(HistoryService);
 
-  readonly node = input.required<Node<Module>>();
+  readonly node = input.required<SimpleNode<AssemblyNodeData>>();
 
-  protected readonly MODULE_TYPES = MODULE_TYPES;
-  protected readonly showIcon = computed(() => this.data().type !== MODULE_TYPES.AREA);
+  protected readonly NODE_TYPES = NODE_TYPES;
+  protected readonly showIcon = computed(() => this.type() !== NODE_TYPES.AREA);
   protected readonly kpis = computed(() => {
     const node = this.node();
-    return deriveMetrics(node.data, this.propCfg(), (key) => this.history.read(node.id, key));
+    return deriveMetrics(this.type(), node.data, this.propCfg(), (key) =>
+      this.history.read(node.id, key),
+    );
   });
   protected readonly kpiColumns = computed(() =>
     Math.min(2, Math.max(1, this.kpis().length > 1 ? 2 : 1)),
   );
-  protected readonly bufferLevel = computed(() => deriveBufferLevel(this.data(), this.propCfg()));
-  protected readonly footer = computed(() => statusFooter(this.data()));
+  protected readonly bufferLevel = computed(() =>
+    deriveBufferLevel(this.type(), this.node().data, this.propCfg()),
+  );
+  protected readonly footer = computed(() => statusFooter(this.type(), this.node().data));
 }

@@ -9,7 +9,7 @@ import {
 import { FormGroup } from '@angular/forms';
 import { FormlyForm, type FormlyFieldConfig } from '@ngx-formly/core';
 import { NgDiagramModelService } from 'ng-diagram';
-import { type Module } from '../../model';
+import { type AssemblyNodeData, type NodeType } from '../../model';
 import {
   DEFAULT_DANGER_COLOR,
   DEFAULT_OK_COLOR,
@@ -19,7 +19,7 @@ import {
 import { DiagramStore } from '../../state/diagram-store.service';
 import { ModeService } from '../../state/mode.service';
 import { SelectionService } from '../../state/selection.service';
-import { fieldsForModuleType, thresholdProps } from './formly/field-from-property-def';
+import { fieldsForNodeType, thresholdProps } from './formly/field-from-property-def';
 import type { ThresholdConfig } from './formly/flow-threshold.type';
 
 type PanelModel = Record<string, unknown>;
@@ -49,12 +49,20 @@ export class PropertiesPanelComponent {
     this.fields().some((f) => f.type === 'flow-threshold'),
   );
 
-  protected readonly selectedData = computed<Module | null>(() => {
+  protected readonly selectedData = computed<AssemblyNodeData | null>(() => {
     const id = this.selection.selectedNodeId();
     if (!id) {
       return null;
     }
-    return (this.store.nodes().find((n) => n.id === id)?.data as Module) ?? null;
+    return (this.store.nodes().find((n) => n.id === id)?.data as AssemblyNodeData) ?? null;
+  });
+
+  protected readonly selectedType = computed<NodeType | null>(() => {
+    const id = this.selection.selectedNodeId();
+    if (!id) {
+      return null;
+    }
+    return this.store.nodes().find((n) => n.id === id)?.type ?? null;
   });
 
   private currentId: string | null = null;
@@ -75,14 +83,14 @@ export class PropertiesPanelComponent {
   }
 
   private rebuild(id: string): void {
-    const data = this.store.nodes().find((n) => n.id === id)?.data as Module | undefined;
-    if (!data) {
+    const node = this.store.nodes().find((n) => n.id === id);
+    if (!node) {
       this.clear();
       return;
     }
     this.form.set(new FormGroup({}));
-    this.fields.set(fieldsForModuleType(data.type));
-    this.model.set(this.seedModel(id, data));
+    this.fields.set(fieldsForNodeType(node.type));
+    this.model.set(this.seedModel(id, node.type, node.data));
   }
 
   private clear(): void {
@@ -91,10 +99,10 @@ export class PropertiesPanelComponent {
     this.model.set({});
   }
 
-  private seedModel(id: string, data: Module): PanelModel {
+  private seedModel(id: string, type: NodeType, data: AssemblyNodeData): PanelModel {
     const cfg = this.viewConfig.propertiesFor(id);
     const model: PanelModel = { name: data.name };
-    for (const m of thresholdProps(data.type)) {
+    for (const m of thresholdProps(type)) {
       const p = cfg[m.key] ?? {};
       const config: ThresholdConfig = {
         warnAt: p.warnAt ?? m.defaultWarnAt!,
@@ -119,17 +127,18 @@ export class PropertiesPanelComponent {
     if (!id) {
       return;
     }
-    const data = this.store.nodes().find((n) => n.id === id)?.data as Module | undefined;
-    if (!data) {
+    const node = this.store.nodes().find((n) => n.id === id);
+    if (!node) {
       return;
     }
+    const data = node.data;
 
     const name = String(model['name'] ?? '').trim();
     if (name && name !== data.name) {
-      this.modelService.updateNodeData<Module>(id, { ...data, name });
+      this.modelService.updateNodeData<AssemblyNodeData>(id, { ...data, name });
     }
 
-    for (const m of thresholdProps(data.type)) {
+    for (const m of thresholdProps(node.type)) {
       const config = model[m.key] as ThresholdConfig | undefined;
       if (config) {
         this.viewConfig.setProperty(id, m.key, config);

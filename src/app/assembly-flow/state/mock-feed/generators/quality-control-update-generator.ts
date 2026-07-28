@@ -1,17 +1,14 @@
-import type { QualityControlModule } from '../../../model';
-import {
-  ModuleUpdateGenerator,
-  occasionalIncrement,
-  randomIncrement,
-} from './module-update-generator';
+import { NODE_TYPES, type QualityControlNodeData } from '../../../model';
+import { NodeUpdateGenerator, occasionalIncrement, randomIncrement } from './node-update-generator';
 
-export class QualityControlUpdateGenerator extends ModuleUpdateGenerator<QualityControlModule> {
+export class QualityControlUpdateGenerator extends NodeUpdateGenerator<QualityControlNodeData> {
+  protected readonly type = NODE_TYPES.QUALITY_CONTROL;
   protected readonly fields = ['unitsPassed', 'unitsRejected', 'passedPercentage'] as const;
 
   protected override readonly percentFields = new Set(['passedPercentage']);
 
   protected override computeNext(
-    module: QualityControlModule,
+    data: QualityControlNodeData,
     field: string,
     current: number,
   ): number {
@@ -23,6 +20,6 @@ export class QualityControlUpdateGenerator extends ModuleUpdateGenerator<Quality
       return current + occasionalIncrement();
     }
     // passedPercentage is a gauge.
-    return super.computeNext(module, field, current);
+    return super.computeNext(data, field, current);
   }
 }

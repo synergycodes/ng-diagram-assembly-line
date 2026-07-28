@@ -1,20 +1,20 @@
-import type { ModuleStatus, ModuleType, Update } from './dto';
+import type { NodeStatus, NodeType, Update } from './node-data';
 
 /**
  * This is the frontend stand-in for what a backend push message would carry.
  */
 export interface DataUpdate {
   readonly nodeId: string;
-  readonly moduleType: ModuleType;
-  readonly status: ModuleStatus;
+  readonly type: NodeType;
+  readonly status: NodeStatus;
   readonly metrics: Readonly<Record<string, unknown>>;
 }
 
 export function toDataUpdate(update: Update): DataUpdate {
   return {
-    nodeId: update.moduleId,
-    moduleType: update.moduleType,
-    status: update.moduleStatus,
-    metrics: update.state as Readonly<Record<string, unknown>>,
+    nodeId: update.nodeId,
+    type: update.type,
+    status: update.status,
+    metrics: update.metrics as Readonly<Record<string, unknown>>,
   };
 }

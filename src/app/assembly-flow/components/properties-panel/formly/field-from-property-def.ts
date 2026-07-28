@@ -1,13 +1,13 @@
 import type { FormlyFieldConfig } from '@ngx-formly/core';
-import { getPropertyMeta, type ModuleType, type PropertyMeta } from '../../../model';
+import { getPropertyMeta, type NodeType, type PropertyMeta } from '../../../model';
 
-export function thresholdProps(type: ModuleType): PropertyMeta[] {
+export function thresholdProps(type: NodeType): PropertyMeta[] {
   return getPropertyMeta(type).filter(
     (m) => Boolean(m.numeric) && m.defaultWarnAt !== undefined && m.defaultCriticalAt !== undefined,
   );
 }
 
-export function fieldsForModuleType(type: ModuleType): FormlyFieldConfig[] {
+export function fieldsForNodeType(type: NodeType): FormlyFieldConfig[] {
   const fields: FormlyFieldConfig[] = [
     { key: 'name', type: 'flow-input', props: { label: 'Name' } },
   ];

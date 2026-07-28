@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
-import { MODULE_TYPES } from '../../model';
+import { NODE_TYPES } from '../../model';
 import { SelectionService } from '../../state/selection.service';
 import { DiagramStore } from '../../state/diagram-store.service';
 import { ViewConfigService } from '../../services/view-config.service';
@@ -43,6 +43,7 @@ export class NodeInspectorComponent {
   });
 
   protected readonly data = computed(() => this.node()?.data ?? null);
+  protected readonly type = computed(() => this.node()?.type ?? null);
 
   protected readonly statusGlyph = computed(() => {
     const d = this.data();
@@ -51,12 +52,12 @@ export class NodeInspectorComponent {
 
   protected readonly shortId = computed(() => {
     const n = this.node();
-    return n ? nodeShortId(n.data.type, n.id) : '';
+    return n ? nodeShortId(n.type, n.id) : '';
   });
 
   protected readonly footer = computed(() => {
-    const d = this.data();
-    return d ? statusFooter(d) : null;
+    const n = this.node();
+    return n ? statusFooter(n.type, n.data) : null;
   });
 
   protected readonly inAlarm = computed(() => {
@@ -70,27 +71,27 @@ export class NodeInspectorComponent {
       return [];
     }
     const propCfg = this.viewConfig.propertiesFor(n.id);
-    return deriveMetrics(n.data, propCfg, (key) => this.history.read(n.id, key));
+    return deriveMetrics(n.type, n.data, propCfg, (key) => this.history.read(n.id, key));
   });
 
   protected readonly buffer = computed(() => {
     const n = this.node();
-    if (!n || n.data.type !== MODULE_TYPES.BUFFER) {
+    if (!n || n.type !== NODE_TYPES.BUFFER) {
       return null;
     }
     const propCfg = this.viewConfig.propertiesFor(n.id);
-    return deriveBufferLevel(n.data, propCfg);
+    return deriveBufferLevel(n.type, n.data, propCfg);
   });
 
   protected readonly paint = computed(() => {
-    const d = this.data();
-    return d?.type === MODULE_TYPES.PAINT_SHOP ? d : null;
+    const n = this.node();
+    return n?.type === NODE_TYPES.PAINT_SHOP ? n.data : null;
   });
 
   protected readonly assembly = computed(() => {
-    const d = this.data();
-    return d?.type === MODULE_TYPES.AUTO_ASSEMBLY ? d : null;
+    const n = this.node();
+    return n?.type === NODE_TYPES.AUTO_ASSEMBLY ? n.data : null;
   });
 
-  protected readonly isArea = computed(() => this.data()?.type === MODULE_TYPES.AREA);
+  protected readonly isArea = computed(() => this.node()?.type === NODE_TYPES.AREA);
 }

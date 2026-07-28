@@ -1,16 +1,17 @@
-import type { PaintShopModule, Update } from '../../../model';
+import { NODE_TYPES, type PaintShopNodeData, type Update } from '../../../model';
 import {
-  ModuleUpdateGenerator,
+  NodeUpdateGenerator,
   occasionalIncrement,
   randomDrain,
   randomMagnitude,
-  type UpdateContext,
-} from './module-update-generator';
+} from './node-update-generator';
+import type { UpdateContext } from '../mock-feed-types';
 
 const PAINT_LOW_THRESHOLD = 5;
 const PAINT_REFILL_LEVEL = 80;
 
-export class PaintShopUpdateGenerator extends ModuleUpdateGenerator<PaintShopModule> {
+export class PaintShopUpdateGenerator extends NodeUpdateGenerator<PaintShopNodeData> {
+  protected readonly type = NODE_TYPES.PAINT_SHOP;
   protected readonly fields = [
     'paintLevels',
     'unitsPassed',
@@ -20,36 +21,36 @@ export class PaintShopUpdateGenerator extends ModuleUpdateGenerator<PaintShopMod
 
   protected override readonly percentFields = new Set(['firstPassYieldPct']);
 
-  override generate(module: PaintShopModule, context: UpdateContext): Update | null {
-    if (this.requiresWorkingUpstream && !this.hasWorkingUpstream(module, context)) {
+  override generate(data: PaintShopNodeData, context: UpdateContext): Update | null {
+    if (this.requiresWorkingUpstream && !this.hasWorkingUpstream(context)) {
       return null;
     }
 
-    const state: Record<string, unknown> = {};
+    const metrics: Record<string, unknown> = {};
 
-    const paintLevels = this.computePaintLevels(module);
+    const paintLevels = this.computePaintLevels(data);
     if (paintLevels) {
-      state['paintLevels'] = paintLevels;
+      metrics['paintLevels'] = paintLevels;
     }
 
     // Most batches pass; rework is the exception (~1 in 7 updates adds one),
     // keeping the rework counter and first-pass yield in a realistic band.
     const passedDelta = randomMagnitude(6);
     const reworkDelta = occasionalIncrement();
-    state['unitsPassed'] = (module.unitsPassed ?? 0) + passedDelta;
-    state['unitsRework'] = (module.unitsRework ?? 0) + reworkDelta;
-    state['unitsTotal'] = (module.unitsTotal ?? 0) + passedDelta + reworkDelta;
+    metrics['unitsPassed'] = (data.unitsPassed ?? 0) + passedDelta;
+    metrics['unitsRework'] = (data.unitsRework ?? 0) + reworkDelta;
+    metrics['unitsTotal'] = (data.unitsTotal ?? 0) + passedDelta + reworkDelta;
 
-    const yieldPartial = this.generateField(module, 'firstPassYieldPct');
+    const yieldPartial = this.generateField(data, 'firstPassYieldPct');
     if (yieldPartial) {
-      Object.assign(state, yieldPartial);
+      Object.assign(metrics, yieldPartial);
     }
 
-    return this.makeUpdate(module, state);
+    return this.makeUpdate(data, context.nodeId, metrics);
   }
 
-  private computePaintLevels(module: PaintShopModule): PaintShopModule['paintLevels'] | null {
-    const paintLevels = module.paintLevels ?? [];
+  private computePaintLevels(data: PaintShopNodeData): PaintShopNodeData['paintLevels'] | null {
+    const paintLevels = data.paintLevels ?? [];
     if (paintLevels.length === 0) {
       return null;
     }

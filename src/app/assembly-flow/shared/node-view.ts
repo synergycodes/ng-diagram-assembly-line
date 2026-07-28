@@ -2,9 +2,12 @@ import {
   computeTone,
   getPropertyMeta,
   getPropertyValue,
-  MODULE_TYPES,
-  type Module,
-  type ModuleStatus,
+  NODE_TYPES,
+  type AssemblyNodeData,
+  type BufferNodeData,
+  type NodeStatus,
+  type NodeType,
+  type ServoPressNodeData,
   type Tone,
 } from '../model';
 import {
@@ -14,24 +17,24 @@ import {
   type PropertyViewConfig,
 } from '../services/view-config.service';
 
-export const STATUS_GLYPH: Record<ModuleStatus, string> = {
+export const STATUS_GLYPH: Record<NodeStatus, string> = {
   disconnected: '∅',
   working: '✓',
   idle: '!',
   error: '✕',
 };
 
-const SHORT_ID_PREFIX: Record<Module['type'], string> = {
-  [MODULE_TYPES.AREA]: 'AR',
-  [MODULE_TYPES.BUFFER]: 'B',
-  [MODULE_TYPES.SERVO_PRESS]: 'P',
-  [MODULE_TYPES.WELDING_CELL]: 'WC',
-  [MODULE_TYPES.AUTO_ASSEMBLY]: 'AA',
-  [MODULE_TYPES.PAINT_SHOP]: 'PS',
-  [MODULE_TYPES.QUALITY_CONTROL]: 'QC',
+const SHORT_ID_PREFIX: Record<NodeType, string> = {
+  [NODE_TYPES.AREA]: 'AR',
+  [NODE_TYPES.BUFFER]: 'B',
+  [NODE_TYPES.SERVO_PRESS]: 'P',
+  [NODE_TYPES.WELDING_CELL]: 'WC',
+  [NODE_TYPES.AUTO_ASSEMBLY]: 'AA',
+  [NODE_TYPES.PAINT_SHOP]: 'PS',
+  [NODE_TYPES.QUALITY_CONTROL]: 'QC',
 };
 
-export function nodeShortId(type: Module['type'], nodeId: string): string {
+export function nodeShortId(type: NodeType, nodeId: string): string {
   return `${SHORT_ID_PREFIX[type]}-${nodeId.slice(0, 4).toUpperCase()}`;
 }
 
@@ -41,7 +44,10 @@ export type StatusTone = 'ok' | 'warn' | 'danger';
  * Always returns a value so the caller can render a constant footer row whose
  * appearance never resizes the node — only text and tone change with status.
  */
-export function statusFooter(data: Module): { text: string; tone: StatusTone } {
+export function statusFooter(
+  type: NodeType,
+  data: AssemblyNodeData,
+): { text: string; tone: StatusTone } {
   if (data.status === 'disconnected') {
     return { text: 'DISCONNECTED · awaiting data feed', tone: 'ok' };
   }
@@ -51,12 +57,11 @@ export function statusFooter(data: Module): { text: string; tone: StatusTone } {
   if (data.status === 'idle') {
     return { text: 'WAITING · No upstream material', tone: 'warn' };
   }
-  if (
-    data.type === MODULE_TYPES.SERVO_PRESS &&
-    data.oeePercent !== undefined &&
-    data.oeePercent < 70
-  ) {
-    return { text: 'Running · OEE below 70% target', tone: 'warn' };
+  if (type === NODE_TYPES.SERVO_PRESS) {
+    const oee = (data as ServoPressNodeData).oeePercent;
+    if (oee !== undefined && oee < 70) {
+      return { text: 'Running · OEE below 70% target', tone: 'warn' };
+    }
   }
   return { text: 'RUNNING · nominal', tone: 'ok' };
 }
@@ -102,11 +107,12 @@ function valueColorFor(tone: Tone, cfg?: PropertyViewConfig): string | undefined
  * has no thresholds — so it renders in the default theme color.
  */
 export function deriveValueColor(
-  data: Module,
+  type: NodeType,
+  data: AssemblyNodeData,
   key: string,
   cfg?: PropertyViewConfig,
 ): string | undefined {
-  const meta = getPropertyMeta(data.type).find((m) => m.key === key);
+  const meta = getPropertyMeta(type).find((m) => m.key === key);
   if (!meta?.numeric) {
     return undefined;
   }
@@ -123,11 +129,12 @@ export function deriveValueColor(
  * `HistoryService.read`), and reading it inside a computed keeps output reactive.
  */
 export function deriveMetrics(
-  data: Module,
+  type: NodeType,
+  data: AssemblyNodeData,
   propCfg: PropCfgMap,
   readSeries: (key: string) => number[],
 ): MetricView[] {
-  return getPropertyMeta(data.type)
+  return getPropertyMeta(type)
     .filter((m) => propCfg[m.key]?.visible !== false)
     .map((m) => {
       const raw = getPropertyValue(data, m.key);
@@ -182,13 +189,18 @@ const BUFFER_UNAVAILABLE: BufferLevel = {
  * The reading is only shown when both current and capacity are known; otherwise
  * the whole value reads `N/A` (never a half-reading like `N/A/30`).
  */
-export function deriveBufferLevel(data: Module, propCfg: PropCfgMap): BufferLevel {
-  if (data.type !== MODULE_TYPES.BUFFER) {
+export function deriveBufferLevel(
+  type: NodeType,
+  data: AssemblyNodeData,
+  propCfg: PropCfgMap,
+): BufferLevel {
+  if (type !== NODE_TYPES.BUFFER) {
     return { ...BUFFER_UNAVAILABLE };
   }
-  const rawCapacity = data.capacity;
+  const buffer = data as BufferNodeData;
+  const rawCapacity = buffer.capacity;
   const capacity = Number.isFinite(rawCapacity) ? Math.max(0, rawCapacity) : undefined;
-  const rawCurrent = data.currentCount;
+  const rawCurrent = buffer.currentCount;
   const current =
     rawCurrent === undefined || !Number.isFinite(rawCurrent)
       ? undefined
@@ -199,7 +211,7 @@ export function deriveBufferLevel(data: Module, propCfg: PropCfgMap): BufferLeve
   }
 
   const pct = capacity > 0 ? (current / capacity) * 100 : 0;
-  const meta = getPropertyMeta(data.type).find((m) => m.key === 'currentCount');
+  const meta = getPropertyMeta(type).find((m) => m.key === 'currentCount');
   const cfg = propCfg['currentCount'];
   const tone: Tone = meta ? computeTone(pct, meta, cfg?.warnAt, cfg?.criticalAt) : 'default';
 

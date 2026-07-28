@@ -42,10 +42,7 @@ export function endpointWorldPosition(
     return null;
   }
   const size = node.size ?? { width: 0, height: 0 };
-  return {
-    x: node.position.x + size.width / 2,
-    y: node.position.y + size.height / 2,
-  };
+  return { x: node.position.x + size.width / 2, y: node.position.y + size.height / 2 };
 }
 
 // World position of an edge's OTHER end, relative to the named side. Used to

@@ -3,11 +3,11 @@ import {
   NgDiagramNodeSelectedDirective,
   NgDiagramPortComponent,
   type NgDiagramNodeTemplate,
-  type Node,
+  type SimpleNode,
 } from 'ng-diagram';
-import type { AutoAssemblyModule } from '../../../../model';
+import type { AutoAssemblyNodeData } from '../../../../model';
 import { formatCount, formatDuration, formatHoursMinutes } from '../../../../shared/format';
-import { BaseModuleNode } from '../shared/base-module-node';
+import { BaseNode } from '../shared/base-node';
 import { NodeIconComponent } from '../shared/node-icon/node-icon.component';
 
 @Component({
@@ -19,16 +19,16 @@ import { NodeIconComponent } from '../shared/node-icon/node-icon.component';
     '[class.ng-diagram-port-hoverable-over-node]': 'true',
     '[class.dimmed]': 'isDimmed()',
     '[attr.data-status]': 'data().status',
-    '[attr.data-type]': 'data().type',
+    '[attr.data-type]': 'type()',
   },
   templateUrl: './auto-assembly-node.component.html',
   styleUrl: './auto-assembly-node.component.scss',
 })
 export class AutoAssemblyNodeComponent
-  extends BaseModuleNode<AutoAssemblyModule>
-  implements NgDiagramNodeTemplate<AutoAssemblyModule>
+  extends BaseNode<AutoAssemblyNodeData>
+  implements NgDiagramNodeTemplate<AutoAssemblyNodeData>
 {
-  readonly node = input.required<Node<AutoAssemblyModule>>();
+  readonly node = input.required<SimpleNode<AutoAssemblyNodeData>>();
 
   protected readonly formattedRemaining = computed(() => formatCount(this.data().partsRemaining));
 

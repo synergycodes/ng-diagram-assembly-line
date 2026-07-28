@@ -3,11 +3,11 @@ import {
   NgDiagramNodeSelectedDirective,
   NgDiagramPortComponent,
   type NgDiagramNodeTemplate,
-  type Node,
+  type SimpleNode,
 } from 'ng-diagram';
-import type { PaintShopModule } from '../../../../model';
+import type { PaintShopNodeData } from '../../../../model';
 import { formatCount, formatPct } from '../../../../shared/format';
-import { BaseModuleNode } from '../shared/base-module-node';
+import { BaseNode } from '../shared/base-node';
 import { NodeIconComponent } from '../shared/node-icon/node-icon.component';
 
 @Component({
@@ -19,16 +19,16 @@ import { NodeIconComponent } from '../shared/node-icon/node-icon.component';
     '[class.ng-diagram-port-hoverable-over-node]': 'true',
     '[class.dimmed]': 'isDimmed()',
     '[attr.data-status]': 'data().status',
-    '[attr.data-type]': 'data().type',
+    '[attr.data-type]': 'type()',
   },
   templateUrl: './paint-shop-node.component.html',
   styleUrl: './paint-shop-node.component.scss',
 })
 export class PaintShopNodeComponent
-  extends BaseModuleNode<PaintShopModule>
-  implements NgDiagramNodeTemplate<PaintShopModule>
+  extends BaseNode<PaintShopNodeData>
+  implements NgDiagramNodeTemplate<PaintShopNodeData>
 {
-  readonly node = input.required<Node<PaintShopModule>>();
+  readonly node = input.required<SimpleNode<PaintShopNodeData>>();
 
   protected readonly formattedPassed = computed(() => formatCount(this.data().unitsPassed));
   protected readonly formattedTotal = computed(() => formatCount(this.data().unitsTotal));

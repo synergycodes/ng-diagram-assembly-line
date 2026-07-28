@@ -1,4 +1,4 @@
-import { MODULE_TYPES, type Module } from '../model';
+import { NODE_TYPES, type BufferNodeData, type ServoPressNodeData } from '../model';
 import {
   deriveBufferLevel,
   deriveMetrics,
@@ -7,42 +7,38 @@ import {
   STATUS_GLYPH,
 } from './node-view';
 
-const servoPress = (overrides: Partial<Module> = {}): Module =>
-  ({
-    id: 'press-1',
-    name: 'Bodyside Press',
-    type: MODULE_TYPES.SERVO_PRESS,
-    status: 'working',
-    position: { x: 0, y: 0 },
-    ...overrides,
-  }) as Module;
+const servoPress = (overrides: Partial<ServoPressNodeData> = {}): ServoPressNodeData => ({
+  name: 'Bodyside Press',
+  status: 'working',
+  ...overrides,
+});
 
 describe('nodeShortId', () => {
   it('prefixes by type and uppercases the first 4 id chars', () => {
-    expect(nodeShortId(MODULE_TYPES.SERVO_PRESS, 'press-1')).toBe('P-PRES');
-    expect(nodeShortId(MODULE_TYPES.QUALITY_CONTROL, 'qc-final')).toBe('QC-QC-F');
+    expect(nodeShortId(NODE_TYPES.SERVO_PRESS, 'press-1')).toBe('P-PRES');
+    expect(nodeShortId(NODE_TYPES.QUALITY_CONTROL, 'qc-final')).toBe('QC-QC-F');
   });
 });
 
 describe('statusFooter', () => {
   it('maps each status to its human-readable line + tone', () => {
-    expect(statusFooter(servoPress({ status: 'disconnected' }))).toEqual({
+    expect(statusFooter(NODE_TYPES.SERVO_PRESS, servoPress({ status: 'disconnected' }))).toEqual({
       text: 'DISCONNECTED · awaiting data feed',
       tone: 'ok',
     });
-    expect(statusFooter(servoPress({ status: 'error' })).tone).toBe('danger');
-    expect(statusFooter(servoPress({ status: 'idle' })).tone).toBe('warn');
-    expect(statusFooter(servoPress({ status: 'working', oeePercent: 82 }))).toEqual({
-      text: 'RUNNING · nominal',
-      tone: 'ok',
-    });
+    expect(statusFooter(NODE_TYPES.SERVO_PRESS, servoPress({ status: 'error' })).tone).toBe(
+      'danger',
+    );
+    expect(statusFooter(NODE_TYPES.SERVO_PRESS, servoPress({ status: 'idle' })).tone).toBe('warn');
+    expect(
+      statusFooter(NODE_TYPES.SERVO_PRESS, servoPress({ status: 'working', oeePercent: 82 })),
+    ).toEqual({ text: 'RUNNING · nominal', tone: 'ok' });
   });
 
   it('flags a working servo press whose OEE is below the 70% target', () => {
-    expect(statusFooter(servoPress({ status: 'working', oeePercent: 62 }))).toEqual({
-      text: 'Running · OEE below 70% target',
-      tone: 'warn',
-    });
+    expect(
+      statusFooter(NODE_TYPES.SERVO_PRESS, servoPress({ status: 'working', oeePercent: 62 })),
+    ).toEqual({ text: 'Running · OEE below 70% target', tone: 'warn' });
   });
 
   it('has a glyph for every status', () => {
@@ -55,7 +51,7 @@ describe('statusFooter', () => {
 describe('deriveMetrics', () => {
   it('derives value/unit/tone and pulls series only for present numeric metrics', () => {
     const data = servoPress({ throughputPerHour: 520, oeePercent: 62, partsPressed: 500 });
-    const metrics = deriveMetrics(data, {}, () => [1, 2, 3]);
+    const metrics = deriveMetrics(NODE_TYPES.SERVO_PRESS, data, {}, () => [1, 2, 3]);
 
     // Throughput 520 with default lower-is-worse thresholds (warn 400) → healthy 'ok'.
     const throughput = metrics.find((m) => m.key === 'throughputPerHour')!;
@@ -82,23 +78,25 @@ describe('deriveMetrics', () => {
 
   it('respects per-metric visibility config', () => {
     const data = servoPress({ throughputPerHour: 50 });
-    const metrics = deriveMetrics(data, { throughputPerHour: { visible: false } }, () => []);
+    const metrics = deriveMetrics(
+      NODE_TYPES.SERVO_PRESS,
+      data,
+      { throughputPerHour: { visible: false } },
+      () => [],
+    );
     expect(metrics.some((m) => m.key === 'throughputPerHour')).toBe(false);
   });
 });
 
 describe('deriveBufferLevel', () => {
   it('computes clamped current, pct and tone from capacity', () => {
-    const data = {
-      id: 'buf-1',
+    const data: BufferNodeData = {
       name: 'Store',
-      type: MODULE_TYPES.BUFFER,
       status: 'working',
-      position: { x: 0, y: 0 },
       capacity: 40,
       currentCount: 38,
-    } as Module;
-    const level = deriveBufferLevel(data, {});
+    };
+    const level = deriveBufferLevel(NODE_TYPES.BUFFER, data, {});
     expect(level.capacity).toBe(40);
     expect(level.current).toBe(38);
     expect(level.pct).toBe(95);
@@ -109,23 +107,16 @@ describe('deriveBufferLevel', () => {
   });
 
   it('reads N/A until the current count arrives (capacity alone is not enough)', () => {
-    const data = {
-      id: 'buf-1',
-      name: 'Store',
-      type: MODULE_TYPES.BUFFER,
-      status: 'working',
-      position: { x: 0, y: 0 },
-      capacity: 40,
-    } as Module;
-    const level = deriveBufferLevel(data, {});
+    const data: BufferNodeData = { name: 'Store', status: 'working', capacity: 40 };
+    const level = deriveBufferLevel(NODE_TYPES.BUFFER, data, {});
     expect(level.available).toBe(false);
     expect(level.text).toBe('N/A');
     expect(level.current).toBeUndefined();
     expect(level.valueColor).toBeUndefined();
   });
 
-  it('returns inert defaults for non-buffer modules', () => {
-    expect(deriveBufferLevel(servoPress(), {})).toEqual({
+  it('returns inert defaults for non-buffer types', () => {
+    expect(deriveBufferLevel(NODE_TYPES.SERVO_PRESS, servoPress(), {})).toEqual({
       current: undefined,
       capacity: undefined,
       pct: 0,

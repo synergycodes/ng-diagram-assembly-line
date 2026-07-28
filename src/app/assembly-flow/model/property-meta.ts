@@ -1,4 +1,4 @@
-import { MODULE_TYPES, type Module, type ModuleType } from './dto';
+import { NODE_TYPES, type AssemblyNodeData, type NodeType } from './node-data';
 
 export interface PropertyMeta {
   key: string;
@@ -13,9 +13,9 @@ export interface PropertyMeta {
   alwaysVisible?: boolean;
 }
 
-const PROPERTIES: Record<ModuleType, PropertyMeta[]> = {
-  [MODULE_TYPES.AREA]: [],
-  [MODULE_TYPES.BUFFER]: [
+export const PROPERTIES: Record<NodeType, PropertyMeta[]> = {
+  [NODE_TYPES.AREA]: [],
+  [NODE_TYPES.BUFFER]: [
     { key: 'capacity', label: 'Capacity', numeric: true, min: 0, max: 30 },
     {
       key: 'currentCount',
@@ -29,7 +29,7 @@ const PROPERTIES: Record<ModuleType, PropertyMeta[]> = {
       alwaysVisible: true,
     },
   ],
-  [MODULE_TYPES.SERVO_PRESS]: [
+  [NODE_TYPES.SERVO_PRESS]: [
     {
       key: 'throughputPerHour',
       label: 'Throughput',
@@ -98,7 +98,7 @@ const PROPERTIES: Record<ModuleType, PropertyMeta[]> = {
     },
     { key: 'partsPressed', label: 'Pressed', numeric: true, min: 0, max: 10000 },
   ],
-  [MODULE_TYPES.WELDING_CELL]: [
+  [NODE_TYPES.WELDING_CELL]: [
     {
       key: 'cycleTimeSec',
       label: 'Cycle',
@@ -134,7 +134,7 @@ const PROPERTIES: Record<ModuleType, PropertyMeta[]> = {
     { key: 'totalRobots', label: 'Total robots', numeric: true, min: 0, max: 8 },
     { key: 'weldsCompleted', label: 'Welds', numeric: true, min: 0, max: 10000 },
   ],
-  [MODULE_TYPES.AUTO_ASSEMBLY]: [
+  [NODE_TYPES.AUTO_ASSEMBLY]: [
     {
       key: 'partsRemaining',
       label: 'Parts remaining',
@@ -207,7 +207,7 @@ const PROPERTIES: Record<ModuleType, PropertyMeta[]> = {
       defaultCriticalAt: 30,
     },
   ],
-  [MODULE_TYPES.PAINT_SHOP]: [
+  [NODE_TYPES.PAINT_SHOP]: [
     { key: 'unitsPassed', label: 'Passed', numeric: true, min: 0, max: 3000 },
     {
       key: 'unitsRework',
@@ -232,7 +232,7 @@ const PROPERTIES: Record<ModuleType, PropertyMeta[]> = {
       defaultCriticalAt: 88,
     },
   ],
-  [MODULE_TYPES.QUALITY_CONTROL]: [
+  [NODE_TYPES.QUALITY_CONTROL]: [
     { key: 'unitsPassed', label: 'Passed', numeric: true, min: 0, max: 3000 },
     {
       key: 'unitsRejected',
@@ -258,12 +258,12 @@ const PROPERTIES: Record<ModuleType, PropertyMeta[]> = {
   ],
 };
 
-export function getPropertyMeta(type: ModuleType): PropertyMeta[] {
+export function getPropertyMeta(type: NodeType): PropertyMeta[] {
   return PROPERTIES[type] ?? [];
 }
 
-export function getPropertyValue(state: Module, key: string): string | number | undefined {
-  return (state as unknown as Record<string, string | number | undefined>)[key];
+export function getPropertyValue(data: AssemblyNodeData, key: string): string | number | undefined {
+  return (data as unknown as Record<string, string | number | undefined>)[key];
 }
 
 export type Tone = 'default' | 'ok' | 'warn' | 'danger';

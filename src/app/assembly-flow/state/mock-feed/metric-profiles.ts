@@ -1,4 +1,4 @@
-import { MODULE_TYPES, type ModuleType } from '../../model';
+import { NODE_TYPES, type NodeType } from '../../model';
 
 /**
  * Operating point for a "gauge" metric — one that hovers around a setpoint rather
@@ -17,8 +17,8 @@ export interface GaugeProfile {
  * are set to bracket these so a healthy line reads green, with the occasional
  * noise excursion tipping a metric into warning.
  */
-export const GAUGE_PROFILES: Partial<Record<ModuleType, Record<string, GaugeProfile>>> = {
-  [MODULE_TYPES.SERVO_PRESS]: {
+export const GAUGE_PROFILES: Partial<Record<NodeType, Record<string, GaugeProfile>>> = {
+  [NODE_TYPES.SERVO_PRESS]: {
     throughputPerHour: { nominal: 520, spread: 22 },
     oeePercent: { nominal: 82, spread: 3 },
     pressureBar: { nominal: 118, spread: 7 },
@@ -26,26 +26,22 @@ export const GAUGE_PROFILES: Partial<Record<ModuleType, Record<string, GaugeProf
     pressureKn: { nominal: 1250, spread: 55 },
     cycleTimeMs: { nominal: 4600, spread: 180 },
   },
-  [MODULE_TYPES.WELDING_CELL]: {
+  [NODE_TYPES.WELDING_CELL]: {
     cycleTimeSec: { nominal: 52, spread: 3 },
     temperatureC: { nominal: 44, spread: 3 },
   },
-  [MODULE_TYPES.AUTO_ASSEMBLY]: {
+  [NODE_TYPES.AUTO_ASSEMBLY]: {
     partsToLoad: { nominal: 28, spread: 6 },
     cycleTimeSec: { nominal: 168, spread: 7 },
     inspectionTimeMin: { nominal: 12, spread: 2 },
     manualWorkers: { nominal: 6, spread: 0.8 },
   },
-  [MODULE_TYPES.PAINT_SHOP]: {
-    firstPassYieldPct: { nominal: 96, spread: 1.5 },
-  },
-  [MODULE_TYPES.QUALITY_CONTROL]: {
-    passedPercentage: { nominal: 97, spread: 1.5 },
-  },
+  [NODE_TYPES.PAINT_SHOP]: { firstPassYieldPct: { nominal: 96, spread: 1.5 } },
+  [NODE_TYPES.QUALITY_CONTROL]: { passedPercentage: { nominal: 97, spread: 1.5 } },
 };
 
 /** A slightly randomized boot value for a gauge, so modules don't all start identical. */
-export function bootGauge(type: ModuleType, field: string): number {
+export function bootGauge(type: NodeType, field: string): number {
   const g = GAUGE_PROFILES[type]?.[field];
   if (!g) {
     return 0;
