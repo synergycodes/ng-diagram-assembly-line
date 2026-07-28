@@ -7,8 +7,7 @@ import {
   type NgDiagramEdgeTemplate,
   type Point,
 } from 'ng-diagram';
-import { isAreaNode } from '../../../model';
-import type { AssemblyNode, AssemblyNodeData, EdgeFlowState, EdgeType } from '../../../model';
+import type { AssemblyNodeData, EdgeFlowState, EdgeType } from '../../../model';
 import { AlarmFilterService } from '../../../services/alarm-filter.service';
 
 interface FlowEdgeData {
@@ -99,23 +98,15 @@ export class FlowEdgeComponent implements NgDiagramEdgeTemplate {
 
   private computeReworkDetour(source: Point, target: Point): Point[] {
     const CLEARANCE = 20;
-
-    const spanMinX = Math.min(source.x, target.x);
-    const spanMaxX = Math.max(source.x, target.x);
-
-    // Area (group) nodes are skipped so the loop clears the machines inside the
-    // shop, not the whole shop container.
+    const edge = this.edge();
+    const endpointIds = new Set([edge.source, edge.target]);
     let channelY = Math.max(source.y, target.y);
-    for (const node of this.modelService.nodes() as AssemblyNode[]) {
-      if (isAreaNode(node)) {
+    for (const node of this.modelService.nodes()) {
+      if (!endpointIds.has(node.id)) {
         continue;
       }
       const size = node.size;
       if (!size) {
-        continue;
-      }
-      const left = node.position.x;
-      if (left + size.width < spanMinX || left > spanMaxX) {
         continue;
       }
       channelY = Math.max(channelY, node.position.y + size.height);
