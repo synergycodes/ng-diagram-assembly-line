@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   DestroyRef,
+  ElementRef,
   computed,
   effect,
   inject,
@@ -48,6 +49,7 @@ import { DiagramStore } from '../../state/diagram-store.service';
 import { ModeService } from '../../state/mode.service';
 import { SelectionService } from '../../state/selection.service';
 import { DataConnectionService } from '../../state/data-connection.service';
+import { DiagramExportService } from '../../services/diagram-export';
 import { EdgeReshapeOverlayComponent } from '../features/edge-reshape';
 import { applyEdgeStretchOnSelectionMoved } from '../features/edge-routing';
 import { pointInRect } from '../core/geometry/point';
@@ -105,6 +107,8 @@ export class DiagramComponent {
   private readonly dataConnection = inject(DataConnectionService);
   private readonly history = inject(HistoryService);
   private readonly destroyRef = inject(DestroyRef);
+  private readonly elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
+  private readonly exportService = inject(DiagramExportService);
 
   private feedSub?: Subscription;
 
@@ -231,6 +235,10 @@ export class DiagramComponent {
     });
 
     this.destroyRef.onDestroy(() => this.feedSub?.unsubscribe());
+
+    // Expose the diagram host element so the header's export menu can capture it.
+    this.exportService.setDiagramElement(this.elementRef);
+    this.destroyRef.onDestroy(() => this.exportService.clearDiagramElement());
   }
 
   private applyUpdate(update: DataUpdate): void {

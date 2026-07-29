@@ -1,0 +1,100 @@
+<button
+  type="button"
+  class="export-btn"
+  [class.open]="menuOpen()"
+  [disabled]="!canExport() || exporting()"
+  aria-haspopup="menu"
+  [attr.aria-expanded]="menuOpen()"
+  (click)="toggleMenu($event)"
+  title="Export diagram"
+>
+  <svg
+    viewBox="0 0 16 16"
+    width="14"
+    height="14"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.5"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    aria-hidden="true"
+  >
+    <path d="M8 10V2M5 5l3-3 3 3M2.5 10v3a1 1 0 0 0 1 1h9a1 1 0 0 0 1-1v-3" />
+  </svg>
+  <span class="label">Export</span>
+  <svg
+    class="caret"
+    viewBox="0 0 16 16"
+    width="12"
+    height="12"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.5"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    aria-hidden="true"
+  >
+    <path d="M4 6l4 4 4-4" />
+  </svg>
+</button>
+
+@if (menuOpen()) {
+  <div
+    class="export-menu"
+    role="menu"
+    tabindex="-1"
+    (click)="$event.stopPropagation()"
+    (keydown)="$event.stopPropagation()"
+  >
+    <div class="menu-kicker">EXPORT AS</div>
+    <button
+      type="button"
+      class="menu-row"
+      role="menuitem"
+      [disabled]="exporting()"
+      (click)="exportPng($event)"
+    >
+      <svg
+        class="menu-icon"
+        viewBox="0 0 16 16"
+        width="15"
+        height="15"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <rect x="2" y="3" width="12" height="10" rx="1.5" />
+        <circle cx="5.5" cy="6.5" r="1" />
+        <path d="M2.5 11l3-3 3 3 2-2 3 3" />
+      </svg>
+      <span class="menu-label">PNG image</span>
+    </button>
+    <button
+      type="button"
+      class="menu-row"
+      role="menuitem"
+      [disabled]="exporting()"
+      (click)="exportSvg($event)"
+    >
+      <svg
+        class="menu-icon"
+        viewBox="0 0 16 16"
+        width="15"
+        height="15"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <path d="M9 1.5H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V5.5z" />
+        <path d="M9 1.5v4h4" />
+      </svg>
+      <span class="menu-label">SVG image</span>
+    </button>
+  </div>
+}
