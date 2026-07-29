@@ -44,6 +44,11 @@ export class ExportMenuComponent {
     await this.runExport(() => this.exportService.exportSvg());
   }
 
+  async exportDxf(event: MouseEvent) {
+    event.stopPropagation();
+    await this.runExport(async () => this.exportService.exportDxf());
+  }
+
   private async runExport(run: () => Promise<void>) {
     if (!this.canExport() || this.exporting()) {
       return;

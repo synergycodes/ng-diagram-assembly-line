@@ -2,6 +2,11 @@ import { computed, ElementRef, inject, Injectable, signal } from '@angular/core'
 import { toCanvas, toSvg } from 'html-to-image';
 import type { Options } from 'html-to-image/lib/types';
 import { NgDiagramModelService } from 'ng-diagram';
+import { HistoryService } from '../history.service';
+import { buildAssemblyFlowDxfConfig } from './dxf-assembly-flow/assembly-dxf-config';
+import { resolveEdgePoints } from './dxf-assembly-flow/edge-geometry';
+import { DxfExporter } from './dxf/dxf-exporter';
+import { DxfWriter } from './dxf/dxf-writer';
 import { inlineEdgeStrokeStyles } from './inline-edge-stroke-styles';
 import { pruneSvgStyles } from './prune-svg-styles';
 
@@ -20,6 +25,7 @@ interface ExportRegion {
 @Injectable()
 export class DiagramExportService {
   private readonly modelService = inject(NgDiagramModelService);
+  private readonly history = inject(HistoryService);
   private readonly diagramElement = signal<ElementRef<HTMLElement> | null>(null);
 
   readonly canExport = computed(
@@ -69,6 +75,26 @@ export class DiagramExportService {
     const svg = pruneSvgStyles(rawSvg);
     const blob = new Blob([svg], { type: 'image/svg+xml;charset=utf-8' });
     this.downloadBlob(blob, 'assembly-flow.svg');
+  }
+
+  exportDxf(): void {
+    const nodes = this.modelService.nodes();
+    if (nodes.length === 0) {
+      return;
+    }
+    const edges = this.modelService.edges();
+    const bounds = this.modelService.computePartsBounds(nodes, edges);
+    const resolvedEdges = edges.map((edge) => ({
+      ...edge,
+      points: resolveEdgePoints(edge, nodes),
+    }));
+
+    const config = buildAssemblyFlowDxfConfig((nodeId, key) => this.history.read(nodeId, key));
+    const doc = new DxfExporter(config).export(nodes, resolvedEdges, bounds);
+    const content = new DxfWriter().serialize(doc);
+
+    const blob = new Blob([content], { type: 'application/dxf' });
+    this.downloadBlob(blob, 'assembly-flow.dxf');
   }
 
   private buildOptions(canvasEl: HTMLElement, region: ExportRegion): Options {
