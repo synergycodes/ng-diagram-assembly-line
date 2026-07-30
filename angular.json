@@ -73,6 +73,13 @@
           "options": {
             "lintFilePatterns": ["src/**/*.ts", "src/**/*.html"]
           }
+        },
+        "test": {
+          "builder": "@angular/build:unit-test",
+          "options": {
+            "buildTarget": "assembly-flow:build:development",
+            "tsConfig": "tsconfig.spec.json"
+          }
         }
       }
     }

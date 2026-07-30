@@ -199,7 +199,7 @@ There is no server — Monitor mode is powered entirely in the browser:
 - [ng-diagram](https://www.npmjs.com/package/ng-diagram) — the diagram engine
 - [@ngx-formly/core](https://formly.dev/) — the schema-driven properties panel
 - [RxJS](https://rxjs.dev/) — the data bus
-- [Vitest](https://vitest.dev/) (via `@analogjs`) — unit tests
+- [Vitest](https://vitest.dev/) (via the built-in `@angular/build:unit-test` builder) — unit tests
 - Plain SCSS with a `--ngd-*` design-token system (light/dark)
 - [Phosphor Icons](https://phosphoricons.com/), Poppins + JetBrains Mono fonts
 
