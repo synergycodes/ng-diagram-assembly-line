@@ -1,5 +1,5 @@
 import { Injectable, signal } from '@angular/core';
-import type { ModuleStatus } from '../model';
+import type { NodeStatus } from '../model';
 
 @Injectable({ providedIn: 'root' })
 export class AlarmFilterService {
@@ -40,7 +40,7 @@ export class AlarmFilterService {
     return Boolean(this._whitelisted()[id]);
   }
 
-  isAlarmStatus(status: ModuleStatus): boolean {
+  isAlarmStatus(status: NodeStatus): boolean {
     if (status === 'error') {
       return this._errorsEnabled();
     }
@@ -50,7 +50,7 @@ export class AlarmFilterService {
     return false;
   }
 
-  isNodeDimmed(id: string, status: ModuleStatus): boolean {
+  isNodeDimmed(id: string, status: NodeStatus): boolean {
     if (!this._active()) {
       return false;
     }

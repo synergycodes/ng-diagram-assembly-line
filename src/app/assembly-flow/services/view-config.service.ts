@@ -39,10 +39,7 @@ export class ViewConfigService {
         ...map,
         [nodeId]: {
           ...existing,
-          properties: {
-            ...existing.properties,
-            [prop]: { ...existingProp, ...patch },
-          },
+          properties: { ...existing.properties, [prop]: { ...existingProp, ...patch } },
         },
       };
     });

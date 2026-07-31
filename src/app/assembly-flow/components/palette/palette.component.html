@@ -14,15 +14,8 @@
           <span class="label">{{ item.label }}</span>
         </div>
         <ng-diagram-palette-item-preview>
-          <div class="item preview">
-            <span class="icon">
-              @if (fallbackIcons[item.type]; as glyph) {
-                {{ glyph }}
-              } @else {
-                <app-node-icon [type]="item.type" [active]="false" pose="mid" />
-              }
-            </span>
-            <span class="label">{{ item.label }}</span>
+          <div class="node-preview">
+            <app-area-node [node]="previewFor(NODE_TYPES.AREA)" />
           </div>
         </ng-diagram-palette-item-preview>
       </ng-diagram-palette-item>
@@ -44,15 +37,18 @@
           <span class="label">{{ item.label }}</span>
         </div>
         <ng-diagram-palette-item-preview>
-          <div class="item preview">
-            <span class="icon">
-              @if (fallbackIcons[item.type]; as glyph) {
-                {{ glyph }}
-              } @else {
-                <app-node-icon [type]="item.type" [active]="false" pose="mid" />
+          <div class="node-preview">
+            @switch (item.type) {
+              @case (NODE_TYPES.PAINT_SHOP) {
+                <app-paint-shop-node [node]="previewFor(item.type)" />
               }
-            </span>
-            <span class="label">{{ item.label }}</span>
+              @case (NODE_TYPES.AUTO_ASSEMBLY) {
+                <app-auto-assembly-node [node]="previewFor(item.type)" />
+              }
+              @default {
+                <app-assembly-node [node]="previewFor(item.type)" />
+              }
+            }
           </div>
         </ng-diagram-palette-item-preview>
       </ng-diagram-palette-item>

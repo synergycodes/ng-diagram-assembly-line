@@ -1,7 +1,8 @@
-import type { WeldingCellModule } from '../../../model';
-import { ModuleUpdateGenerator, jitter, randomIncrement } from './module-update-generator';
+import { NODE_TYPES, type WeldingCellNodeData } from '../../../model';
+import { NodeUpdateGenerator, jitter, randomIncrement } from './node-update-generator';
 
-export class WeldingCellUpdateGenerator extends ModuleUpdateGenerator<WeldingCellModule> {
+export class WeldingCellUpdateGenerator extends NodeUpdateGenerator<WeldingCellNodeData> {
+  protected readonly type = NODE_TYPES.WELDING_CELL;
   protected readonly fields = [
     'cycleTimeSec',
     'temperatureC',
@@ -10,7 +11,7 @@ export class WeldingCellUpdateGenerator extends ModuleUpdateGenerator<WeldingCel
   ] as const;
 
   protected override computeNext(
-    module: WeldingCellModule,
+    data: WeldingCellNodeData,
     field: string,
     current: number,
   ): number {
@@ -20,9 +21,9 @@ export class WeldingCellUpdateGenerator extends ModuleUpdateGenerator<WeldingCel
     }
     // Usually all robots run; occasionally one drops out for a beat.
     if (field === 'activeRobots') {
-      const total = module.totalRobots ?? 6;
+      const total = data.totalRobots ?? 6;
       return Math.min(total, jitter(current, total, 0.7));
     }
-    return super.computeNext(module, field, current);
+    return super.computeNext(data, field, current);
   }
 }

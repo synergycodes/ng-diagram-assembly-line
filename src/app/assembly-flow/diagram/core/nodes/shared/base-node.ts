@@ -1,29 +1,31 @@
 import { computed, inject, type Signal } from '@angular/core';
-import type { Node } from 'ng-diagram';
-import type { Module } from '../../../../model';
+import type { SimpleNode } from 'ng-diagram';
+import type { AssemblyNodeData, NodeType } from '../../../../model';
 import { AlarmFilterService } from '../../../../services/alarm-filter.service';
 import { ViewConfigService } from '../../../../services/view-config.service';
 import { STATUS_GLYPH, deriveValueColor, nodeShortId } from '../../../../shared/node-view';
 
 /**
  * Shared state + behaviour for the ng-diagram node templates (module, paint
- * shop, auto-assembly): live data, short id, status glyph, alarm dimming +
- * reveal, and the per-node view config. Each concrete node declares its own
- * `node` input so the module type narrows; that field satisfies the abstract
- * accessor here. Not an Angular directive — a plain base whose `inject()` runs
- * in the subclass component's injection context.
+ * shop, auto-assembly): live data, node type, short id, status glyph, alarm
+ * dimming + reveal, and the per-node view config. Generic over the `data`
+ * payload so each concrete node narrows it. The node wrapper's `type` is the
+ * type — ng-diagram types it as `string`, so `type` asserts it to `NodeType`.
+ * Not an Angular directive — a plain base whose `inject()` runs in the subclass
+ * component's injection context.
  */
-export abstract class BaseModuleNode<M extends Module> {
+export abstract class BaseNode<D extends AssemblyNodeData = AssemblyNodeData> {
   protected readonly viewConfig = inject(ViewConfigService);
   protected readonly alarmFilter = inject(AlarmFilterService);
 
-  abstract readonly node: Signal<Node<M>>;
+  abstract readonly node: Signal<SimpleNode<D>>;
 
   protected readonly data = computed(() => this.node().data);
-  protected readonly shortId = computed(() => nodeShortId(this.data().type, this.node().id));
-  protected readonly statusGlyph = computed(() => STATUS_GLYPH[this.data().status]);
+  protected readonly type = computed(() => this.node().type as NodeType);
+  protected readonly shortId = computed(() => nodeShortId(this.type(), this.node().id));
+  protected readonly statusGlyph = computed(() => STATUS_GLYPH[this.node().data.status]);
   protected readonly isDimmed = computed(() =>
-    this.alarmFilter.isNodeDimmed(this.node().id, this.data().status),
+    this.alarmFilter.isNodeDimmed(this.node().id, this.node().data.status),
   );
   protected readonly propCfg = computed(() => this.viewConfig.propertiesFor(this.node().id));
 
@@ -38,6 +40,6 @@ export abstract class BaseModuleNode<M extends Module> {
 
   /** Threshold color for a metric's value, or undefined when it has no range. */
   protected metricColor(key: string): string | undefined {
-    return deriveValueColor(this.data(), key, this.propCfg()[key]);
+    return deriveValueColor(this.type(), this.node().data, key, this.propCfg()[key]);
   }
 }

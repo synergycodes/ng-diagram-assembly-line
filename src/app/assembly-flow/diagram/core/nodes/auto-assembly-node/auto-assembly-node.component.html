@@ -4,7 +4,7 @@
   <span class="status-badge" [attr.data-status]="data().status">{{ statusGlyph() }}</span>
 
   <header class="head">
-    <app-node-icon [type]="data().type" [active]="data().status === 'working'" />
+    <app-node-icon [type]="type()" [active]="data().status === 'working'" />
     <span class="name">{{ data().name }}</span>
     <span class="code">{{ shortId() }}</span>
   </header>

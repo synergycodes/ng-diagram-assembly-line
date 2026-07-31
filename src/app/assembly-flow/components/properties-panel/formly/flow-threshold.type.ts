@@ -13,7 +13,7 @@ import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
 import {
   computeTone,
   getPropertyValue,
-  type Module,
+  type AssemblyNodeData,
   type PropertyMeta,
   type Tone,
 } from '../../../model';
@@ -34,7 +34,7 @@ export interface ThresholdConfig {
   visible: boolean;
 }
 
-type DragKind = 'warn' | 'critical';
+type DragType = 'warn' | 'critical';
 
 /**
  * The editable config lives in `formControl.value` (a {@link ThresholdConfig});
@@ -55,7 +55,7 @@ export class FlowFormlyThresholdType extends FieldType<FieldTypeConfig> implemen
   private readonly store = inject(DiagramStore);
 
   protected readonly bar = viewChild<ElementRef<HTMLDivElement>>('bar');
-  private readonly drag = signal<DragKind | null>(null);
+  private readonly drag = signal<DragType | null>(null);
   protected readonly expanded = signal(false);
 
   // Mirror of formControl.value so pointer edits re-render (signal-driven CD).
@@ -93,7 +93,7 @@ export class FlowFormlyThresholdType extends FieldType<FieldTypeConfig> implemen
 
   protected readonly current = computed<number>(() => {
     const id = this.selection.selectedNodeId();
-    const data = this.store.nodes().find((n) => n.id === id)?.data as Module | undefined;
+    const data = this.store.nodes().find((n) => n.id === id)?.data as AssemblyNodeData | undefined;
     if (!data) {
       return 0;
     }
@@ -193,14 +193,14 @@ export class FlowFormlyThresholdType extends FieldType<FieldTypeConfig> implemen
     return Math.max(min, Math.min(max, value));
   }
 
-  startDrag(event: PointerEvent, kind: DragKind): void {
+  startDrag(event: PointerEvent, type: DragType): void {
     event.preventDefault();
     event.stopPropagation();
     const target = event.target as HTMLElement;
     target.setPointerCapture(event.pointerId);
-    this.drag.set(kind);
+    this.drag.set(type);
 
-    const move = (e: PointerEvent) => this.onDrag(e, kind);
+    const move = (e: PointerEvent) => this.onDrag(e, type);
     const up = (e: PointerEvent) => {
       target.releasePointerCapture(e.pointerId);
       target.removeEventListener('pointermove', move);
@@ -213,7 +213,7 @@ export class FlowFormlyThresholdType extends FieldType<FieldTypeConfig> implemen
     target.addEventListener('pointercancel', up);
   }
 
-  private onDrag(event: PointerEvent, kind: DragKind): void {
+  private onDrag(event: PointerEvent, type: DragType): void {
     const bar = this.bar()?.nativeElement;
     if (!bar) {
       return;
@@ -223,7 +223,7 @@ export class FlowFormlyThresholdType extends FieldType<FieldTypeConfig> implemen
     const min = this.meta.min ?? 0;
     const max = this.meta.max ?? 100;
     const value = Math.round(min + ratio * (max - min));
-    if (kind === 'warn') {
+    if (type === 'warn') {
       this.setWarn(value);
     } else {
       this.setCritical(value);

@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   DestroyRef,
+  ElementRef,
   computed,
   effect,
   inject,
@@ -17,6 +18,7 @@ import {
   NgDiagramEdgeTemplateMap,
   NgDiagramModelService,
   NgDiagramNodeTemplateMap,
+  NgDiagramViewportService,
   type Edge,
   type GroupMembershipChangedEvent,
   type Middleware,
@@ -31,17 +33,25 @@ import {
   AutoAssemblyNodeComponent,
   FlowEdgeComponent,
   HistoryService,
-  ModuleNodeComponent,
+  AssemblyNodeComponent,
   PaintShopNodeComponent,
 } from '../../shared';
-import { MODULE_TYPES, getPropertyMeta, type DataUpdate, type Module } from '../../model';
+import {
+  NODE_TYPES,
+  getPropertyMeta,
+  isAreaNode,
+  type AreaNode,
+  type AssemblyNode,
+  type AssemblyNodeData,
+  type DataUpdate,
+} from '../../model';
 import { DiagramStore } from '../../state/diagram-store.service';
 import { ModeService } from '../../state/mode.service';
 import { SelectionService } from '../../state/selection.service';
 import { DataConnectionService } from '../../state/data-connection.service';
+import { DiagramExportService } from '../../services/diagram-export';
 import { EdgeReshapeOverlayComponent } from '../features/edge-reshape';
 import { applyEdgeStretchOnSelectionMoved } from '../features/edge-routing';
-import { NODE_TYPES, FLOW_EDGE_TYPE } from '../core/geometry/node-types';
 import { pointInRect } from '../core/geometry/point';
 
 const AREA_PADDING = 16;
@@ -92,24 +102,26 @@ export class DiagramComponent {
   private readonly selection = inject(SelectionService);
   private readonly modelService = inject(NgDiagramModelService);
   private readonly groupsService = inject(NgDiagramGroupsService);
+  private readonly viewport = inject(NgDiagramViewportService);
   protected readonly mode = inject(ModeService).mode;
   private readonly dataConnection = inject(DataConnectionService);
   private readonly history = inject(HistoryService);
   private readonly destroyRef = inject(DestroyRef);
+  private readonly elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
+  private readonly exportService = inject(DiagramExportService);
 
   private feedSub?: Subscription;
 
   protected readonly nodeTemplateMap = new NgDiagramNodeTemplateMap([
-    [NODE_TYPES.MODULE, ModuleNodeComponent],
     [NODE_TYPES.AREA, AreaNodeComponent],
+    [NODE_TYPES.BUFFER, AssemblyNodeComponent],
+    [NODE_TYPES.SERVO_PRESS, AssemblyNodeComponent],
+    [NODE_TYPES.WELDING_CELL, AssemblyNodeComponent],
+    [NODE_TYPES.QUALITY_CONTROL, AssemblyNodeComponent],
     [NODE_TYPES.PAINT_SHOP, PaintShopNodeComponent],
     [NODE_TYPES.AUTO_ASSEMBLY, AutoAssemblyNodeComponent],
   ]);
-
-  protected readonly edgeTemplateMap = new NgDiagramEdgeTemplateMap([
-    [FLOW_EDGE_TYPE, FlowEdgeComponent],
-  ]);
-
+  protected readonly edgeTemplateMap = new NgDiagramEdgeTemplateMap([['flow', FlowEdgeComponent]]);
   protected readonly config = computed<NgDiagramConfig>(() => {
     // Orthogonal (right-angle) routing suits conveyor flows and gives the
     // edge-reshape feature straight segments to drag. Applied in both modes.
@@ -123,6 +135,7 @@ export class DiagramComponent {
     // GRID=8 reshape snap.)
     const CANVAS_SNAP_PX = 20;
     const background = { dotSpacing: CANVAS_SNAP_PX };
+    const zoom = { zoomToFit: { onInit: true } };
     const snapping = {
       shouldSnapDragForNode: () => true,
       computeSnapForNodeDrag: () => ({ width: CANVAS_SNAP_PX, height: CANVAS_SNAP_PX }),
@@ -137,16 +150,18 @@ export class DiagramComponent {
         linking: { validateConnection: () => false },
         edgeRouting,
         background,
+        zoom,
       };
     }
     return {
       edgeRouting,
       background,
       snapping,
+      zoom,
       linking: {
         finalEdgeDataBuilder: (edge: Edge) => {
           if (edge.sourcePort === 'port-rework') {
-            return { ...edge, type: 'flow', data: { ...(edge.data ?? {}), kind: 'rework' } };
+            return { ...edge, type: 'flow', data: { ...(edge.data ?? {}), type: 'rework' } };
           }
           return { ...edge, type: edge.type ?? 'flow' };
         },
@@ -178,13 +193,13 @@ export class DiagramComponent {
   ]);
 
   protected readonly model = initializeModel({
-    nodes: this.store.nodes() as Node<Module>[],
+    nodes: this.store.nodes() as Node<AssemblyNodeData>[],
     edges: this.store.edges() as Edge[],
   });
 
   constructor() {
     effect(() => {
-      const nodes = this.modelService.nodes() as Node<Module>[];
+      const nodes = this.modelService.nodes() as AssemblyNode[];
       untracked(() => this.store.setNodes(nodes));
     });
     effect(() => {
@@ -209,23 +224,37 @@ export class DiagramComponent {
       });
     });
 
+    effect(() => {
+      const monitoring = this.mode() === 'monitor';
+      untracked(() => {
+        if (monitoring) {
+          // use requestAnimationFrame so that diagram viewport is updated after palette gets hidden
+          requestAnimationFrame(() => this.viewport.zoomToFit());
+        }
+      });
+    });
+
     this.destroyRef.onDestroy(() => this.feedSub?.unsubscribe());
+
+    // Expose the diagram host element so the header's export menu can capture it.
+    this.exportService.setDiagramElement(this.elementRef);
+    this.destroyRef.onDestroy(() => this.exportService.clearDiagramElement());
   }
 
   private applyUpdate(update: DataUpdate): void {
-    const current = this.modelService.getNodeById<Module>(update.nodeId);
+    const current = this.modelService.getNodeById<AssemblyNodeData>(update.nodeId);
     if (!current) {
       return;
     }
 
-    this.modelService.updateNodeData<Module>(update.nodeId, {
+    this.modelService.updateNodeData<AssemblyNodeData>(update.nodeId, {
       ...current.data,
       status: update.status,
-      ...(update.metrics as Partial<Module>),
-    } as Module);
+      ...(update.metrics as Partial<AssemblyNodeData>),
+    } as AssemblyNodeData);
 
     const numeric: Record<string, number> = {};
-    for (const meta of getPropertyMeta(update.moduleType)) {
+    for (const meta of getPropertyMeta(update.type)) {
       if (!meta.numeric) {
         continue;
       }
@@ -292,10 +321,10 @@ export class DiagramComponent {
     requestAnimationFrame(() => this.fitAreaWhenReady(groupId, attempt + 1));
   }
 
-  private findAreaContainingPoint(point: { x: number; y: number }): Node<Module> | null {
-    const nodes = this.modelService.nodes() as Node<Module>[];
+  private findAreaContainingPoint(point: { x: number; y: number }): AreaNode | null {
+    const nodes = this.modelService.nodes() as AssemblyNode[];
     for (const n of nodes) {
-      if (n.data.type !== MODULE_TYPES.AREA || !n.size) {
+      if (!isAreaNode(n) || !n.size) {
         continue;
       }
       const within = pointInRect(point, {
@@ -312,11 +341,11 @@ export class DiagramComponent {
   }
 
   private fitAreaToChildren(groupId: string) {
-    const group = this.modelService.getNodeById<Module>(groupId);
+    const group = this.modelService.getNodeById<AssemblyNodeData>(groupId);
     if (!group?.size) {
       return;
     }
-    if (group.data.type !== MODULE_TYPES.AREA) {
+    if (group.type !== NODE_TYPES.AREA) {
       return;
     }
 

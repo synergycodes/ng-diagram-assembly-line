@@ -54,14 +54,16 @@ diagram tool.
 | **Processing** | **Paint Shop**      | Paint booth — per-color tank levels, first-pass yield                        |
 | **Quality**    | **Quality Control** | Inspection — pass rate, rejects, plus a **rework loopback** port             |
 
-The catalog is data-driven: node types live in
-[`model/dto.ts`](src/app/assembly-flow/model/dto.ts) (`MODULE_TYPES`), their palette
-grouping and defaults in
-[`model/module-defaults.ts`](src/app/assembly-flow/model/module-defaults.ts)
-(`MODULE_TYPE_META`, `createDefaultModule`), and their per-metric metadata
-(labels, units, thresholds) in
-[`model/property-meta.ts`](src/app/assembly-flow/model/property-meta.ts). Each type maps to
-a render component through the template maps in
+The catalog is data-driven and built on ng-diagram's own node types. Each kind and its
+`data` payload interface (`*NodeData`) live in
+[`model/node-data.ts`](src/app/assembly-flow/model/node-data.ts) (`NODE_TYPES`, the
+`NodeDataByKind` map); the typed node objects (`AssemblyNode` = `SimpleNode`/`GroupNode`
+per kind) in [`model/nodes.ts`](src/app/assembly-flow/model/nodes.ts); a single per-kind
+registry — label, default `data` (`createDefault`), palette footprint — in
+[`model/node-registry.ts`](src/app/assembly-flow/model/node-registry.ts) (`NODE_REGISTRY`);
+and the per-metric metadata (labels, units, thresholds) in
+[`model/property-meta.ts`](src/app/assembly-flow/model/property-meta.ts). A node's `type`
+_is_ its kind, mapping it to a render component through the template map in
 [`diagram/canvas/diagram.component.ts`](src/app/assembly-flow/diagram/canvas/diagram.component.ts).
 
 ## Getting Started
@@ -119,14 +121,14 @@ src/
       ├─ diagram/
       │  ├─ canvas/                     # ng-diagram host, template maps, config, central applier
       │  ├─ core/
-      │  │  ├─ nodes/                   # module / area / paint-shop / auto-assembly + icon, sparkline
+      │  │  ├─ nodes/                   # assembly (generic) / area / paint-shop / auto-assembly + icon, sparkline
       │  │  ├─ edges/                   # flow edge (+ rework detour & chevrons)
       │  │  ├─ geometry/                # grid, orthogonal helpers, port/edge math
       │  │  └─ ng-diagram-bridge/       # pointer-drag controller
       │  └─ features/                   # self-contained plugins with their own barrels
       │     ├─ edge-reshape/            # drag segments; optional extension seam
       │     └─ edge-routing/            # keep links attached on node move
-      ├─ model/                         # DTOs, property metadata, module defaults
+      ├─ model/                         # node-data types, typed node union, node registry, property metadata
       ├─ services/                      # history (sparklines), view-config, alarm filter, theme
       ├─ shared/                        # barrel for node/edge components + view services
       └─ state/                         # diagram store, mode/selection
@@ -146,14 +148,15 @@ theme. `data-theme` is applied by a pre-paint inline script in `index.html`
 
 ## Customization
 
-- **Add a node type** — extend `MODULE_TYPES` in
-  [`model/dto.ts`](src/app/assembly-flow/model/dto.ts), add a `MODULE_TYPE_META` entry +
-  `createDefaultModule` case in
-  [`model/module-defaults.ts`](src/app/assembly-flow/model/module-defaults.ts), describe its
-  metrics in [`model/property-meta.ts`](src/app/assembly-flow/model/property-meta.ts),
-  register a render component in the template map in
-  [`diagram/canvas/diagram.component.ts`](src/app/assembly-flow/diagram/canvas/diagram.component.ts),
-  and (for live values) add a generator under
+- **Add a node type** — add the kind to `NODE_TYPES`, a `*NodeData` interface, and a
+  `NodeDataByKind` entry in [`model/node-data.ts`](src/app/assembly-flow/model/node-data.ts);
+  a matching node alias (and `AssemblyNode` union member) in
+  [`model/nodes.ts`](src/app/assembly-flow/model/nodes.ts); a `NODE_REGISTRY` entry (label,
+  `createDefault`) in [`model/node-registry.ts`](src/app/assembly-flow/model/node-registry.ts);
+  its metrics in [`model/property-meta.ts`](src/app/assembly-flow/model/property-meta.ts);
+  a render component in the template map in
+  [`diagram/canvas/diagram.component.ts`](src/app/assembly-flow/diagram/canvas/diagram.component.ts);
+  and (for live values) a generator under
   [`state/mock-feed/generators/`](src/app/assembly-flow/state/mock-feed/generators/).
 - **Change the seed diagram** — edit
   [`state/initial-diagram.json`](src/app/assembly-flow/state/initial-diagram.json); the app
@@ -168,7 +171,7 @@ There is no server — Monitor mode is powered entirely in the browser:
 
 - [`state/mock-feed/mock-production-engine.ts`](src/app/assembly-flow/state/mock-feed/mock-production-engine.ts)
   seeds a scoped state and, on a set of timers, random-walks each **working**
-  module's metrics and periodically re-rolls statuses (weighted
+  node's metrics and periodically re-rolls statuses (weighted
   working / idle / error).
 - [`state/data-connection.service.ts`](src/app/assembly-flow/state/data-connection.service.ts)
   exposes an RxJS **data bus** — `updatesFor(nodeIds)` — that starts generation on
@@ -196,7 +199,7 @@ There is no server — Monitor mode is powered entirely in the browser:
 - [ng-diagram](https://www.npmjs.com/package/ng-diagram) — the diagram engine
 - [@ngx-formly/core](https://formly.dev/) — the schema-driven properties panel
 - [RxJS](https://rxjs.dev/) — the data bus
-- [Vitest](https://vitest.dev/) (via `@analogjs`) — unit tests
+- [Vitest](https://vitest.dev/) (via the built-in `@angular/build:unit-test` builder) — unit tests
 - Plain SCSS with a `--ngd-*` design-token system (light/dark)
 - [Phosphor Icons](https://phosphoricons.com/), Poppins + JetBrains Mono fonts
 

@@ -1,4 +1,5 @@
-import type { EdgeState, Module, ProductionState, Update } from '../../../model';
+import type { AssemblyNodeData, NodeType, Update } from '../../../model';
+import type { UpdateContext } from '../mock-feed-types';
 import { GAUGE_PROFILES } from '../metric-profiles';
 
 const MAX_DELTA = 5;
@@ -6,56 +7,52 @@ const MAX_DELTA = 5;
 /** How strongly a gauge is pulled back toward its nominal each tick (0..1). */
 const REVERSION = 0.2;
 
-export interface UpdateContext {
-  state: ProductionState;
-  edges: readonly EdgeState[];
-}
-
-export abstract class ModuleUpdateGenerator<M extends Module = Module> {
+/**
+ * Produces metric deltas for one node type. Operates on the node's `data` payload
+ * plus an {@link UpdateContext} carrying the node id (for upstream checks and the
+ * emitted update); the node's type is declared per subclass as `type`.
+ */
+export abstract class NodeUpdateGenerator<D extends AssemblyNodeData = AssemblyNodeData> {
+  protected abstract readonly type: NodeType;
   protected abstract readonly fields: readonly string[];
   protected readonly percentFields: ReadonlySet<string> = new Set();
   protected readonly requiresWorkingUpstream: boolean = false;
 
-  generate(module: M, context: UpdateContext): Update | null {
+  generate(data: D, context: UpdateContext): Update | null {
     if (this.fields.length === 0) {
       return null;
     }
-    if (this.requiresWorkingUpstream && !this.hasWorkingUpstream(module, context)) {
+    if (this.requiresWorkingUpstream && !this.hasWorkingUpstream(context)) {
       return null;
     }
-    const state: Record<string, unknown> = {};
+    const metrics: Record<string, unknown> = {};
     for (const field of this.fields) {
-      const partial = this.generateField(module, field);
+      const partial = this.generateField(data, field);
       if (partial) {
-        Object.assign(state, partial);
+        Object.assign(metrics, partial);
       }
     }
-    if (Object.keys(state).length === 0) {
+    if (Object.keys(metrics).length === 0) {
       return null;
     }
-    return this.makeUpdate(module, state);
+    return this.makeUpdate(data, context.nodeId, metrics);
   }
 
-  protected generateField(module: M, field: string): Record<string, unknown> | null {
-    const record = module as unknown as Record<string, number>;
+  protected generateField(data: D, field: string): Record<string, unknown> | null {
+    const record = data as unknown as Record<string, number>;
     // Metrics start "not available" (undefined) in the seed, so treat a missing
     // value as 0 — the first tick then walks up from a clean baseline instead of
     // producing NaN.
     const current = Number.isFinite(record[field]) ? record[field] : 0;
-    let next = this.computeNext(module, field, current);
+    let next = this.computeNext(data, field, current);
     if (this.percentFields.has(field)) {
       next = Math.min(100, next);
     }
     return { [field]: next };
   }
 
-  protected makeUpdate(module: M, state: Record<string, unknown>): Update {
-    return {
-      moduleId: module.id,
-      moduleType: module.type,
-      moduleStatus: module.status,
-      state,
-    } as Update;
+  protected makeUpdate(data: D, nodeId: string, metrics: Record<string, unknown>): Update {
+    return { nodeId, type: this.type, status: data.status, metrics } as Update;
   }
 
   /**
@@ -63,17 +60,17 @@ export abstract class ModuleUpdateGenerator<M extends Module = Module> {
    * {@link jitter}; anything else falls back to a bounded random walk. Subclasses
    * override for accumulators/drains and delegate gauges back here via `super`.
    */
-  protected computeNext(module: M, field: string, current: number): number {
-    const gauge = GAUGE_PROFILES[module.type]?.[field];
+  protected computeNext(data: D, field: string, current: number): number {
+    const gauge = GAUGE_PROFILES[this.type]?.[field];
     if (gauge) {
       return jitter(current, gauge.nominal, gauge.spread);
     }
     return randomWalk(current);
   }
 
-  protected hasWorkingUpstream(module: M, { state, edges }: UpdateContext): boolean {
+  protected hasWorkingUpstream({ nodeId, state, edges }: UpdateContext): boolean {
     return edges.some(
-      (edge) => edge.target === module.id && state[edge.source]?.status === 'working',
+      (edge) => edge.target === nodeId && state[edge.source]?.data.status === 'working',
     );
   }
 }

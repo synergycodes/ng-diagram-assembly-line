@@ -7,13 +7,12 @@ import {
   type NgDiagramEdgeTemplate,
   type Point,
 } from 'ng-diagram';
-import { isAreaNode } from '../geometry/node-types';
-import type { EdgeFlowState, EdgeKind, Module } from '../../../model';
+import type { AssemblyNodeData, EdgeFlowState, EdgeType } from '../../../model';
 import { AlarmFilterService } from '../../../services/alarm-filter.service';
 
 interface FlowEdgeData {
   flowState?: EdgeFlowState;
-  kind?: EdgeKind;
+  type?: EdgeType;
 }
 
 const MARKER_PIXEL_SPACING = 300;
@@ -50,7 +49,7 @@ export class FlowEdgeComponent implements NgDiagramEdgeTemplate {
 
   protected readonly state = computed<EdgeFlowState>(() => this.edge().data?.flowState ?? 'normal');
   protected readonly isRework = computed(
-    () => this.edge().data?.kind === 'rework' || this.edge().sourcePort === 'port-rework',
+    () => this.edge().data?.type === 'rework' || this.edge().sourcePort === 'port-rework',
   );
   protected readonly isDimmed = computed(() => {
     if (!this.alarmFilter.active()) {
@@ -60,7 +59,9 @@ export class FlowEdgeComponent implements NgDiagramEdgeTemplate {
     const nodes = this.modelService.nodes();
     const endpointDimmed = (nodeId: string): boolean => {
       const node = nodes.find((n) => n.id === nodeId);
-      return node ? this.alarmFilter.isNodeDimmed(node.id, (node.data as Module).status) : true;
+      return node
+        ? this.alarmFilter.isNodeDimmed(node.id, (node.data as AssemblyNodeData).status)
+        : true;
     };
     return endpointDimmed(edge.source) && endpointDimmed(edge.target);
   });
@@ -97,23 +98,15 @@ export class FlowEdgeComponent implements NgDiagramEdgeTemplate {
 
   private computeReworkDetour(source: Point, target: Point): Point[] {
     const CLEARANCE = 20;
-
-    const spanMinX = Math.min(source.x, target.x);
-    const spanMaxX = Math.max(source.x, target.x);
-
-    // Area (group) nodes are skipped so the loop clears the machines inside the
-    // shop, not the whole shop container.
+    const edge = this.edge();
+    const endpointIds = new Set([edge.source, edge.target]);
     let channelY = Math.max(source.y, target.y);
     for (const node of this.modelService.nodes()) {
-      if (isAreaNode(node)) {
+      if (!endpointIds.has(node.id)) {
         continue;
       }
       const size = node.size;
       if (!size) {
-        continue;
-      }
-      const left = node.position.x;
-      if (left + size.width < spanMinX || left > spanMaxX) {
         continue;
       }
       channelY = Math.max(channelY, node.position.y + size.height);

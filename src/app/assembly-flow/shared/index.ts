@@ -1,5 +1,5 @@
 export * from '../model/node-data';
-export * from '../diagram/core/nodes/module-node/module-node.component';
+export * from '../diagram/core/nodes/assembly-node/assembly-node.component';
 export * from '../diagram/core/nodes/area-node/area-node.component';
 export * from '../diagram/core/nodes/paint-shop-node/paint-shop-node.component';
 export * from '../diagram/core/nodes/auto-assembly-node/auto-assembly-node.component';

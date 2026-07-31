@@ -1,10 +1,11 @@
-import type { AutoAssemblyModule } from '../../../model';
-import { ModuleUpdateGenerator, randomDrain } from './module-update-generator';
+import { NODE_TYPES, type AutoAssemblyNodeData } from '../../../model';
+import { NodeUpdateGenerator, randomDrain } from './node-update-generator';
 
 const REFILL_PARTS_REMAINING = 200;
 const REFILL_NEXT_REFILL_MIN = 30;
 
-export class AutoAssemblyUpdateGenerator extends ModuleUpdateGenerator<AutoAssemblyModule> {
+export class AutoAssemblyUpdateGenerator extends NodeUpdateGenerator<AutoAssemblyNodeData> {
+  protected readonly type = NODE_TYPES.AUTO_ASSEMBLY;
   protected readonly fields = [
     'partsRemaining',
     'partsToLoad',
@@ -15,7 +16,7 @@ export class AutoAssemblyUpdateGenerator extends ModuleUpdateGenerator<AutoAssem
   ] as const;
 
   protected override computeNext(
-    module: AutoAssemblyModule,
+    data: AutoAssemblyNodeData,
     field: string,
     current: number,
   ): number {
@@ -28,6 +29,6 @@ export class AutoAssemblyUpdateGenerator extends ModuleUpdateGenerator<AutoAssem
       return randomDrain(current, 0, REFILL_NEXT_REFILL_MIN, 1);
     }
     // partsToLoad / cycleTimeSec / manualWorkers / inspectionTimeMin are gauges.
-    return super.computeNext(module, field, current);
+    return super.computeNext(data, field, current);
   }
 }

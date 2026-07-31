@@ -1,19 +1,19 @@
 <ng-diagram-port id="port-left" side="left" type="both" />
 <ng-diagram-port id="port-right" side="right" type="both" />
-@if (data().type === MODULE_TYPES.QUALITY_CONTROL) {
+@if (type() === NODE_TYPES.QUALITY_CONTROL) {
   <ng-diagram-port id="port-rework" side="right" type="both" class="port-rework" />
 }
 <div class="card">
   <span class="status-badge" [attr.data-status]="data().status">{{ statusGlyph() }}</span>
   <header class="head">
     @if (showIcon()) {
-      <app-node-icon [type]="data().type" [active]="data().status === 'working'" />
+      <app-node-icon [type]="type()" [active]="data().status === 'working'" />
     }
     <span class="name">{{ data().name }}</span>
     <span class="code">{{ shortId() }}</span>
   </header>
 
-  @if (data().type === MODULE_TYPES.BUFFER) {
+  @if (type() === NODE_TYPES.BUFFER) {
     <div
       class="buffer-body"
       [style.--bar-color]="bufferLevel().color"

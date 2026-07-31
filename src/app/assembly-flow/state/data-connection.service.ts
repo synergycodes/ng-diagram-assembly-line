@@ -2,15 +2,15 @@ import { Injectable, inject, signal } from '@angular/core';
 import { Observable, share } from 'rxjs';
 import {
   toDataUpdate,
+  type AssemblyNode,
   type DataUpdate,
   type EdgeFlowState,
-  type EdgeKind,
+  type EdgeType,
   type EdgeState,
-  type Module,
-  type ProductionSnapshot,
 } from '../model';
 import { DiagramStore } from './diagram-store.service';
 import { MockProductionEngine } from './mock-feed/mock-production-engine';
+import type { ProductionSnapshot } from './mock-feed/mock-feed-types';
 import { getUpdateGenerator } from './mock-feed/generators';
 
 const GENERATE_INTERVAL_MS = 100;
@@ -58,33 +58,27 @@ export class DataConnectionService {
    * checks stay valid.
    */
   private buildScopedSnapshot(ids: ReadonlySet<string>): ProductionSnapshot {
-    const modules: Module[] = this.store
+    const nodes: AssemblyNode[] = this.store
       .nodes()
       .filter((node) => ids.has(node.id))
-      .map((node) => ({
-        ...(node.data as Module),
-        id: node.id,
-        position: node.position,
-        groupId: node.groupId,
-      }))
-      .filter((module) => getUpdateGenerator(module) !== undefined);
+      .filter((node) => getUpdateGenerator(node.type) !== undefined);
 
-    const includedIds = new Set(modules.map((m) => m.id));
+    const includedIds = new Set(nodes.map((n) => n.id));
     const edges: EdgeState[] = this.store
       .edges()
       .filter((edge) => includedIds.has(edge.source) && includedIds.has(edge.target))
       .map((edge) => {
-        const data = (edge.data ?? {}) as { kind?: EdgeKind; flowState?: EdgeFlowState };
+        const data = (edge.data ?? {}) as { type?: EdgeType; flowState?: EdgeFlowState };
         return {
           id: edge.id,
           source: edge.source,
           target: edge.target,
-          kind: data.kind ?? 'flow',
+          type: data.type ?? 'flow',
           flowState: data.flowState,
           carsInTransit: [],
         };
       });
 
-    return { modules, edges, timestamp: Date.now() };
+    return { nodes, edges, timestamp: Date.now() };
   }
 }

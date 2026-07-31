@@ -27,7 +27,7 @@
   font-family: var(--ngd-font-family, 'Poppins', system-ui, sans-serif);
 }
 
-/* Buffers declare a fixed 260px footprint in the model; pin the shared module
+/* Buffers declare a fixed 260px footprint in the model; pin the shared node
  * card to match so both buffers render identically wide regardless of name
  * length (a longer name ellipsizes within rather than stretching the card). */
 :host([data-type='buffer']) .card {

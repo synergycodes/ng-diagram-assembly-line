@@ -12,9 +12,7 @@ describe('stretchPolyline', () => {
       const b = points[i + 1];
       const horizontal = Math.abs(a.y - b.y) < 0.5;
       const vertical = Math.abs(a.x - b.x) < 0.5;
-      expect(horizontal || vertical)
-        .withContext(`segment ${i}: (${a.x},${a.y}) → (${b.x},${b.y})`)
-        .toBe(true);
+      expect(horizontal || vertical, `segment ${i}: (${a.x},${a.y}) → (${b.x},${b.y})`).toBe(true);
     }
   }
 

@@ -1,10 +1,11 @@
-import type { ProductionState, Update } from '../../../model';
+import type { Update } from '../../../model';
+import type { ProductionState } from '../mock-feed-types';
 
 export function applyUpdate(state: ProductionState, update: Update): void {
-  const module = state[update.moduleId];
-  if (!module) {
+  const node = state[update.nodeId];
+  if (!node) {
     return;
   }
-  module.status = update.moduleStatus;
-  Object.assign(module, update.state);
+  node.data.status = update.status;
+  Object.assign(node.data, update.metrics);
 }

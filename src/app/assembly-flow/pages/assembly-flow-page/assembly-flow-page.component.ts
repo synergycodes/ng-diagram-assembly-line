@@ -16,9 +16,11 @@ import { NodeInspectorComponent } from '../../components/node-inspector/node-ins
 import { FlowFormlyInputType } from '../../components/properties-panel/formly/flow-input.type';
 import { FlowFormlyThresholdType } from '../../components/properties-panel/formly/flow-threshold.type';
 import { ThemeToggleComponent } from '../../components/theme-toggle/theme-toggle.component';
+import { ExportMenuComponent } from '../../components/export-menu/export-menu.component';
 import { DiagramStore } from '../../state/diagram-store.service';
 import { ModeService } from '../../state/mode.service';
 import { DataConnectionService } from '../../state/data-connection.service';
+import { DiagramExportService } from '../../services/diagram-export';
 
 @Component({
   selector: 'app-assembly-flow-page',
@@ -28,6 +30,7 @@ import { DataConnectionService } from '../../state/data-connection.service';
     PropertiesPanelComponent,
     NodeInspectorComponent,
     ThemeToggleComponent,
+    ExportMenuComponent,
   ],
   providers: [
     provideNgDiagram(),
@@ -37,6 +40,7 @@ import { DataConnectionService } from '../../state/data-connection.service';
         { name: 'flow-threshold', component: FlowFormlyThresholdType },
       ],
     }),
+    DiagramExportService,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './assembly-flow-page.component.html',
