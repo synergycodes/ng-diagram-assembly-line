@@ -3,7 +3,7 @@
   [class]="
     'flow-edge state-' + state() + (isRework() ? ' rework' : '') + (isDimmed() ? ' dimmed' : '')
   "
-  [edge]="routedEdge()"
+  [edge]="edge()"
 >
   @if (isRework()) {
     @for (marker of markers(); track marker.id) {

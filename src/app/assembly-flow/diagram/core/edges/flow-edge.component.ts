@@ -21,7 +21,6 @@ interface ReworkMarker {
   id: string;
   pos: number;
   angle: number;
-  position: Point;
 }
 
 @Component({
@@ -36,16 +35,6 @@ export class FlowEdgeComponent implements NgDiagramEdgeTemplate {
 
   private readonly modelService = inject(NgDiagramModelService);
   private readonly alarmFilter = inject(AlarmFilterService);
-  private readonly geometry = computed(() => {
-    const edge = this.edge();
-    const source = edge.sourcePosition;
-    const target = edge.targetPosition;
-    if (!this.isRework() || !source || !target) {
-      return null;
-    }
-    const points = this.computeReworkDetour(source, target);
-    return { points, markers: this.computeMarkers(points) };
-  });
 
   protected readonly state = computed<EdgeFlowState>(() => this.edge().data?.flowState ?? 'normal');
   protected readonly isRework = computed(
@@ -65,79 +54,27 @@ export class FlowEdgeComponent implements NgDiagramEdgeTemplate {
     };
     return endpointDimmed(edge.source) && endpointDimmed(edge.target);
   });
-  protected readonly markers = computed<ReworkMarker[]>(() => this.geometry()?.markers ?? []);
-
-  /**
-   * Rework edges loop from a QC node's right-hand `port-rework` back to an
-   * upstream node's left port — an auto path would cut straight through the
-   * nodes in between — so we route them manually as a rectangular detour below
-   * the machines.
-   *
-   * The chevron positions are injected as `measuredLabels` (rather than left to
-   * ng-diagram's label pipeline, which only re-runs on endpoint moves) so they
-   * track the detour whenever it re-computes — including node resizes mid-loop.
-   */
-  protected readonly routedEdge = computed<Edge<FlowEdgeData>>(() => {
-    const edge = this.edge();
-    const geo = this.geometry();
-    if (!geo) {
-      return edge;
+  protected readonly markers = computed<ReworkMarker[]>(() => {
+    if (!this.isRework()) {
+      return [];
     }
-    return {
-      ...edge,
-      routing: 'polyline',
-      routingMode: 'manual',
-      points: geo.points,
-      measuredLabels: geo.markers.map((marker) => ({
-        id: marker.id,
-        positionOnEdge: marker.pos,
-        position: marker.position,
-      })),
-    };
+    return this.computeMarkers(this.edge().points ?? []);
   });
-
-  private computeReworkDetour(source: Point, target: Point): Point[] {
-    const CLEARANCE = 20;
-    const edge = this.edge();
-    const endpointIds = new Set([edge.source, edge.target]);
-    let channelY = Math.max(source.y, target.y);
-    for (const node of this.modelService.nodes()) {
-      if (!endpointIds.has(node.id)) {
-        continue;
-      }
-      const size = node.size;
-      if (!size) {
-        continue;
-      }
-      channelY = Math.max(channelY, node.position.y + size.height);
-    }
-    channelY += CLEARANCE;
-
-    const exitX = source.x + CLEARANCE; // port-rework sits on the node's right
-    const approachX = target.x - CLEARANCE; // port-left is approached from the left
-    return [
-      { x: source.x, y: source.y },
-      { x: exitX, y: source.y },
-      { x: exitX, y: channelY },
-      { x: approachX, y: channelY },
-      { x: approachX, y: target.y },
-      { x: target.x, y: target.y },
-    ];
-  }
 
   /**
    * Each marker carries its absolute flow position and a rotation matching the
    * segment's travel direction (path runs source→target; the base glyph points
    * left, hence −180°).
    */
-  private computeMarkers(points: Point[]): ReworkMarker[] {
-    const segments: { a: Point; b: Point; length: number; start: number }[] = [];
+  private computeMarkers(points: readonly Point[]): ReworkMarker[] {
+    const segments: { length: number; start: number; angle: number }[] = [];
     let total = 0;
     for (let i = 0; i < points.length - 1; i++) {
       const a = points[i];
       const b = points[i + 1];
       const length = Math.hypot(b.x - a.x, b.y - a.y);
-      segments.push({ a, b, length, start: total });
+      const angle = (Math.atan2(b.y - a.y, b.x - a.x) * 180) / Math.PI - 180;
+      segments.push({ length, start: total, angle });
       total += length;
     }
     if (total === 0) {
@@ -150,14 +87,7 @@ export class FlowEdgeComponent implements NgDiagramEdgeTemplate {
       const pos = (i + 0.5) / count;
       const distance = pos * total;
       const segment = segments.find((s) => distance <= s.start + s.length) ?? segments.at(-1)!;
-      const t = segment.length === 0 ? 0 : (distance - segment.start) / segment.length;
-      const position = {
-        x: segment.a.x + (segment.b.x - segment.a.x) * t,
-        y: segment.a.y + (segment.b.y - segment.a.y) * t,
-      };
-      const angle =
-        (Math.atan2(segment.b.y - segment.a.y, segment.b.x - segment.a.x) * 180) / Math.PI - 180;
-      markers.push({ id: `rework-marker-${i}`, pos, angle, position });
+      markers.push({ id: `rework-marker-${i}`, pos, angle: segment.angle });
     }
     return markers;
   }

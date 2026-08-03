@@ -5,6 +5,7 @@
     [middlewares]="middlewares"
     [nodeTemplateMap]="nodeTemplateMap"
     [edgeTemplateMap]="edgeTemplateMap"
+    (diagramInit)="onDiagramInit()"
     (selectionChanged)="onSelectionChanged($event)"
     (selectionMoved)="onSelectionMoved($event)"
     (groupMembershipChanged)="onGroupMembershipChanged($event)"

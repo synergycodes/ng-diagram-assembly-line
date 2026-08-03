@@ -1,6 +1,7 @@
-import type { Edge, Node } from 'ng-diagram';
+import type { Edge, Node, Point } from 'ng-diagram';
 import { describe, expect, it } from 'vitest';
 import seed from '../../../state/initial-diagram.json';
+import { reworkDetourPoints } from '../../../diagram/core/edges/rework-detour';
 import { DxfLwPolyline } from '../dxf/dxf-entity';
 import { DxfExporter } from '../dxf/dxf-exporter';
 import { DxfWriter } from '../dxf/dxf-writer';
@@ -36,7 +37,34 @@ const bounds = (() => {
   return { x: minX, y: minY, width: maxX - minX, height: maxY - minY };
 })();
 
-const resolvedEdges = edges.map((edge) => ({ ...edge, points: resolveEdgePoints(edge, nodes) }));
+/**
+ * The exporter reads each edge's route from `edge.points` (ng-diagram's routing
+ * writes it into the model at runtime — see `resolveEdgePoints`). The seed holds
+ * no points, so stand in for a routed model: forward edges get a straight run
+ * between endpoint centres, rework edges the same detour `ReworkRouting` computes.
+ */
+const centre = (id: string): Point => {
+  const node = nodes.find((n) => n.id === id)!;
+  const size = node.size ?? { width: 0, height: 0 };
+  return { x: node.position.x + size.width / 2, y: node.position.y + size.height / 2 };
+};
+const bottom = (id: string): number => {
+  const node = nodes.find((n) => n.id === id)!;
+  return node.position.y + (node.size?.height ?? 0);
+};
+const routedEdges = edges.map((edge) => {
+  const source = centre(edge.source);
+  const target = centre(edge.target);
+  const points = isReworkEdge(edge)
+    ? reworkDetourPoints(source, target, [bottom(edge.source), bottom(edge.target)])
+    : [source, target];
+  return { ...edge, points } as Edge;
+});
+
+const resolvedEdges = routedEdges.map((edge) => ({
+  ...edge,
+  points: resolveEdgePoints(edge, nodes),
+}));
 const doc = new DxfExporter(buildAssemblyFlowDxfConfig(noSeries)).export(
   nodes,
   resolvedEdges,

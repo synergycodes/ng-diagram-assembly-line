@@ -105,7 +105,7 @@ npm start
 | Transactions         | `NgDiagramService.transaction()`                                                     |
 | Config               | `NgDiagramConfig` — snapping, dotted background, edge routing, linking rules         |
 | Middleware           | `createMiddlewares()` — a read-only guard for Monitor mode                           |
-| Manual edge routing  | `routingMode: 'manual'` + `points` for the rework detour                             |
+| Custom edge routing  | `NgDiagramService.registerRouting()` — a `ReworkRouting` for the loop-back detour    |
 | Events               | `selectionChanged`, `selectionMoved`, `groupMembershipChanged`, `paletteItemDropped` |
 
 ## Architecture

@@ -18,6 +18,7 @@ import {
   NgDiagramEdgeTemplateMap,
   NgDiagramModelService,
   NgDiagramNodeTemplateMap,
+  NgDiagramService,
   NgDiagramViewportService,
   type Edge,
   type GroupMembershipChangedEvent,
@@ -53,6 +54,7 @@ import { DiagramExportService } from '../../services/diagram-export';
 import { EdgeReshapeOverlayComponent } from '../features/edge-reshape';
 import { applyEdgeStretchOnSelectionMoved } from '../features/edge-routing';
 import { pointInRect } from '../core/geometry/point';
+import { REWORK_ROUTING_NAME, ReworkRouting } from '../core/edges/rework-routing';
 
 const AREA_PADDING = 16;
 const AREA_PADDING_TOP = 28;
@@ -101,6 +103,7 @@ export class DiagramComponent {
   private readonly store = inject(DiagramStore);
   private readonly selection = inject(SelectionService);
   private readonly modelService = inject(NgDiagramModelService);
+  private readonly diagramService = inject(NgDiagramService);
   private readonly groupsService = inject(NgDiagramGroupsService);
   private readonly viewport = inject(NgDiagramViewportService);
   protected readonly mode = inject(ModeService).mode;
@@ -161,7 +164,12 @@ export class DiagramComponent {
       linking: {
         finalEdgeDataBuilder: (edge: Edge) => {
           if (edge.sourcePort === 'port-rework') {
-            return { ...edge, type: 'flow', data: { ...(edge.data ?? {}), type: 'rework' } };
+            return {
+              ...edge,
+              type: 'flow',
+              routing: REWORK_ROUTING_NAME,
+              data: { ...(edge.data ?? {}), type: 'rework' },
+            };
           }
           return { ...edge, type: edge.type ?? 'flow' };
         },
@@ -266,6 +274,10 @@ export class DiagramComponent {
     if (Object.keys(numeric).length) {
       this.history.pushTick(update.nodeId, numeric);
     }
+  }
+
+  onDiagramInit() {
+    this.diagramService.registerRouting(new ReworkRouting());
   }
 
   onSelectionChanged(event: SelectionChangedEvent) {

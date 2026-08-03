@@ -344,6 +344,7 @@
       "sourcePort": "port-rework",
       "targetPort": "port-left",
       "type": "flow",
+      "routing": "rework",
       "data": {
         "type": "rework"
       }
@@ -377,6 +378,7 @@
       "sourcePort": "port-rework",
       "targetPort": "port-left",
       "type": "flow",
+      "routing": "rework",
       "data": {
         "type": "rework"
       }

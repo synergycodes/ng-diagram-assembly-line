@@ -91,10 +91,10 @@ Geometry is read from the **measured** model (`node.size` / `node.position` /
   represented by their KPIs rather than reproduced pixel-for-pixel — DXF is a
   CAD schematic, not the screenshot that PNG/SVG already provide.
 - **Areas** render as their outline plus an uppercased name tab.
-- **Edges**: forward flow follows ng-diagram's orthogonal route. Rework
-  loop-backs are re-derived to the same rectangular detour the
-  `FlowEdgeComponent` draws on screen (the model's `edge.points` still holds the
-  stale straight-through route), and get direction chevrons along the path.
+- **Edges**: forward flow follows ng-diagram's orthogonal route; rework
+  loop-backs follow the rectangular detour computed by the registered
+  `ReworkRouting`. Both routes are read straight from the model's `edge.points`,
+  and rework edges get direction chevrons along the path.
 - **Scale**: a fixed `0.3 mm` per diagram unit (not paper-fitted), so a
   station's physical size in the DXF stays constant regardless of diagram size.
 

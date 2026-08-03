@@ -99,9 +99,6 @@ export const AREA_LABEL_X = 16;
 export const FONT_AREA_LABEL = 10;
 
 // --- Rework edge routing (mirrors flow-edge.component.ts) --------------------
-
-/** `CLEARANCE` in `computeReworkDetour` — the detour's offset from the ports/nodes. */
-export const REWORK_CLEARANCE = 20;
 /** `MARKER_PIXEL_SPACING` — one direction chevron per this many px of path. */
 export const REWORK_MARKER_SPACING = 300;
 /** Direction-chevron footprint (diagram px). */
