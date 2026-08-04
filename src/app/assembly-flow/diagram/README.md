@@ -6,8 +6,11 @@ on (`core/`).
 
 ```
 diagram/
-  canvas/      thin host component — registers templates, config and routes
-               ng-diagram events to features. No domain logic.
+  canvas/      thin host component — registers templates and routes ng-diagram
+               events to features. Its wiring lives in siblings:
+               diagram-config (per-mode NgDiagramConfig), read-only.middleware
+               (monitor-mode edit guard), area-fit (grow Area to fit children),
+               live-feed.service (apply the monitor data feed to the model).
   core/        shared infrastructure (NOT a feature):
     geometry/          pure math + domain types (node-types, constants,
                        port-position, edge-stretch)
