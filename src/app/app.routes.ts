@@ -4,8 +4,8 @@ export const appRoutes: Route[] = [
   {
     path: '',
     loadComponent: () =>
-      import('./assembly-flow/pages/assembly-flow-page/assembly-flow-page.component').then(
-        (m) => m.AssemblyFlowPageComponent,
+      import('./assembly-line/pages/assembly-line-page/assembly-line-page.component').then(
+        (m) => m.AssemblyLinePageComponent,
       ),
   },
   { path: '**', redirectTo: '' },

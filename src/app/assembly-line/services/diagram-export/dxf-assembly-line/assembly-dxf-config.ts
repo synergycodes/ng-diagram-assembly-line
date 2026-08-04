@@ -14,7 +14,7 @@ import { renderFlowEdge } from './flow-edge-renderer';
 import { createStationNodeRenderer, type SeriesReader } from './station-node-renderer';
 
 /**
- * Wires assembly-flow's renderers into the generic DxfExporter.
+ * Wires assembly-line's renderers into the generic DxfExporter.
  *
  * Every node type is registered explicitly — `area` to its container renderer,
  * the six station types to the shared schematic-card renderer. Both edge kinds
@@ -28,7 +28,7 @@ import { createStationNodeRenderer, type SeriesReader } from './station-node-ren
  * task list), write a dedicated `DxfNodeRenderer` and swap its entry in here —
  * nothing in the generic `dxf/` library changes.
  */
-export const buildAssemblyFlowDxfConfig = (readSeries: SeriesReader): DxfExportConfig => {
+export const buildAssemblyLineDxfConfig = (readSeries: SeriesReader): DxfExportConfig => {
   const renderStationNode = createStationNodeRenderer(readSeries);
   return {
     scaleMmPerPx: DXF_SCALE_MM_PER_PX,

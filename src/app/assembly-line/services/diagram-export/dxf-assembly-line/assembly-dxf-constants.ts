@@ -1,5 +1,5 @@
 /**
- * assembly-flow-specific DXF constants: layers, colors, lineweights, the
+ * assembly-line-specific DXF constants: layers, colors, lineweights, the
  * px→mm scale, and the font sizes / paddings the renderers use to lay out a
  * node card's interior. Tunable here without touching the generic `dxf/`
  * library or the renderers.

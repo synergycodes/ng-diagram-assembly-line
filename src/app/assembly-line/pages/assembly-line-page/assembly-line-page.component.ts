@@ -24,7 +24,7 @@ import { DataConnectionService } from '../../state/data-connection.service';
 import { DiagramExportService } from '../../services/diagram-export';
 
 @Component({
-  selector: 'app-assembly-flow-page',
+  selector: 'app-assembly-line-page',
   imports: [
     DiagramComponent,
     PaletteComponent,
@@ -45,10 +45,10 @@ import { DiagramExportService } from '../../services/diagram-export';
     DiagramExportService,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  templateUrl: './assembly-flow-page.component.html',
-  styleUrl: './assembly-flow-page.component.scss',
+  templateUrl: './assembly-line-page.component.html',
+  styleUrl: './assembly-line-page.component.scss',
 })
-export class AssemblyFlowPageComponent {
+export class AssemblyLinePageComponent {
   private readonly modeService = inject(ModeService);
   private readonly connection = inject(DataConnectionService);
   private readonly alarmFilter = inject(AlarmFilterService);

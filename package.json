@@ -1,5 +1,5 @@
 {
-  "name": "assembly-flow",
+  "name": "assembly-line",
   "version": "1.0.0",
   "description": "Assembly-line production monitor / diagram editor built with Angular and ng-diagram",
   "license": "MIT",

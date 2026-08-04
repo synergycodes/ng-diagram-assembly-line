@@ -3,8 +3,8 @@ import { toCanvas, toSvg } from 'html-to-image';
 import type { Options } from 'html-to-image/lib/types';
 import { NgDiagramModelService } from 'ng-diagram';
 import { HistoryService } from '../history.service';
-import { buildAssemblyFlowDxfConfig } from './dxf-assembly-flow/assembly-dxf-config';
-import { resolveEdgePoints } from './dxf-assembly-flow/edge-geometry';
+import { buildAssemblyLineDxfConfig } from './dxf-assembly-line/assembly-dxf-config';
+import { resolveEdgePoints } from './dxf-assembly-line/edge-geometry';
 import { DxfExporter } from './dxf/dxf-exporter';
 import { DxfWriter } from './dxf/dxf-writer';
 import { inlineEdgeStrokeStyles } from './inline-edge-stroke-styles';
@@ -50,7 +50,7 @@ export class DiagramExportService {
     const restoreEdges = inlineEdgeStrokeStyles(canvasEl);
     try {
       const canvas = await toCanvas(canvasEl, this.buildOptions(canvasEl, region));
-      this.downloadDataUrl(canvas.toDataURL('image/png'), 'assembly-flow.png');
+      this.downloadDataUrl(canvas.toDataURL('image/png'), 'assembly-line.png');
     } finally {
       restoreEdges();
     }
@@ -74,7 +74,7 @@ export class DiagramExportService {
 
     const svg = pruneSvgStyles(rawSvg);
     const blob = new Blob([svg], { type: 'image/svg+xml;charset=utf-8' });
-    this.downloadBlob(blob, 'assembly-flow.svg');
+    this.downloadBlob(blob, 'assembly-line.svg');
   }
 
   exportDxf(): void {
@@ -89,12 +89,12 @@ export class DiagramExportService {
       points: resolveEdgePoints(edge, nodes),
     }));
 
-    const config = buildAssemblyFlowDxfConfig((nodeId, key) => this.history.read(nodeId, key));
+    const config = buildAssemblyLineDxfConfig((nodeId, key) => this.history.read(nodeId, key));
     const doc = new DxfExporter(config).export(nodes, resolvedEdges, bounds);
     const content = new DxfWriter().serialize(doc);
 
     const blob = new Blob([content], { type: 'application/dxf' });
-    this.downloadBlob(blob, 'assembly-flow.dxf');
+    this.downloadBlob(blob, 'assembly-line.dxf');
   }
 
   private buildOptions(canvasEl: HTMLElement, region: ExportRegion): Options {

@@ -6,7 +6,7 @@ import { DxfLwPolyline } from '../dxf/dxf-entity';
 import { DxfExporter } from '../dxf/dxf-exporter';
 import { DxfWriter } from '../dxf/dxf-writer';
 import { LAYERS } from './assembly-dxf-constants';
-import { buildAssemblyFlowDxfConfig } from './assembly-dxf-config';
+import { buildAssemblyLineDxfConfig } from './assembly-dxf-config';
 import { isReworkEdge, resolveEdgePoints } from './edge-geometry';
 
 /** No-history series reader: exercises the pipeline without sparklines. */
@@ -65,7 +65,7 @@ const resolvedEdges = routedEdges.map((edge) => ({
   ...edge,
   points: resolveEdgePoints(edge, nodes),
 }));
-const doc = new DxfExporter(buildAssemblyFlowDxfConfig(noSeries)).export(
+const doc = new DxfExporter(buildAssemblyLineDxfConfig(noSeries)).export(
   nodes,
   resolvedEdges,
   bounds,
@@ -73,7 +73,7 @@ const doc = new DxfExporter(buildAssemblyFlowDxfConfig(noSeries)).export(
 const entities = doc.getEntities();
 const onLayer = (layer: string) => entities.filter((entity) => entity.layerName === layer);
 
-describe('assembly-flow DXF export', () => {
+describe('assembly-line DXF export', () => {
   it('serializes a well-formed R2000+ file', () => {
     const content = new DxfWriter().serialize(doc);
     expect(content).toContain('AC1027');
@@ -114,7 +114,7 @@ describe('assembly-flow DXF export', () => {
     };
 
     const nodePolylines = (readSeries: (nodeId: string, key: string) => number[]) => {
-      const config = buildAssemblyFlowDxfConfig(readSeries);
+      const config = buildAssemblyLineDxfConfig(readSeries);
       const built = new DxfExporter(config).export([servo!], [], singleBounds);
       return built
         .getEntities()

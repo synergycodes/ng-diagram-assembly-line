@@ -56,15 +56,15 @@ diagram tool.
 
 The catalog is data-driven and built on ng-diagram's own node types. Each kind and its
 `data` payload interface (`*NodeData`) live in
-[`model/node-data.ts`](src/app/assembly-flow/model/node-data.ts) (`NODE_TYPES`, the
+[`model/node-data.ts`](src/app/assembly-line/model/node-data.ts) (`NODE_TYPES`, the
 `NodeDataByKind` map); the typed node objects (`AssemblyNode` = `SimpleNode`/`GroupNode`
-per kind) in [`model/nodes.ts`](src/app/assembly-flow/model/nodes.ts); a single per-kind
+per kind) in [`model/nodes.ts`](src/app/assembly-line/model/nodes.ts); a single per-kind
 registry — label, default `data` (`createDefault`), palette footprint — in
-[`model/node-registry.ts`](src/app/assembly-flow/model/node-registry.ts) (`NODE_REGISTRY`);
+[`model/node-registry.ts`](src/app/assembly-line/model/node-registry.ts) (`NODE_REGISTRY`);
 and the per-metric metadata (labels, units, thresholds) in
-[`model/property-meta.ts`](src/app/assembly-flow/model/property-meta.ts). A node's `type`
+[`model/property-meta.ts`](src/app/assembly-line/model/property-meta.ts). A node's `type`
 _is_ its kind, mapping it to a render component through the template map in
-[`diagram/canvas/diagram.component.ts`](src/app/assembly-flow/diagram/canvas/diagram.component.ts).
+[`diagram/canvas/diagram.component.ts`](src/app/assembly-line/diagram/canvas/diagram.component.ts).
 
 ## Getting Started
 
@@ -115,8 +115,8 @@ src/
 ├─ main.ts, index.html, styles.scss     # bootstrap, pre-paint theme, design tokens
 └─ app/
    ├─ app.config.ts, app.routes.ts      # providers, single lazy route
-   └─ assembly-flow/                    # domain root — feature-sliced ng-diagram layout
-      ├─ pages/assembly-flow/           # page shell: provideNgDiagram + Formly, top bar
+   └─ assembly-line/                    # domain root — feature-sliced ng-diagram layout
+      ├─ pages/assembly-line/           # page shell: provideNgDiagram + Formly, top bar
       ├─ components/                    # chrome: palette, properties-panel (Formly), theme-toggle
       ├─ diagram/
       │  ├─ canvas/                     # ng-diagram host, template maps, config, central applier
@@ -152,34 +152,34 @@ theme. `data-theme` is applied by a pre-paint inline script in `index.html`
 ## Customization
 
 - **Add a node type** — add the kind to `NODE_TYPES`, a `*NodeData` interface, and a
-  `NodeDataByKind` entry in [`model/node-data.ts`](src/app/assembly-flow/model/node-data.ts);
+  `NodeDataByKind` entry in [`model/node-data.ts`](src/app/assembly-line/model/node-data.ts);
   a matching node alias (and `AssemblyNode` union member) in
-  [`model/nodes.ts`](src/app/assembly-flow/model/nodes.ts); a `NODE_REGISTRY` entry (label,
-  `createDefault`) in [`model/node-registry.ts`](src/app/assembly-flow/model/node-registry.ts);
-  its metrics in [`model/property-meta.ts`](src/app/assembly-flow/model/property-meta.ts);
+  [`model/nodes.ts`](src/app/assembly-line/model/nodes.ts); a `NODE_REGISTRY` entry (label,
+  `createDefault`) in [`model/node-registry.ts`](src/app/assembly-line/model/node-registry.ts);
+  its metrics in [`model/property-meta.ts`](src/app/assembly-line/model/property-meta.ts);
   a render component in the template map in
-  [`diagram/canvas/diagram.component.ts`](src/app/assembly-flow/diagram/canvas/diagram.component.ts);
+  [`diagram/canvas/diagram.component.ts`](src/app/assembly-line/diagram/canvas/diagram.component.ts);
   and (for live values) a generator under
-  [`state/mock-feed/generators/`](src/app/assembly-flow/state/mock-feed/generators/).
+  [`state/mock-feed/generators/`](src/app/assembly-line/state/mock-feed/generators/).
 - **Change the seed diagram** — edit
-  [`state/initial-diagram.json`](src/app/assembly-flow/state/initial-diagram.json); the app
+  [`state/initial-diagram.json`](src/app/assembly-line/state/initial-diagram.json); the app
   seeds fresh from it on every load.
 - **Tune the canvas** — grid pitch, snapping, background spacing, edge routing, and
   the read-only Monitor guard all live in the `config`/`middlewares` of
-  [`diagram/canvas/diagram.component.ts`](src/app/assembly-flow/diagram/canvas/diagram.component.ts).
+  [`diagram/canvas/diagram.component.ts`](src/app/assembly-line/diagram/canvas/diagram.component.ts).
 
 ## Live Data Feed
 
 There is no server — Monitor mode is powered entirely in the browser:
 
-- [`state/mock-feed/mock-production-engine.ts`](src/app/assembly-flow/state/mock-feed/mock-production-engine.ts)
+- [`state/mock-feed/mock-production-engine.ts`](src/app/assembly-line/state/mock-feed/mock-production-engine.ts)
   seeds a scoped state and, on a set of timers, random-walks each **working**
   node's metrics and periodically re-rolls statuses (weighted
   working / idle / error).
-- [`state/data-connection.service.ts`](src/app/assembly-flow/state/data-connection.service.ts)
+- [`state/data-connection.service.ts`](src/app/assembly-line/state/data-connection.service.ts)
   exposes an RxJS **data bus** — `updatesFor(nodeIds)` — that starts generation on
   subscribe and emits self-describing `DataUpdate` messages.
-- [`diagram/canvas/diagram.component.ts`](src/app/assembly-flow/diagram/canvas/diagram.component.ts)
+- [`diagram/canvas/diagram.component.ts`](src/app/assembly-line/diagram/canvas/diagram.component.ts)
   is the single **central applier**: it subscribes in Monitor mode and writes
   each update into the ng-diagram model plus the sparkline history; switching to
   Edit tears the subscription down.

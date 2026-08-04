@@ -1,6 +1,6 @@
 # edge-reshape
 
-Lets you drag any orthogonal segment of a selected edge. In assembly-flow this
+Lets you drag any orthogonal segment of a selected edge. In assembly-line this
 is the interaction for reshaping the conveyor **flow edges** between production
 modules (presses → buffers → welding → paint → QC → assembly) while arranging
 the line in **edit mode**. Fully generic — it knows only orthogonal-edge
