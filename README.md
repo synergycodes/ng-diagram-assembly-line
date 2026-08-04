@@ -137,9 +137,12 @@ src/
 
 ## Design Tokens
 
-Theming runs on a three-tier `--ngd-*` custom-property system defined in
-[`src/styles.scss`](src/styles.scss): primitive palette (`--ngd-color-*`) →
-semantic tokens (`--ngd-sem-color-bg/text/stroke-*`) → component usage. Light mode
+Theming runs on a three-tier `--al-*` (Assembly Line) custom-property system
+defined in [`src/styles.scss`](src/styles.scss): primitive palette (`--al-color-*`)
+→ semantic tokens (`--al-sem-color-bg/text/stroke-*`) → component usage. The `--al-*`
+prefix marks app-owned tokens, keeping them distinct from ng-diagram's own `--ngd-*`
+tokens (the library reads `--ngd-*`; a few app values are bridged into them, e.g.
+`--ng-diagram-background-color` and the node `--ngd-port-*` vars). Light mode
 overrides only the semantic tier under `:root[data-theme='light']`, and the
 ng-diagram canvas background is bound to a semantic token so it flips with the
 theme. `data-theme` is applied by a pre-paint inline script in `index.html`

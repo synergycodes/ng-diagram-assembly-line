@@ -5,7 +5,7 @@
 .section {
   display: flex;
   flex-direction: column;
-  border-top: 1px solid var(--ngd-sem-color-stroke-subtle);
+  border-top: 1px solid var(--al-sem-color-stroke-subtle);
 }
 
 .section-head {
@@ -27,16 +27,16 @@
   margin: 0;
   cursor: pointer;
   text-align: left;
-  color: var(--ngd-sem-color-text-primary);
+  color: var(--al-sem-color-text-primary);
   border-radius: 4px;
   transition: color 0.12s ease;
 
   &:hover {
-    color: var(--ngd-color-blue-400, #4a90e2);
+    color: var(--al-color-blue-400, #4a90e2);
   }
 
   &:focus-visible {
-    outline: 2px solid var(--ngd-color-blue-400, #4a90e2);
+    outline: 2px solid var(--al-color-blue-400, #4a90e2);
     outline-offset: 4px;
   }
 }
@@ -52,7 +52,7 @@
 
 .chevron {
   flex-shrink: 0;
-  color: var(--ngd-sem-color-text-tertiary);
+  color: var(--al-sem-color-text-tertiary);
   transition: transform 0.18s ease;
 }
 
@@ -75,7 +75,7 @@
   width: 32px;
   height: 18px;
   border-radius: 100px;
-  background: var(--ngd-color-gray-650, #3a3d47);
+  background: var(--al-color-gray-650, #3a3d47);
   border: none;
   padding: 0;
   position: relative;
@@ -85,7 +85,7 @@
 }
 
 .switch.on {
-  background: #4a90e2;
+  background: var(--al-color-blue-400);
 }
 
 .switch .thumb {
@@ -95,7 +95,7 @@
   width: 14px;
   height: 14px;
   border-radius: 50%;
-  background: #ffffff;
+  background: var(--al-color-gray-100);
   transition: transform 0.18s ease;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
 }
@@ -121,15 +121,15 @@
 .threshold-label {
   font-size: 12px;
   font-weight: 500;
-  color: var(--ngd-sem-color-text-secondary);
+  color: var(--al-sem-color-text-secondary);
 }
 
 .threshold-status {
-  font-family: var(--ngd-font-mono, 'JetBrains Mono', monospace);
+  font-family: var(--al-font-mono, 'JetBrains Mono', monospace);
   font-size: 11px;
   font-weight: 500;
   /* Color comes inline from the live zone (zoneColor); this is only the fallback. */
-  color: var(--ngd-sem-color-text-secondary);
+  color: var(--al-sem-color-text-secondary);
   text-align: right;
 }
 
@@ -146,8 +146,8 @@
   right: 0;
   top: 18px;
   height: 6px;
-  background: var(--ngd-sem-color-bg-default);
-  border: 1px solid var(--ngd-sem-color-stroke-subtle);
+  background: var(--al-sem-color-bg-default);
+  border: 1px solid var(--al-sem-color-stroke-subtle);
   border-radius: 3px;
   overflow: hidden;
 }
@@ -165,8 +165,8 @@
   width: 18px;
   height: 18px;
   border-radius: 50%;
-  background: var(--ngd-sem-color-bg-raised);
-  border: 2px solid var(--ngd-color-gray-450, #6b7180);
+  background: var(--al-sem-color-bg-raised);
+  border: 2px solid var(--al-color-gray-450, #6b7180);
   transform: translateX(-9px);
   cursor: grab;
   z-index: 2;
@@ -189,8 +189,8 @@
   position: absolute;
   top: -2px;
   /* Background comes inline from the live zone color (zoneColor). */
-  color: #ffffff;
-  font-family: var(--ngd-font-mono, 'JetBrains Mono', monospace);
+  color: var(--al-color-gray-100);
+  font-family: var(--al-font-mono, 'JetBrains Mono', monospace);
   font-size: 10px;
   font-weight: 700;
   padding: 2px 6px;
@@ -202,9 +202,9 @@
 .bar-axis {
   display: flex;
   justify-content: space-between;
-  font-family: var(--ngd-font-mono, 'JetBrains Mono', monospace);
+  font-family: var(--al-font-mono, 'JetBrains Mono', monospace);
   font-size: 10px;
-  color: var(--ngd-sem-color-text-tertiary);
+  color: var(--al-sem-color-text-tertiary);
   margin-top: -4px;
 }
 
@@ -226,22 +226,22 @@
   font-weight: 600;
   letter-spacing: 0.6px;
   text-transform: uppercase;
-  color: var(--ngd-sem-color-text-tertiary);
+  color: var(--al-sem-color-text-tertiary);
 }
 
 .threshold-inputs input {
   padding: 7px 9px;
-  background: var(--ngd-sem-color-bg-default);
-  border: 1px solid var(--ngd-sem-color-stroke-subtle);
+  background: var(--al-sem-color-bg-default);
+  border: 1px solid var(--al-sem-color-stroke-subtle);
   border-radius: 4px;
-  color: var(--ngd-sem-color-text-primary);
-  font-family: var(--ngd-font-mono, 'JetBrains Mono', monospace);
+  color: var(--al-sem-color-text-primary);
+  font-family: var(--al-font-mono, 'JetBrains Mono', monospace);
   font-size: 12px;
 }
 
 .threshold-inputs input:focus {
   outline: none;
-  border-color: #4a90e2;
+  border-color: var(--al-color-blue-400);
 }
 
 .legend {
@@ -259,7 +259,7 @@
   gap: 8px;
   font-size: 11px;
   font-weight: 500;
-  color: var(--ngd-sem-color-text-secondary);
+  color: var(--al-sem-color-text-secondary);
 }
 
 .legend .dot-btn {

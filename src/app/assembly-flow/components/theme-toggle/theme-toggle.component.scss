@@ -7,8 +7,8 @@
   gap: 2px;
   padding: 2px;
   border-radius: 8px;
-  background: var(--ngd-sem-color-bg-default);
-  border: 1px solid var(--ngd-sem-color-stroke-subtle);
+  background: var(--al-sem-color-bg-default);
+  border: 1px solid var(--al-sem-color-stroke-subtle);
 }
 
 .seg {
@@ -20,18 +20,18 @@
   border: none;
   border-radius: 6px;
   background: transparent;
-  color: var(--ngd-sem-color-text-tertiary);
+  color: var(--al-sem-color-text-tertiary);
   cursor: pointer;
   transition:
     background-color 0.12s ease,
     color 0.12s ease;
 
   &:hover {
-    color: var(--ngd-sem-color-text-secondary);
+    color: var(--al-sem-color-text-secondary);
   }
 
   &.active {
-    background: var(--ngd-sem-color-bg-elevated);
-    color: var(--ngd-color-blue-400);
+    background: var(--al-sem-color-bg-elevated);
+    color: var(--al-color-blue-400);
   }
 }

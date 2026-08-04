@@ -9,9 +9,9 @@
   gap: 7px;
   height: 30px;
   padding: 0 10px;
-  background: var(--ngd-sem-color-bg-sunken);
-  border: 1px solid var(--ngd-border-strong);
-  color: var(--ngd-sem-color-text-secondary);
+  background: var(--al-sem-color-bg-sunken);
+  border: 1px solid var(--al-border-strong);
+  color: var(--al-sem-color-text-secondary);
   border-radius: 8px;
   cursor: pointer;
   font-family: inherit;
@@ -31,13 +31,13 @@
   }
 
   &:hover:not(:disabled) {
-    color: var(--ngd-sem-color-text-primary);
-    border-color: var(--ngd-color-gray-500);
+    color: var(--al-sem-color-text-primary);
+    border-color: var(--al-color-gray-500);
   }
 
   &.open {
-    color: var(--ngd-sem-color-text-primary);
-    border-color: var(--ngd-color-blue-400);
+    color: var(--al-sem-color-text-primary);
+    border-color: var(--al-color-blue-400);
 
     .caret {
       transform: rotate(180deg);
@@ -55,11 +55,11 @@
   top: calc(100% + 8px);
   right: 0;
   min-width: 190px;
-  background: var(--ngd-sem-color-bg-raised);
-  border: 1px solid var(--ngd-sem-color-stroke-default);
+  background: var(--al-sem-color-bg-raised);
+  border: 1px solid var(--al-sem-color-stroke-default);
   border-radius: 8px;
   padding: 10px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  box-shadow: var(--al-shadow-menu);
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -68,13 +68,13 @@
 }
 
 .menu-kicker {
-  font-family: var(--ngd-font-mono, 'JetBrains Mono', monospace);
+  font-family: var(--al-font-mono, 'JetBrains Mono', monospace);
   font-size: 9.5px;
   font-weight: 700;
   letter-spacing: 1.33px;
-  color: var(--ngd-sem-color-text-tertiary);
+  color: var(--al-sem-color-text-tertiary);
   padding: 4px 8px 6px;
-  border-bottom: 1px solid var(--ngd-sem-color-stroke-subtle);
+  border-bottom: 1px solid var(--al-sem-color-stroke-subtle);
   margin-bottom: 4px;
 }
 
@@ -92,7 +92,7 @@
   transition: background-color 0.12s ease;
 
   &:hover:not(:disabled) {
-    background: var(--ngd-sem-color-bg-sunken);
+    background: var(--al-sem-color-bg-sunken);
   }
 
   &:disabled {
@@ -103,12 +103,12 @@
 
 .menu-icon {
   flex-shrink: 0;
-  color: var(--ngd-sem-color-text-tertiary);
+  color: var(--al-sem-color-text-tertiary);
 }
 
 .menu-label {
   flex: 1;
   font-size: 12px;
   font-weight: 500;
-  color: var(--ngd-sem-color-text-primary);
+  color: var(--al-sem-color-text-primary);
 }

@@ -15,7 +15,7 @@
     gap: 8px;
     font-size: 10px;
     letter-spacing: 0.02em;
-    color: var(--ngd-sem-color-text-secondary, #9aa1b2);
+    color: var(--al-sem-color-text-secondary, #9aa1b2);
   }
 
   &__label-text {
@@ -25,19 +25,19 @@
   }
 
   &__unit {
-    font-family: var(--ngd-font-mono, ui-monospace, monospace);
+    font-family: var(--al-font-mono, ui-monospace, monospace);
     font-size: 10px;
-    color: var(--ngd-sem-color-text-tertiary, #6b7180);
+    color: var(--al-sem-color-text-tertiary, #6b7180);
     flex-shrink: 0;
   }
 
   &__input {
     width: 100%;
     padding: 8px 10px;
-    border: 1px solid var(--ngd-sem-color-stroke-default);
+    border: 1px solid var(--al-sem-color-stroke-default);
     border-radius: 6px;
-    background: var(--ngd-sem-color-bg-sunken);
-    color: var(--ngd-sem-color-text-primary);
+    background: var(--al-sem-color-bg-sunken);
+    color: var(--al-sem-color-text-primary);
     font: inherit;
     font-size: 12px;
     outline: none;
@@ -46,12 +46,12 @@
       box-shadow 120ms ease;
 
     &:focus {
-      border-color: var(--ngd-color-purple-400);
-      box-shadow: 0 0 0 3px rgba(181, 80, 252, 0.25);
+      border-color: var(--al-color-purple-400);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--al-color-purple-400) 25%, transparent);
     }
 
     &[type='number'] {
-      font-family: var(--ngd-font-mono, ui-monospace, monospace);
+      font-family: var(--al-font-mono, ui-monospace, monospace);
       font-variant-numeric: tabular-nums;
       appearance: textfield;
     }

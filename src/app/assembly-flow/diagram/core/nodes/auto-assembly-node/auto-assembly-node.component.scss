@@ -8,16 +8,16 @@
 .card {
   position: relative;
   width: 340px;
-  background: var(--ngd-sem-color-bg-raised, #151516);
-  border: 2px solid var(--ngd-sem-color-stroke-default, #3e4348);
+  background: var(--al-sem-color-bg-raised, #151516);
+  border: 2px solid var(--al-sem-color-stroke-default, #3e4348);
   border-radius: 8px;
-  font-family: var(--ngd-font-family, 'Poppins', system-ui, sans-serif);
-  color: var(--ngd-sem-color-text-secondary, #d4d7da);
+  font-family: var(--al-font-family, 'Poppins', system-ui, sans-serif);
+  color: var(--al-sem-color-text-secondary, #d4d7da);
 }
 
 .section {
   padding: 12px 15px 14px;
-  border-top: 1px solid var(--ngd-sem-color-stroke-subtle, #2c3137);
+  border-top: 1px solid var(--al-sem-color-stroke-subtle, #2c3137);
 
   &:first-of-type {
     border-top: none;
@@ -29,7 +29,7 @@
   font-size: 9px;
   font-weight: 500;
   letter-spacing: 0.8px;
-  color: var(--ngd-sem-color-text-tertiary, #8a8e93);
+  color: var(--al-sem-color-text-tertiary, #8a8e93);
   text-transform: uppercase;
 }
 
@@ -39,7 +39,7 @@
   justify-content: space-between;
   gap: 8px;
   padding: 5px 8px;
-  background: var(--ngd-sem-color-bg-sunken, #1a1d21);
+  background: var(--al-sem-color-bg-sunken, #1a1d21);
   border-radius: 4px;
   margin-bottom: 14px;
 }
@@ -54,20 +54,20 @@
 }
 
 .pill-auto {
-  background: rgba(74, 144, 226, 0.2);
-  color: var(--ngd-color-blue-400, #4a90e2);
+  background: color-mix(in srgb, var(--al-color-blue-400) 20%, transparent);
+  color: var(--al-color-blue-400, #4a90e2);
 }
 
 .pill-manual {
-  background: rgba(244, 185, 66, 0.15);
-  color: var(--ngd-color-warning-400, #f4b942);
+  background: color-mix(in srgb, var(--al-color-amber-400) 15%, transparent);
+  color: var(--al-color-warning-400, #f4b942);
 }
 
 .pill-marker {
   width: 14px;
   height: 14px;
   border-radius: 2px;
-  background: var(--ngd-color-blue-400, #4a90e2);
+  background: var(--al-color-blue-400, #4a90e2);
 }
 
 .kpi-row {
@@ -84,11 +84,11 @@
 }
 
 .kpi-num {
-  font-family: var(--ngd-font-family, 'Poppins', system-ui, sans-serif);
+  font-family: var(--al-font-family, 'Poppins', system-ui, sans-serif);
   font-size: 32px;
   font-weight: 700;
   line-height: 1;
-  color: var(--ngd-sem-color-text-secondary, #d4d7da);
+  color: var(--al-sem-color-text-secondary, #d4d7da);
   font-variant-numeric: tabular-nums;
 }
 
@@ -101,7 +101,7 @@
   font-weight: 400;
   letter-spacing: 0.5px;
   line-height: 1.3;
-  color: var(--ngd-sem-color-text-tertiary, #8a8e93);
+  color: var(--al-sem-color-text-tertiary, #8a8e93);
 }
 
 .detail-row {
@@ -114,20 +114,20 @@
 .detail-label {
   font-size: 10px;
   font-weight: 400;
-  color: var(--ngd-sem-color-text-tertiary, #8a8e93);
+  color: var(--al-sem-color-text-tertiary, #8a8e93);
 }
 
 .detail-value {
   font-size: 10px;
   font-weight: 600;
   /* Threshold color bound inline (metricColor); falls back to this otherwise. */
-  color: var(--ngd-sem-color-text-secondary, #d4d7da);
+  color: var(--al-sem-color-text-secondary, #d4d7da);
   font-variant-numeric: tabular-nums;
 }
 
 .detail-target {
   margin-left: 4px;
-  color: var(--ngd-color-warning-400, #f4b942);
+  color: var(--al-color-warning-400, #f4b942);
   font-weight: 500;
 }
 
@@ -136,7 +136,7 @@
   align-items: center;
   gap: 16px;
   padding: 10px 12px;
-  background: var(--ngd-sem-color-bg-sunken, #1a1d21);
+  background: var(--al-sem-color-bg-sunken, #1a1d21);
   border-radius: 4px;
   margin-bottom: 8px;
 
@@ -151,18 +151,18 @@
   height: 8px;
   border-radius: 50%;
   background: transparent;
-  border: 1.5px solid var(--ngd-sem-color-text-tertiary, #6b6f73);
+  border: 1.5px solid var(--al-sem-color-text-tertiary, #6b6f73);
 }
 
 .task-item[data-status='done'] .task-dot {
-  background: var(--ngd-sem-color-text-secondary, #d4d7da);
-  border-color: var(--ngd-sem-color-text-secondary, #d4d7da);
+  background: var(--al-sem-color-text-secondary, #d4d7da);
+  border-color: var(--al-sem-color-text-secondary, #d4d7da);
 }
 
 .task-text {
   font-size: 10px;
   font-weight: 500;
-  color: var(--ngd-sem-color-text-secondary, #d4d7da);
+  color: var(--al-sem-color-text-secondary, #d4d7da);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -170,5 +170,5 @@
 
 .task-item[data-status='done'] .task-text {
   font-weight: 400;
-  color: var(--ngd-sem-color-text-disabled, #6b6f73);
+  color: var(--al-sem-color-text-disabled, #6b6f73);
 }

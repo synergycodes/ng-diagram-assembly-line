@@ -4,11 +4,11 @@
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  background: var(--ngd-sem-color-bg-default);
-  border: 2px solid #f4b942;
-  color: #f4b942;
+  background: var(--al-sem-color-bg-default);
+  border: 2px solid var(--al-sem-color-flow-warn);
+  color: var(--al-sem-color-flow-warn);
   line-height: 1;
   user-select: none;
   pointer-events: none;
-  box-shadow: 0 0 0 3px var(--ngd-sem-color-bg-default);
+  box-shadow: 0 0 0 3px var(--al-sem-color-bg-default);
 }

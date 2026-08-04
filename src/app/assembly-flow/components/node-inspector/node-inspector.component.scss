@@ -1,8 +1,14 @@
+:host {
+  /* Status-badge chrome — a fixed light-metal chip, not theme-driven. Local. */
+  --badge-border: #c7c7c7;
+  --badge-text: #f2f2f2;
+}
+
 .panel {
-  background: var(--ngd-sem-color-bg-raised);
-  border-left: 1px solid var(--ngd-sem-color-stroke-subtle);
+  background: var(--al-sem-color-bg-raised);
+  border-left: 1px solid var(--al-sem-color-stroke-subtle);
   height: 100%;
-  font-family: var(--ngd-font-family);
+  font-family: var(--al-font-family);
   display: flex;
   flex-direction: column;
   min-height: 0;
@@ -25,11 +31,11 @@
 }
 
 .kicker {
-  font-family: var(--ngd-font-mono, 'JetBrains Mono', monospace);
+  font-family: var(--al-font-mono, 'JetBrains Mono', monospace);
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 1.4px;
-  color: var(--ngd-sem-color-text-tertiary);
+  color: var(--al-sem-color-text-tertiary);
 }
 
 .title-row {
@@ -42,7 +48,7 @@
   margin: 0;
   font-size: 17px;
   font-weight: 600;
-  color: var(--ngd-sem-color-text-primary);
+  color: var(--al-sem-color-text-primary);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -52,9 +58,9 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  font-family: var(--ngd-font-mono, 'JetBrains Mono', monospace);
+  font-family: var(--al-font-mono, 'JetBrains Mono', monospace);
   font-size: 10px;
-  color: var(--ngd-sem-color-text-tertiary);
+  color: var(--al-sem-color-text-tertiary);
 }
 
 .sub .type {
@@ -68,49 +74,49 @@
   border-radius: 50%;
   display: grid;
   place-items: center;
-  font-family: var(--ngd-font-family);
+  font-family: var(--al-font-family);
   font-size: 9px;
   font-weight: 700;
   line-height: 1;
-  color: #f2f2f2;
-  border: 1px solid #c7c7c7;
+  color: var(--badge-text);
+  border: 1px solid var(--badge-border);
 }
 .status-badge[data-status='working'] {
-  background: var(--ngd-status-working);
+  background: var(--al-status-working);
 }
 .status-badge[data-status='idle'] {
-  background: var(--ngd-status-idle);
-  color: var(--ngd-status-idle-text);
+  background: var(--al-status-idle);
+  color: var(--al-status-idle-text);
 }
 .status-badge[data-status='error'] {
-  background: var(--ngd-status-error);
+  background: var(--al-status-error);
 }
 .status-badge[data-status='disconnected'] {
-  background: var(--ngd-status-disconnected);
+  background: var(--al-status-disconnected);
 }
 
 .state-line {
   margin-top: 2px;
   font-size: 11px;
   font-weight: 500;
-  color: var(--ngd-sem-color-text-tertiary);
+  color: var(--al-sem-color-text-tertiary);
 }
 .state-line[data-tone='warn'] {
-  color: var(--ngd-sem-color-text-warning, #d99100);
+  color: var(--al-sem-color-text-warning, #d99100);
 }
 .state-line[data-tone='danger'] {
-  color: var(--ngd-sem-color-text-danger, #d32f2f);
+  color: var(--al-sem-color-text-danger, #d32f2f);
 }
 
 .alarm-badge {
   align-self: flex-start;
   margin-top: 4px;
-  font-family: var(--ngd-font-mono, 'JetBrains Mono', monospace);
+  font-family: var(--al-font-mono, 'JetBrains Mono', monospace);
   font-size: 9px;
   font-weight: 700;
   letter-spacing: 0.8px;
-  color: #fff;
-  background: var(--ngd-color-error-500, #b12424);
+  color: var(--al-color-gray-100);
+  background: var(--al-color-error-500, #b12424);
   padding: 2px 7px;
   border-radius: 3px;
 }
@@ -138,23 +144,23 @@
   font-size: 9px;
   font-weight: 600;
   letter-spacing: 0.72px;
-  color: var(--ngd-sem-color-text-tertiary);
+  color: var(--al-sem-color-text-tertiary);
 }
 
 .metric-value {
-  font-family: var(--ngd-font-mono, 'JetBrains Mono', monospace);
+  font-family: var(--al-font-mono, 'JetBrains Mono', monospace);
   font-size: 15px;
   font-weight: 700;
   letter-spacing: -0.3px;
   /* Threshold color is bound inline (valueColor); no-threshold metrics keep this. */
-  color: var(--ngd-sem-color-text-primary);
+  color: var(--al-sem-color-text-primary);
 }
 
 .metric-value .unit {
   margin-left: 3px;
   font-size: 10px;
   font-weight: 500;
-  color: var(--ngd-sem-color-text-tertiary);
+  color: var(--al-sem-color-text-tertiary);
 }
 
 .metric .chart {
@@ -166,8 +172,8 @@
 .bar {
   position: relative;
   height: 6px;
-  background: var(--ngd-sem-color-bg-default);
-  border: 1px solid var(--ngd-sem-color-stroke-subtle);
+  background: var(--al-sem-color-bg-default);
+  border: 1px solid var(--al-sem-color-stroke-subtle);
   border-radius: 3px;
   overflow: hidden;
 }
@@ -186,7 +192,7 @@
   flex-direction: column;
   gap: 10px;
   padding-top: 16px;
-  border-top: 1px solid var(--ngd-sem-color-stroke-subtle);
+  border-top: 1px solid var(--al-sem-color-stroke-subtle);
 }
 
 .section-title {
@@ -194,7 +200,7 @@
   font-size: 9px;
   font-weight: 700;
   letter-spacing: 0.9px;
-  color: var(--ngd-sem-color-text-tertiary);
+  color: var(--al-sem-color-text-tertiary);
 }
 
 .tank-row {
@@ -206,11 +212,11 @@
 
 .tank-name {
   font-size: 12px;
-  color: var(--ngd-sem-color-text-secondary);
+  color: var(--al-sem-color-text-secondary);
 }
 
 .tank-pct {
-  font-family: var(--ngd-font-mono, 'JetBrains Mono', monospace);
+  font-family: var(--al-font-mono, 'JetBrains Mono', monospace);
   font-size: 12px;
   font-weight: 700;
 }
@@ -228,11 +234,11 @@
 }
 
 .rework-part {
-  color: var(--ngd-sem-color-text-secondary);
+  color: var(--al-sem-color-text-secondary);
 }
 
 .rework-defect {
-  color: var(--ngd-sem-color-text-warning, #d99100);
+  color: var(--al-sem-color-text-warning, #d99100);
   text-align: right;
 }
 
@@ -241,7 +247,7 @@
   align-items: center;
   gap: 8px;
   font-size: 12px;
-  color: var(--ngd-sem-color-text-secondary);
+  color: var(--al-sem-color-text-secondary);
 }
 
 .task-dot {
@@ -249,16 +255,16 @@
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  border: 1.5px solid var(--ngd-sem-color-stroke-strong);
+  border: 1.5px solid var(--al-sem-color-stroke-strong);
 }
 
 .task-item[data-status='done'] .task-dot {
-  background: #0f7d1c;
-  border-color: #0f7d1c;
+  background: var(--al-status-working);
+  border-color: var(--al-status-working);
 }
 
 .task-item[data-status='done'] .task-text {
-  color: var(--ngd-sem-color-text-tertiary);
+  color: var(--al-sem-color-text-tertiary);
   text-decoration: line-through;
 }
 
@@ -266,5 +272,5 @@
   margin: 0;
   font-size: 12px;
   line-height: 1.5;
-  color: var(--ngd-sem-color-text-tertiary);
+  color: var(--al-sem-color-text-tertiary);
 }
