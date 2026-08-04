@@ -6,6 +6,7 @@ export * from '../diagram/core/nodes/auto-assembly-node/auto-assembly-node.compo
 export * from '../diagram/core/nodes/shared/sparkline/sparkline.component';
 export * from '../diagram/core/nodes/shared/node-icon/node-icon.component';
 export * from '../diagram/core/edges/flow-edge.component';
+export * from './icon/icon.component';
 export * from '../services/view-config.service';
 export * from '../services/history.service';
 export * from '../services/alarm-filter.service';

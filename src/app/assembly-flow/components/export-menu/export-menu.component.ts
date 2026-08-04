@@ -1,9 +1,11 @@
 import { ChangeDetectionStrategy, Component, HostListener, inject, signal } from '@angular/core';
 import { DiagramExportService } from '../../services/diagram-export';
+import { IconComponent } from '../../shared/icon/icon.component';
 
 @Component({
   selector: 'app-export-menu',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [IconComponent],
   templateUrl: './export-menu.component.html',
   styleUrl: './export-menu.component.scss',
 })

@@ -17,6 +17,7 @@ import { FlowFormlyInputType } from '../../components/properties-panel/formly/fl
 import { FlowFormlyThresholdType } from '../../components/properties-panel/formly/flow-threshold.type';
 import { ThemeToggleComponent } from '../../components/theme-toggle/theme-toggle.component';
 import { ExportMenuComponent } from '../../components/export-menu/export-menu.component';
+import { IconComponent } from '../../shared/icon/icon.component';
 import { DiagramStore } from '../../state/diagram-store.service';
 import { ModeService } from '../../state/mode.service';
 import { DataConnectionService } from '../../state/data-connection.service';
@@ -31,6 +32,7 @@ import { DiagramExportService } from '../../services/diagram-export';
     NodeInspectorComponent,
     ThemeToggleComponent,
     ExportMenuComponent,
+    IconComponent,
   ],
   providers: [
     provideNgDiagram(),

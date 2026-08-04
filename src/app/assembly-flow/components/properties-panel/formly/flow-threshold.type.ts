@@ -24,6 +24,7 @@ import {
 } from '../../../services/view-config.service';
 import { SelectionService } from '../../../state/selection.service';
 import { DiagramStore } from '../../../state/diagram-store.service';
+import { IconComponent } from '../../../shared/icon/icon.component';
 
 export interface ThresholdConfig {
   warnAt: number;
@@ -45,7 +46,7 @@ type DragType = 'warn' | 'critical';
  */
 @Component({
   selector: 'flow-formly-threshold',
-  imports: [FormsModule],
+  imports: [FormsModule, IconComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './flow-threshold.type.html',
   styleUrl: './flow-threshold.type.scss',

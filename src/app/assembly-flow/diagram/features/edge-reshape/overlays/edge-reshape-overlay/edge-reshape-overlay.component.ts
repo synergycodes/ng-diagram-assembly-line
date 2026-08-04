@@ -18,6 +18,7 @@ import { portWorldPosition } from '../../../../core/geometry/port-position';
 import { clonePoint, clonePoints, sameX, sameY } from '../../../../core/geometry/point';
 import { collapseCollinearBends, dropSameAxisBends } from '../../../../core/geometry/edge-stretch';
 import { PointerDragController } from '../../../../core/ng-diagram-bridge/pointer-drag-controller';
+import { IconComponent } from '../../../../../shared/icon/icon.component';
 import {
   findReshapeableSegments,
   reshapeAnchoredSegment,
@@ -46,6 +47,7 @@ interface DragState {
 @Component({
   selector: 'app-edge-reshape-overlay',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [IconComponent],
   templateUrl: './edge-reshape-overlay.component.html',
   styleUrl: './edge-reshape-overlay.component.scss',
 })

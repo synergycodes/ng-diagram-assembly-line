@@ -9,6 +9,7 @@ import {
 } from 'ng-diagram';
 import type { AssemblyNodeData, EdgeFlowState, EdgeType } from '../../../model';
 import { AlarmFilterService } from '../../../services/alarm-filter.service';
+import { IconComponent } from '../../../shared/icon/icon.component';
 
 interface FlowEdgeData {
   flowState?: EdgeFlowState;
@@ -26,7 +27,7 @@ interface ReworkMarker {
 @Component({
   selector: 'app-flow-edge',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NgDiagramBaseEdgeComponent, NgDiagramBaseEdgeLabelComponent],
+  imports: [NgDiagramBaseEdgeComponent, NgDiagramBaseEdgeLabelComponent, IconComponent],
   templateUrl: './flow-edge.component.html',
   styleUrl: './flow-edge.component.scss',
 })
