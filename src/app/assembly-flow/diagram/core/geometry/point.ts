@@ -1,13 +1,6 @@
 import type { Point } from 'ng-diagram';
 import { POSITION_TOLERANCE_PX } from './constants';
 
-export interface Rect {
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-}
-
 /** Shallow copy of a point (new object, same coords). */
 export function clonePoint(p: Point): Point {
   return { x: p.x, y: p.y };
@@ -45,14 +38,4 @@ export function isOrthogonalPolyline(
     }
   }
   return true;
-}
-
-/** Point lies within the rectangle (edges inclusive). */
-export function pointInRect(point: Point, rect: Rect): boolean {
-  return (
-    point.x >= rect.x &&
-    point.x <= rect.x + rect.width &&
-    point.y >= rect.y &&
-    point.y <= rect.y + rect.height
-  );
 }

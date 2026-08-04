@@ -41,7 +41,6 @@ import {
   NODE_TYPES,
   getPropertyMeta,
   isAreaNode,
-  type AreaNode,
   type AssemblyNode,
   type AssemblyNodeData,
   type DataUpdate,
@@ -53,7 +52,6 @@ import { DataConnectionService } from '../../state/data-connection.service';
 import { DiagramExportService } from '../../services/diagram-export';
 import { EdgeReshapeOverlayComponent } from '../features/edge-reshape';
 import { applyEdgeStretchOnSelectionMoved } from '../features/edge-routing';
-import { pointInRect } from '../core/geometry/point';
 import { REWORK_ROUTING_NAME, ReworkRouting } from '../core/edges/rework-routing';
 
 const AREA_PADDING = 16;
@@ -289,14 +287,15 @@ export class DiagramComponent {
    * Keep manual-routed (reshaped) edges attached to their ports while a
    * connected node — or an Area group and its children — is dragged. ng-diagram
    * re-routes only `auto` edges on a move, so without this a reshaped edge would
-   * detach. Expands moved ids to include group children so child-incident edges
-   * re-anchor when their Area moves.
+   * detach. Expands moved ids to include every descendant (getChildrenNested, so
+   * nested Areas are covered too) so child-incident edges re-anchor when their
+   * Area moves.
    */
   onSelectionMoved(event: SelectionMovedEvent) {
     const movedIds = new Set<string>();
     for (const node of event.nodes) {
       movedIds.add(node.id);
-      for (const child of this.modelService.getChildren(node.id)) {
+      for (const child of this.modelService.getChildrenNested(node.id)) {
         movedIds.add(child.id);
       }
     }
@@ -305,67 +304,71 @@ export class DiagramComponent {
 
   onGroupMembershipChanged(event: GroupMembershipChangedEvent) {
     for (const { targetGroup } of event.grouped) {
+      // Children are usually measured by the time membership settles, so this
+      // fits on the first pass; the rAF poll inside is only a defensive retry.
       this.fitAreaWhenReady(targetGroup.id);
     }
   }
 
-  onPaletteItemDropped(event: PaletteItemDroppedEvent) {
+  async onPaletteItemDropped(event: PaletteItemDroppedEvent) {
     const explicitGroupId = event.node.groupId;
     if (explicitGroupId) {
+      // The library added the node to the group before this event fired, so
+      // there is no mutation of ours to wrap — poll until the child is measured.
       this.fitAreaWhenReady(explicitGroupId);
       return;
     }
-    const area = this.findAreaContainingPoint(event.dropPosition);
+    const area = this.modelService.getNodesInRange(event.dropPosition, 1).find(isAreaNode);
     if (!area) {
       return;
     }
-    this.groupsService.addToGroup(area.id, [event.node.id]);
-    this.fitAreaWhenReady(area.id);
+    // Auto-join: we own the mutation, so wrap it in a transaction that resolves
+    // only once the added child is measured — the fit then reads a real size and
+    // needs no polling.
+    await this.diagramService.transaction(
+      () => {
+        this.groupsService.addToGroup(area.id, [event.node.id]);
+      },
+      { waitForMeasurements: true },
+    );
+    this.fitAreaToChildren(area.id);
   }
 
+  /**
+   * Defensive fallback for the drop paths where we can't await measurements
+   * (a direct drop into a group, whose mutation the library already made): retry
+   * the fit across a few frames until the children report a measured size.
+   */
   private fitAreaWhenReady(groupId: string, attempt = 0) {
-    const children = this.modelService.getChildren(groupId);
-    const ready = children.length > 0 && children.every((c) => c.size !== undefined);
-    if (ready || attempt > 30) {
-      this.fitAreaToChildren(groupId);
+    if (this.fitAreaToChildren(groupId) || attempt > 10) {
       return;
     }
     requestAnimationFrame(() => this.fitAreaWhenReady(groupId, attempt + 1));
   }
 
-  private findAreaContainingPoint(point: { x: number; y: number }): AreaNode | null {
-    const nodes = this.modelService.nodes() as AssemblyNode[];
-    for (const n of nodes) {
-      if (!isAreaNode(n) || !n.size) {
-        continue;
-      }
-      const within = pointInRect(point, {
-        x: n.position.x,
-        y: n.position.y,
-        width: n.size.width,
-        height: n.size.height,
-      });
-      if (within) {
-        return n;
-      }
-    }
-    return null;
-  }
-
-  private fitAreaToChildren(groupId: string) {
+  /**
+   * Grow the Area to enclose its children (never shrinks). Returns `false` only
+   * when a child has no measured size yet, so callers can retry; `true` once the
+   * fit has been applied — or there was nothing to fit.
+   */
+  private fitAreaToChildren(groupId: string): boolean {
     const group = this.modelService.getNodeById<AssemblyNodeData>(groupId);
-    if (!group?.size) {
-      return;
-    }
-    if (group.type !== NODE_TYPES.AREA) {
-      return;
+    if (group?.type !== NODE_TYPES.AREA || !group.size) {
+      return true;
     }
 
     const children = this.modelService.getChildren(groupId);
     if (!children.length) {
-      return;
+      return true;
+    }
+    if (children.some((child) => child.size === undefined)) {
+      return false;
     }
 
+    // Union of the group's current rect with each child's padded rect. Seeding
+    // from the group's own edges is what keeps the Area from ever shrinking.
+    // (NB: `computePartsBounds` is unusable here — it unions with an origin
+    // sentinel for the empty edge list, dragging a subset's bounds back to 0,0.)
     let left = group.position.x;
     let top = group.position.y;
     let right = left + group.size.width;
@@ -401,7 +404,7 @@ export class DiagramComponent {
       newWidth === group.size.width &&
       newHeight === group.size.height
     ) {
-      return;
+      return true;
     }
 
     this.modelService.updateNode(groupId, {
@@ -409,5 +412,6 @@ export class DiagramComponent {
       size: { width: newWidth, height: newHeight },
       autoSize: false,
     });
+    return true;
   }
 }

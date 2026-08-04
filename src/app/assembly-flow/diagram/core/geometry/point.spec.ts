@@ -3,7 +3,6 @@ import {
   clonePoints,
   isOrthogonalPolyline,
   near,
-  pointInRect,
   sameX,
   sameY,
 } from './point';
@@ -51,16 +50,5 @@ describe('isOrthogonalPolyline', () => {
       { x: 10, y: 10 },
     ];
     expect(isOrthogonalPolyline(diagonal)).toBe(false);
-  });
-});
-
-describe('pointInRect', () => {
-  const rect = { x: 0, y: 0, width: 100, height: 50 };
-  it('includes points on/within the edges and excludes outside', () => {
-    expect(pointInRect({ x: 50, y: 25 }, rect)).toBe(true);
-    expect(pointInRect({ x: 0, y: 0 }, rect)).toBe(true);
-    expect(pointInRect({ x: 100, y: 50 }, rect)).toBe(true);
-    expect(pointInRect({ x: 101, y: 25 }, rect)).toBe(false);
-    expect(pointInRect({ x: 50, y: -1 }, rect)).toBe(false);
   });
 });

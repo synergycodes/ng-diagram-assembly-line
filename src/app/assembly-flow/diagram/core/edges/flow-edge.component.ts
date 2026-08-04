@@ -44,15 +44,18 @@ export class FlowEdgeComponent implements NgDiagramEdgeTemplate {
     if (!this.alarmFilter.active()) {
       return false;
     }
-    const edge = this.edge();
-    const nodes = this.modelService.nodes();
-    const endpointDimmed = (nodeId: string): boolean => {
-      const node = nodes.find((n) => n.id === nodeId);
-      return node
-        ? this.alarmFilter.isNodeDimmed(node.id, (node.data as AssemblyNodeData).status)
-        : true;
-    };
-    return endpointDimmed(edge.source) && endpointDimmed(edge.target);
+    // Touch the nodes signal so dimming re-evaluates when the live feed changes
+    // an endpoint's status — getNodeEnds itself is a non-reactive map lookup.
+    // With that dependency registered it resolves both ends in one O(1) call.
+    this.modelService.nodes();
+    const ends = this.modelService.getNodeEnds<AssemblyNodeData, AssemblyNodeData>(this.edge().id);
+    if (!ends) {
+      return true;
+    }
+    return (
+      this.alarmFilter.isNodeDimmed(ends.source.id, ends.source.data.status) &&
+      this.alarmFilter.isNodeDimmed(ends.target.id, ends.target.data.status)
+    );
   });
   protected readonly markers = computed<ReworkMarker[]>(() => {
     if (!this.isRework()) {

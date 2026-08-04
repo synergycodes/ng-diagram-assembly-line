@@ -23,6 +23,6 @@ export type AssemblyNode =
   | PaintShopNode
   | QualityControlNode;
 
-export function isAreaNode(node: AssemblyNode): node is AreaNode {
+export function isAreaNode(node: SimpleNode | GroupNode): node is AreaNode {
   return node.type === NODE_TYPES.AREA;
 }
