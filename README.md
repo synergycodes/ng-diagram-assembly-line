@@ -1,6 +1,6 @@
 # ng-diagram Assembly Line Template
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue)](https://opensource.org/licenses/MIT)
 
 **Live demo:** https://www.ngdiagram.dev/templates/assembly-flow/
 
@@ -13,13 +13,14 @@ live, with real-time status, threshold-colored KPIs, and sparklines.
 
 Built with Angular 21 and [ng-diagram](https://www.npmjs.com/package/ng-diagram);
 the only runtime dependencies are Angular, ng-diagram,
-[@ngx-formly/core](https://formly.dev/) (properties panel), and RxJS (the data
-bus) — no opinionated third-party UI libraries, and no backend (Monitor mode is
-driven by an in-browser mock data feed). Fork it as a starting point for factory
+[@ngx-formly/core](https://formly.dev/) (properties panel),
+[html-to-image](https://github.com/bubkoo/html-to-image) (PNG/SVG export), and RxJS
+(the data bus) — no opinionated third-party UI libraries, and no backend (Monitor
+mode is driven by an in-browser mock data feed). Fork it as a starting point for factory
 dashboards, process/flow editors, live SCADA-style monitors, or any node-and-link
 diagram tool.
 
-## Features
+**Features:**
 
 - **Drag-and-drop palette** of production modules onto a free-form canvas.
 - **Two modes** — **Edit** (author the line) and **Monitor** (a read-only
@@ -40,6 +41,8 @@ diagram tool.
 - **Alarm filter** — dim every node that isn't currently alarming.
 - **Formly-driven properties panel** — edit warn/critical thresholds, colors,
   metric visibility, and node names.
+- **Export** — snapshot the diagram to **PNG** or **SVG** (via html-to-image), or to
+  **DXF** for AutoCAD (a self-contained DXF writer).
 - **Light / dark theming** via a design-token system, with no flash on load.
 
 ## Node Library
@@ -91,22 +94,23 @@ npm start
 
 ## ng-diagram APIs Demonstrated
 
-| Concern              | API                                                                                  |
-| -------------------- | ------------------------------------------------------------------------------------ |
-| Bootstrap            | `provideNgDiagram()` (in the monitor page's providers)                               |
-| Diagram surface      | `NgDiagramComponent`, `NgDiagramBackgroundComponent`                                 |
-| Node templates       | `NgDiagramNodeTemplateMap`, `NgDiagramNodeSelectedDirective`                         |
-| Edge templates       | `NgDiagramEdgeTemplateMap`, `NgDiagramBaseEdgeComponent`, `…BaseEdgeLabelComponent`  |
-| Ports                | `NgDiagramPortComponent`                                                             |
-| Palette              | `NgDiagramPaletteItemComponent`, `NgDiagramPaletteItemPreviewComponent`              |
-| Model                | `NgDiagramModelService` (`updateNodeData`, `updateEdge`, `getNodeById`, `nodes`)     |
-| Groups               | `NgDiagramGroupsService`, group membership events                                    |
-| Selection & viewport | `NgDiagramSelectionService`, `NgDiagramViewportService`                              |
-| Transactions         | `NgDiagramService.transaction()`                                                     |
-| Config               | `NgDiagramConfig` — snapping, dotted background, edge routing, linking rules         |
-| Middleware           | `createMiddlewares()` — a read-only guard for Monitor mode                           |
-| Custom edge routing  | `NgDiagramService.registerRouting()` — a `ReworkRouting` for the loop-back detour    |
-| Events               | `selectionChanged`, `selectionMoved`, `groupMembershipChanged`, `paletteItemDropped` |
+| Concern              | API                                                                                                    |
+| -------------------- | ------------------------------------------------------------------------------------------------------ |
+| Bootstrap            | `provideNgDiagram()` (in the monitor page's providers)                                                 |
+| Diagram surface      | `NgDiagramComponent`, `NgDiagramBackgroundComponent`                                                   |
+| Node templates       | `NgDiagramNodeTemplateMap`, `NgDiagramNodeSelectedDirective`                                           |
+| Edge templates       | `NgDiagramEdgeTemplateMap`, `NgDiagramBaseEdgeComponent`, `…BaseEdgeLabelComponent`                    |
+| Ports                | `NgDiagramPortComponent`                                                                               |
+| Palette              | `NgDiagramPaletteItemComponent`, `NgDiagramPaletteItemPreviewComponent`                                |
+| Model                | `NgDiagramModelService` (`updateNodeData`, `updateEdge`, `getNodeById`, `nodes`)                       |
+| Groups               | `NgDiagramGroupsService`, group membership events                                                      |
+| Selection & viewport | `NgDiagramSelectionService`, `NgDiagramViewportService`                                                |
+| Transactions         | `NgDiagramService.transaction()`                                                                       |
+| Config               | `NgDiagramConfig` — snapping, dotted background, edge routing, linking rules                           |
+| Middleware           | `createMiddlewares()` — a read-only guard for Monitor mode                                             |
+| Custom edge routing  | `NgDiagramService.registerRouting()` — a `ReworkRouting` for the loop-back detour                      |
+| Events               | `selectionChanged`, `selectionMoved`, `groupMembershipChanged`, `paletteItemDropped`                   |
+| Export               | Renders the diagram host to PNG/SVG (html-to-image) + a custom DXF writer — see `DiagramExportService` |
 
 ## Architecture
 
@@ -116,10 +120,10 @@ src/
 └─ app/
    ├─ app.config.ts, app.routes.ts      # providers, single lazy route
    └─ assembly-line/                    # domain root — feature-sliced ng-diagram layout
-      ├─ pages/assembly-line/           # page shell: provideNgDiagram + Formly, top bar
-      ├─ components/                    # chrome: palette, properties-panel (Formly), theme-toggle
+      ├─ pages/assembly-line-page/      # page shell: provideNgDiagram + Formly, top bar
+      ├─ components/                    # chrome: palette, properties-panel (Formly), node-inspector, export-menu, theme-toggle
       ├─ diagram/
-      │  ├─ canvas/                     # ng-diagram host, template maps, config, central applier
+      │  ├─ canvas/                     # ng-diagram host + template maps; diagram-config, read-only.middleware, area-fit, live-feed.service
       │  ├─ core/
       │  │  ├─ nodes/                   # assembly (generic) / area / paint-shop / auto-assembly + icon, sparkline
       │  │  ├─ edges/                   # flow edge (+ rework detour & chevrons)
@@ -129,7 +133,7 @@ src/
       │     ├─ edge-reshape/            # drag segments; optional extension seam
       │     └─ edge-routing/            # keep links attached on node move
       ├─ model/                         # node-data types, typed node union, node registry, property metadata
-      ├─ services/                      # history (sparklines), view-config, alarm filter, theme
+      ├─ services/                      # diagram-export (PNG/SVG/DXF), history (sparklines), view-config, alarm filter, theme
       ├─ shared/                        # barrel for node/edge components + view services
       └─ state/                         # diagram store, mode/selection
          └─ mock-feed/                  # in-browser production engine + per-type generators
@@ -164,9 +168,10 @@ theme. `data-theme` is applied by a pre-paint inline script in `index.html`
 - **Change the seed diagram** — edit
   [`state/initial-diagram.json`](src/app/assembly-line/state/initial-diagram.json); the app
   seeds fresh from it on every load.
-- **Tune the canvas** — grid pitch, snapping, background spacing, edge routing, and
-  the read-only Monitor guard all live in the `config`/`middlewares` of
-  [`diagram/canvas/diagram.component.ts`](src/app/assembly-line/diagram/canvas/diagram.component.ts).
+- **Tune the canvas** — grid pitch, snapping, background spacing and edge routing live in
+  [`diagram/canvas/diagram-config.ts`](src/app/assembly-line/diagram/canvas/diagram-config.ts);
+  the read-only Monitor guard in
+  [`diagram/canvas/read-only.middleware.ts`](src/app/assembly-line/diagram/canvas/read-only.middleware.ts).
 
 ## Live Data Feed
 
@@ -179,10 +184,24 @@ There is no server — Monitor mode is powered entirely in the browser:
 - [`state/data-connection.service.ts`](src/app/assembly-line/state/data-connection.service.ts)
   exposes an RxJS **data bus** — `updatesFor(nodeIds)` — that starts generation on
   subscribe and emits self-describing `DataUpdate` messages.
-- [`diagram/canvas/diagram.component.ts`](src/app/assembly-line/diagram/canvas/diagram.component.ts)
-  is the single **central applier**: it subscribes in Monitor mode and writes
-  each update into the ng-diagram model plus the sparkline history; switching to
+- [`diagram/canvas/live-feed.service.ts`](src/app/assembly-line/diagram/canvas/live-feed.service.ts)
+  is the **applier**: in Monitor mode `DiagramComponent` subscribes it to the bus, and it
+  writes each update into the ng-diagram model plus the sparkline history; switching to
   Edit tears the subscription down.
+
+## Export
+
+The current diagram can be exported from the top-bar **Export** menu in three formats:
+
+- **PNG** / **SVG** — the live `NgDiagramComponent` host is rasterised/serialised with
+  [html-to-image](https://github.com/bubkoo/html-to-image), after inlining the computed
+  edge styles so the animated conveyor links render correctly off-canvas.
+- **DXF** (AutoCAD) — a self-contained DXF writer emits real CAD geometry (stations,
+  conveyor/rework edges with their detours, labels) that strict parsers accept.
+
+[`DiagramExportService`](src/app/assembly-line/services/diagram-export/diagram-export.service.ts)
+orchestrates all three (under [`services/diagram-export/`](src/app/assembly-line/services/diagram-export/));
+the trigger lives in [`components/export-menu/`](src/app/assembly-line/components/export-menu/).
 
 ## Notes & Limitations
 
@@ -190,7 +209,7 @@ There is no server — Monitor mode is powered entirely in the browser:
   (weighted-random), not a real production line.
 - **Sparkline history is ephemeral** — kept in memory only, so charts start empty
   and rebuild each session/reload.
-- **Interactive mode is read-only** — structural edits (move, link, resize,
+- **Monitor mode is read-only** — structural edits (move, link, resize,
   delete) are blocked while monitoring; only live data mutates nodes.
 - **Rework links use a manual detour** — ng-diagram has no obstacle-avoiding
   router, so the loopback path is computed from live node bounds.
@@ -202,8 +221,9 @@ There is no server — Monitor mode is powered entirely in the browser:
 - [ng-diagram](https://www.npmjs.com/package/ng-diagram) — the diagram engine
 - [@ngx-formly/core](https://formly.dev/) — the schema-driven properties panel
 - [RxJS](https://rxjs.dev/) — the data bus
+- [html-to-image](https://github.com/bubkoo/html-to-image) — PNG/SVG diagram export
 - [Vitest](https://vitest.dev/) (via the built-in `@angular/build:unit-test` builder) — unit tests
-- Plain SCSS with a `--ngd-*` design-token system (light/dark)
+- Plain SCSS with an `--al-*` design-token system (light/dark)
 - [Phosphor Icons](https://phosphoricons.com/), Poppins + JetBrains Mono fonts
 
 ## Contributing
@@ -213,6 +233,22 @@ There is no server — Monitor mode is powered entirely in the browser:
 3. Before opening a PR, make sure `npm run lint`, `npm run format:check`, and
    `npm test` all pass, and that `npm run build` succeeds.
 
+## ngDiagram Documentation
+
+For comprehensive ngDiagram documentation, examples, and API reference, visit
+**[ngdiagram.dev/docs](https://www.ngdiagram.dev/docs)**.
+
+## Support
+
+- **Issues**: [GitHub Issues](https://github.com/synergycodes/ng-diagram-assembly-line/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/synergycodes/ng-diagram-assembly-line/discussions)
+- **ngDiagram Discussions**: [GitHub Discussions](https://github.com/synergycodes/ng-diagram/discussions), [Discord](https://discord.gg/FDMjRuarFb)
+- **ngDiagram Documentation**: [ngdiagram.dev/docs](https://www.ngdiagram.dev/docs)
+
 ## License
 
 MIT — see [LICENSE](LICENSE).
+
+---
+
+Built with ❤️ by the [Synergy Codes](https://www.synergycodes.com/) team

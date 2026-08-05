@@ -1,9 +1,31 @@
 {
-  "name": "assembly-line",
+  "name": "ng-diagram-assembly-line",
   "version": "1.0.0",
-  "description": "Assembly-line production monitor / diagram editor built with Angular and ng-diagram",
+  "description": "Interactive assembly-line monitoring template built with Angular and ng-diagram",
   "license": "MIT",
   "private": true,
+  "keywords": [
+    "visualization",
+    "open-source",
+    "angular",
+    "typescript",
+    "graph",
+    "drag-and-drop",
+    "diagram",
+    "diagramming",
+    "node-editor",
+    "node-based-ui",
+    "ng-diagram",
+    "assembly-line",
+    "manufacturing",
+    "production-monitoring"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/synergycodes/ng-diagram-assembly-line.git"
+  },
+  "homepage": "https://www.ngdiagram.dev",
+  "packageManager": "npm@10.9.2",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
