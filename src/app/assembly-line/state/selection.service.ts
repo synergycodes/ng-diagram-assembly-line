@@ -1,6 +1,6 @@
 import { Injectable, signal } from '@angular/core';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class SelectionService {
   private readonly _selectedNodeId = signal<string | null>(null);
   readonly selectedNodeId = this._selectedNodeId.asReadonly();

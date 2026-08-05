@@ -28,7 +28,7 @@ const GENERATE_INTERVAL_MS = 100;
 const STATUS_INTERVAL_MS = 10000;
 const TICK_INTERVAL_MS = 1000;
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class DataConnectionService {
   private readonly store = inject(DiagramStore);
 

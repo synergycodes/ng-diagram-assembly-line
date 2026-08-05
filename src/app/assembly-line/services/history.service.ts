@@ -6,7 +6,7 @@ type Series = number[];
 type NodeHistory = Record<string, Series>;
 type HistoryMap = Record<string, NodeHistory>;
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class HistoryService {
   private readonly _map = signal<HistoryMap>({});
 

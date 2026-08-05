@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { provideNgDiagram } from 'ng-diagram';
 import { provideFormlyCore } from '@ngx-formly/core';
-import { AlarmFilterService } from '../../shared';
+import { AlarmFilterService, HistoryService, ViewConfigService } from '../../shared';
 import { DiagramComponent } from '../../diagram/canvas/diagram.component';
 import { PaletteComponent } from '../../components/palette/palette.component';
 import { PropertiesPanelComponent } from '../../components/properties-panel/properties-panel.component';
@@ -20,7 +20,9 @@ import { ExportMenuComponent } from '../../components/export-menu/export-menu.co
 import { IconComponent } from '../../shared/icon/icon.component';
 import { DiagramStore } from '../../state/diagram-store.service';
 import { ModeService } from '../../state/mode.service';
+import { SelectionService } from '../../state/selection.service';
 import { DataConnectionService } from '../../state/data-connection.service';
+import { ThemeService } from '../../services/theme.service';
 import { DiagramExportService } from '../../services/diagram-export';
 
 @Component({
@@ -42,6 +44,14 @@ import { DiagramExportService } from '../../services/diagram-export';
         { name: 'flow-threshold', component: FlowFormlyThresholdType },
       ],
     }),
+    DiagramStore,
+    ModeService,
+    SelectionService,
+    DataConnectionService,
+    ThemeService,
+    HistoryService,
+    AlarmFilterService,
+    ViewConfigService,
     DiagramExportService,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,

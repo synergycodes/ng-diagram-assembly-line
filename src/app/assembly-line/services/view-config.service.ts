@@ -22,7 +22,7 @@ export interface NodeViewConfig {
 
 type ViewConfigMap = Record<string, NodeViewConfig>;
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class ViewConfigService {
   private readonly _config = persistedSignal<ViewConfigMap>(STORAGE_KEY, {});
   readonly config = this._config.asReadonly();

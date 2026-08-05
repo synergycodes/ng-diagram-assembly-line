@@ -20,7 +20,6 @@ import {
   NgDiagramViewportService,
   type Edge,
   type GroupMembershipChangedEvent,
-  type Node,
   type PaletteItemDroppedEvent,
   type SelectionChangedEvent,
   type SelectionMovedEvent,
@@ -32,7 +31,7 @@ import {
   AssemblyNodeComponent,
   PaintShopNodeComponent,
 } from '../../shared';
-import { NODE_TYPES, isAreaNode, type AssemblyNode, type AssemblyNodeData } from '../../model';
+import { NODE_TYPES, isAreaNode, type AssemblyNode } from '../../model';
 import { DiagramStore } from '../../state/diagram-store.service';
 import { ModeService } from '../../state/mode.service';
 import { SelectionService } from '../../state/selection.service';
@@ -94,8 +93,8 @@ export class DiagramComponent {
   protected readonly middlewares = createReadOnlyMiddlewares(() => this.mode() === 'monitor');
 
   protected readonly model = initializeModel({
-    nodes: this.store.nodes() as Node<AssemblyNodeData>[],
-    edges: this.store.edges() as Edge[],
+    nodes: this.store.nodes(),
+    edges: this.store.edges(),
   });
 
   constructor() {

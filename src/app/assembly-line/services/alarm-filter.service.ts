@@ -1,7 +1,7 @@
 import { Injectable, signal } from '@angular/core';
 import type { NodeStatus } from '../model';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class AlarmFilterService {
   private readonly _active = signal(false);
   private readonly _errorsEnabled = signal(true);

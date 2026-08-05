@@ -10,7 +10,7 @@ interface DiagramSeed {
 
 const SEED: DiagramSeed = initialDiagram as unknown as DiagramSeed;
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class DiagramStore {
   private readonly _nodes = signal<AssemblyNode[]>(SEED.nodes);
   private readonly _edges = signal<Edge[]>(SEED.edges);

@@ -5,7 +5,7 @@ export type Theme = 'light' | 'dark';
 
 const STORAGE_KEY = 'assembly-line-theme';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class ThemeService {
   private readonly _theme = signal<Theme>(this.readInitial());
   readonly theme = this._theme.asReadonly();
