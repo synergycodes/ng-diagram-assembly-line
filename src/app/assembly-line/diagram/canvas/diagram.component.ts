@@ -37,11 +37,10 @@ import { ModeService } from '../../state/mode.service';
 import { SelectionService } from '../../state/selection.service';
 import { DiagramExportService } from '../../services/diagram-export';
 import { EdgeReshapeOverlayComponent } from '../features/edge-reshape';
-import { MinimapPanelComponent } from '../../components/minimap-panel/minimap-panel.component';
 import { ASSEMBLY_LINE_CONFIG } from '../../assembly-line.config';
 import { applyEdgeStretchOnSelectionMoved } from '../features/edge-routing';
 import { ReworkRouting } from '../core/edges/rework-routing';
-import { createDiagramConfig } from './diagram-config';
+import { createDiagramConfig, fitPadding } from './diagram-config';
 import { createReadOnlyMiddlewares } from './read-only.middleware';
 import { fitAreaToChildren, fitAreaWhenReady } from './area-fit';
 import { LiveFeedService } from './live-feed.service';
@@ -54,12 +53,7 @@ import { LiveFeedService } from './live-feed.service';
  */
 @Component({
   selector: 'app-diagram',
-  imports: [
-    NgDiagramComponent,
-    NgDiagramBackgroundComponent,
-    EdgeReshapeOverlayComponent,
-    MinimapPanelComponent,
-  ],
+  imports: [NgDiagramComponent, NgDiagramBackgroundComponent, EdgeReshapeOverlayComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [LiveFeedService],
   templateUrl: './diagram.component.html',
@@ -124,11 +118,12 @@ export class DiagramComponent {
     });
 
     effect(() => {
-      const monitoring = this.mode() === 'monitor';
+      const mode = this.mode();
       untracked(() => {
-        if (monitoring) {
-          // use requestAnimationFrame so that diagram viewport is updated after palette gets hidden
-          requestAnimationFrame(() => this.viewport.zoomToFit());
+        if (mode === 'monitor') {
+          requestAnimationFrame(() =>
+            this.viewport.zoomToFit({ padding: fitPadding(mode, this.appConfig) }),
+          );
         }
       });
     });

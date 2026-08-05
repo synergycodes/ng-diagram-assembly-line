@@ -9,6 +9,12 @@ export interface AssemblyLineConfig {
   viewport: { zoomStep: number };
   snapping: { gridSize: number };
   area: { padding: number; paddingTop: number };
+  layout: {
+    headerHeight: number;
+    leftPanelWidth: number;
+    rightPanelWidth: number;
+    gap: number;
+  };
   feed: {
     generateIntervalMs: number;
     statusIntervalMs: number;
@@ -20,6 +26,7 @@ export const ASSEMBLY_LINE_DEFAULTS: AssemblyLineConfig = {
   viewport: { zoomStep: 0.1 },
   snapping: { gridSize: 20 },
   area: { padding: 16, paddingTop: 28 },
+  layout: { headerHeight: 56, leftPanelWidth: 280, rightPanelWidth: 320, gap: 16 },
   feed: { generateIntervalMs: 100, statusIntervalMs: 10000, tickIntervalMs: 1000 },
 };
 
@@ -47,6 +54,7 @@ function mergeConfig(
     viewport: { ...defaults.viewport, ...overrides.viewport },
     snapping: { ...defaults.snapping, ...overrides.snapping },
     area: { ...defaults.area, ...overrides.area },
+    layout: { ...defaults.layout, ...overrides.layout },
     feed: { ...defaults.feed, ...overrides.feed },
   };
 }

@@ -6,42 +6,79 @@
   background: var(--al-sem-color-bg-default);
 }
 
+/* Overlay grid: the spacing between/around the floating panels is expressed as
+ * real gutter tracks, so the diagram can span every line (full-bleed) while each
+ * panel occupies an inner track. Children are layered by DOM order + z-index. */
 .shell {
-  position: relative;
   height: 100%;
   width: 100%;
+  display: grid;
+  grid-template-columns:
+    [canvas-start] var(--al-space-float)
+    [left-start] var(--left-panel-width)
+    [left-end] var(--al-space-float)
+    [center-start] 1fr
+    [center-end] var(--al-space-float)
+    [right-start] var(--right-panel-width)
+    [right-end] var(--al-space-float) [canvas-end];
+  grid-template-rows:
+    [canvas-start] var(--al-space-float)
+    [header-start] var(--header-height)
+    [header-end] var(--al-space-float)
+    [content-start] 1fr
+    [content-end] var(--al-space-float) [canvas-end];
 }
 
+/* Full-bleed diagram — spans every track (gutters included) as the base layer. */
 .canvas {
-  position: absolute;
-  inset: 0;
+  grid-column: canvas-start / canvas-end;
+  grid-row: canvas-start / canvas-end;
   z-index: 0;
   background: var(--al-sem-color-bg-default);
 }
 
+/* Header — rounded floating card spanning the inner width, in the top row. */
 .header {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
+  grid-column: left-start / right-end;
+  grid-row: header-start / header-end;
   z-index: 20;
 }
 
+/* Side panels — floating cards in the content row. */
 .left,
 .right {
-  position: absolute;
-  top: 56px;
-  bottom: 0;
+  grid-row: content-start / content-end;
   z-index: 10;
   overflow: hidden;
+  background: var(--al-sem-color-bg-raised);
+  border: 1px solid var(--al-border-subtle);
+  border-radius: var(--al-radius-float);
+  box-shadow: var(--al-shadow-float);
 }
 
 .left {
-  left: 0;
-  width: 220px;
+  grid-column: left-start / left-end;
+  transition:
+    transform 0.28s ease,
+    opacity 0.2s ease;
+}
+
+/* Monitor mode: slide the palette off the left edge (kept in the grid track). */
+.left.collapsed {
+  transform: translateX(calc(-100% - var(--al-space-float) - 24px));
+  opacity: 0;
+  pointer-events: none;
 }
 
 .right {
-  right: 0;
-  width: 280px;
+  grid-column: right-start / right-end;
+}
+
+/* Minimap — pinned to the bottom-right of the center track, clear of the panels. */
+.minimap {
+  grid-column: center-start / center-end;
+  grid-row: content-start / content-end;
+  justify-self: end;
+  align-self: end;
+  z-index: 10;
 }

@@ -105,8 +105,9 @@
   --al-danger-red: var(--al-color-error-500);
   --al-text-muted: var(--al-color-gray-500);
 
-  /* Elevation — shared dropdown/menu shadow */
   --al-shadow-menu: 0 8px 24px rgba(0, 0, 0, 0.5);
+  --al-shadow-float: 0 4px 24px rgba(0, 0, 0, 0.35);
+  --al-radius-float: 1rem;
 
   /* ng-diagram canvas bg — follows the semantic bg so it flips with the theme */
   --ng-diagram-background-color: var(--al-sem-color-bg-default);
