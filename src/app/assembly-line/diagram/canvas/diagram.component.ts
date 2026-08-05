@@ -6,6 +6,7 @@ import {
   computed,
   effect,
   inject,
+  input,
   untracked,
 } from '@angular/core';
 import {
@@ -68,10 +69,12 @@ export class DiagramComponent {
   private readonly viewport = inject(NgDiagramViewportService);
   protected readonly mode = inject(ModeService).mode;
   private readonly appConfig = inject(ASSEMBLY_LINE_CONFIG);
+
   private readonly feed = inject(LiveFeedService);
   private readonly destroyRef = inject(DestroyRef);
   private readonly elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
   private readonly exportService = inject(DiagramExportService);
+  readonly rightPanelCollapsed = input<boolean>(false);
 
   protected readonly nodeTemplateMap = new NgDiagramNodeTemplateMap([
     [NODE_TYPES.AREA, AreaNodeComponent],
@@ -121,8 +124,9 @@ export class DiagramComponent {
       const mode = this.mode();
       untracked(() => {
         if (mode === 'monitor') {
+          const rightCollapsed = this.rightPanelCollapsed();
           requestAnimationFrame(() =>
-            this.viewport.zoomToFit({ padding: fitPadding(mode, this.appConfig) }),
+            this.viewport.zoomToFit({ padding: fitPadding(mode, this.appConfig, rightCollapsed) }),
           );
         }
       });

@@ -1,11 +1,11 @@
 <div class="shell" [attr.data-mode]="mode()">
-  <app-diagram class="canvas" />
+  <app-diagram class="canvas" [rightPanelCollapsed]="rightPanelCollapsed()" />
   <app-header class="header" />
   <app-palette class="left" [class.collapsed]="mode() !== 'edit'" />
-  @if (mode() === 'edit') {
-    <app-properties-panel class="right" />
-  } @else {
-    <app-node-inspector class="right" />
-  }
-  <app-minimap-panel class="minimap" />
+  <app-right-panel
+    class="right"
+    [collapsed]="rightPanelCollapsed()"
+    (collapsedChange)="rightPanelCollapsed.set($event)"
+  />
+  <app-minimap-panel class="minimap" [class.right-collapsed]="rightPanelCollapsed()" />
 </div>

@@ -8,15 +8,21 @@ import { REWORK_ROUTING_NAME } from '../core/edges/rework-routing';
  * inside the visible canvas gap between the floating panels rather than underneath
  * them. Reads the chrome dimensions from the app config (the single source of truth
  * shared with the page shell's CSS). The palette (left) only exists in edit mode, so
- * its inset drops to a plain margin in monitor mode.
+ * its inset drops to a plain margin in monitor mode. The right inset always reserves
+ * the collapse tab (which sits on the panel's left edge, protruding into the canvas);
+ * when the panel is collapsed only the tab remains, docked at the viewport edge.
  */
 export function fitPadding(
   mode: AppMode,
   config: AssemblyLineConfig,
+  rightCollapsed = false,
 ): [number, number, number, number] {
-  const { gap, headerHeight, leftPanelWidth, rightPanelWidth } = config.layout;
+  const { gap, headerHeight, leftPanelWidth, rightPanelWidth, rightPanelToggleWidth } =
+    config.layout;
   const top = gap + headerHeight + gap;
-  const right = gap + rightPanelWidth + gap;
+  const right = rightCollapsed
+    ? rightPanelToggleWidth + gap
+    : gap + rightPanelWidth + rightPanelToggleWidth + gap;
   const bottom = gap;
   const left = mode === 'edit' ? gap + leftPanelWidth + gap : gap;
   return [top, right, bottom, left];

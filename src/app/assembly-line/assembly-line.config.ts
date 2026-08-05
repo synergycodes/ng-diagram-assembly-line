@@ -13,6 +13,7 @@ export interface AssemblyLineConfig {
     headerHeight: number;
     leftPanelWidth: number;
     rightPanelWidth: number;
+    rightPanelToggleWidth: number;
     gap: number;
   };
   feed: {
@@ -26,7 +27,13 @@ export const ASSEMBLY_LINE_DEFAULTS: AssemblyLineConfig = {
   viewport: { zoomStep: 0.1 },
   snapping: { gridSize: 20 },
   area: { padding: 16, paddingTop: 28 },
-  layout: { headerHeight: 56, leftPanelWidth: 280, rightPanelWidth: 320, gap: 16 },
+  layout: {
+    headerHeight: 56,
+    leftPanelWidth: 280,
+    rightPanelWidth: 320,
+    rightPanelToggleWidth: 21,
+    gap: 16,
+  },
   feed: { generateIntervalMs: 100, statusIntervalMs: 10000, tickIntervalMs: 1000 },
 };
 

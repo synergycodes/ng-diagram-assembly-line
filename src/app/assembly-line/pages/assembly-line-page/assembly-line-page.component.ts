@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { provideNgDiagram } from 'ng-diagram';
 import { provideFormlyCore } from '@ngx-formly/core';
 import { ASSEMBLY_LINE_CONFIG, provideAssemblyLineConfig } from '../../assembly-line.config';
@@ -6,8 +6,7 @@ import { AlarmFilterService, HistoryService, ViewConfigService } from '../../sha
 import { DiagramComponent } from '../../diagram/canvas/diagram.component';
 import { HeaderComponent } from '../../components/header/header.component';
 import { PaletteComponent } from '../../components/palette/palette.component';
-import { PropertiesPanelComponent } from '../../components/properties-panel/properties-panel.component';
-import { NodeInspectorComponent } from '../../components/node-inspector/node-inspector.component';
+import { RightPanelComponent } from '../../components/right-panel/right-panel.component';
 import { MinimapPanelComponent } from '../../components/minimap-panel/minimap-panel.component';
 import { FlowFormlyInputType } from '../../components/properties-panel/formly/flow-input.type';
 import { FlowFormlyThresholdType } from '../../components/properties-panel/formly/flow-threshold.type';
@@ -24,8 +23,7 @@ import { DiagramExportService } from '../../services/diagram-export';
     HeaderComponent,
     DiagramComponent,
     PaletteComponent,
-    PropertiesPanelComponent,
-    NodeInspectorComponent,
+    RightPanelComponent,
     MinimapPanelComponent,
   ],
   providers: [
@@ -54,6 +52,7 @@ import { DiagramExportService } from '../../services/diagram-export';
     '[style.--header-height]': 'headerHeightPx',
     '[style.--left-panel-width]': 'leftPanelWidthPx',
     '[style.--right-panel-width]': 'rightPanelWidthPx',
+    '[style.--right-panel-toggle-width]': 'rightPanelToggleWidthPx',
     '[style.--al-space-float]': 'gapPx',
   },
 })
@@ -62,9 +61,10 @@ export class AssemblyLinePageComponent {
   private readonly layout = inject(ASSEMBLY_LINE_CONFIG).layout;
 
   protected readonly mode = this.modeService.mode;
-
+  protected readonly rightPanelCollapsed = signal(false);
   protected readonly headerHeightPx = `${this.layout.headerHeight}px`;
   protected readonly leftPanelWidthPx = `${this.layout.leftPanelWidth}px`;
   protected readonly rightPanelWidthPx = `${this.layout.rightPanelWidth}px`;
+  protected readonly rightPanelToggleWidthPx = `${this.layout.rightPanelToggleWidth}px`;
   protected readonly gapPx = `${this.layout.gap}px`;
 }
