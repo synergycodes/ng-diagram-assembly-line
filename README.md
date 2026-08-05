@@ -2,7 +2,7 @@
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue)](https://opensource.org/licenses/MIT)
 
-**Live demo:** https://www.ngdiagram.dev/templates/assembly-flow/
+**Live demo:** https://www.ngdiagram.dev/templates/assembly-line/
 
 Interactive production-line monitor for automotive assembly plants. A starter kit
 for building your own domain-specific live monitoring dashboard. Lay out servo

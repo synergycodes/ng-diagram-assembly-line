@@ -24,7 +24,7 @@ jobs:
         run: npm ci
 
       - name: Build
-        run: npm run build -- --base-href /templates/assembly-flow/
+        run: npm run build -- --base-href /templates/assembly-line/
 
       - name: Azure login (OIDC)
         uses: azure/login@v3
@@ -41,7 +41,7 @@ jobs:
             az storage blob delete-batch \
               --account-name "${{ vars.AZURE_STORAGE_ACCOUNT }}" \
               --source '${{ vars.AZURE_STORAGE_CONTAINER }}' \
-              --pattern 'assembly-flow/*' \
+              --pattern 'assembly-line/*' \
               --auth-mode login
 
       - name: Upload to blob container
@@ -52,7 +52,7 @@ jobs:
             az storage blob upload-batch \
               --account-name "${{ vars.AZURE_STORAGE_ACCOUNT }}" \
               --destination '${{ vars.AZURE_STORAGE_CONTAINER }}' \
-              --destination-path 'assembly-flow' \
-              --source ./dist/assembly-flow/browser \
+              --destination-path 'assembly-line' \
+              --source ./dist/assembly-line/browser \
               --overwrite true \
               --auth-mode login
