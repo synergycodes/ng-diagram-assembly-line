@@ -1,5 +1,16 @@
 import { Injectable, inject, signal } from '@angular/core';
-import { Observable, share } from 'rxjs';
+import {
+  Observable,
+  concatMap,
+  defer,
+  finalize,
+  ignoreElements,
+  interval,
+  map,
+  merge,
+  share,
+  tap,
+} from 'rxjs';
 import {
   toDataUpdate,
   type AssemblyNode,
@@ -26,25 +37,21 @@ export class DataConnectionService {
 
   updatesFor(nodeIds: Iterable<string>): Observable<DataUpdate> {
     const ids = new Set(nodeIds);
-    return new Observable<DataUpdate>((subscriber) => {
+    return defer(() => {
       const engine = new MockProductionEngine();
       engine.init(this.buildScopedSnapshot(ids));
       this.setActive(this.activeCount + 1);
 
-      const generate = setInterval(() => engine.generateStep(), GENERATE_INTERVAL_MS);
-      const status = setInterval(() => engine.statusStep(), STATUS_INTERVAL_MS);
-      const tick = setInterval(() => {
-        for (const update of engine.drain()) {
-          subscriber.next(toDataUpdate(update));
-        }
-      }, TICK_INTERVAL_MS);
+      const generate$ = interval(GENERATE_INTERVAL_MS).pipe(tap(() => engine.generateStep()));
+      const status$ = interval(STATUS_INTERVAL_MS).pipe(tap(() => engine.statusStep()));
+      const tick$ = interval(TICK_INTERVAL_MS).pipe(
+        concatMap(() => engine.drain()),
+        map((update) => toDataUpdate(update)),
+      );
 
-      return () => {
-        clearInterval(generate);
-        clearInterval(status);
-        clearInterval(tick);
-        this.setActive(this.activeCount - 1);
-      };
+      return merge(generate$.pipe(ignoreElements()), status$.pipe(ignoreElements()), tick$).pipe(
+        finalize(() => this.setActive(this.activeCount - 1)),
+      );
     }).pipe(share({ resetOnRefCountZero: true }));
   }
 

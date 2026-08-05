@@ -213,11 +213,16 @@ the trigger lives in [`components/export-menu/`](src/app/assembly-line/component
   delete) are blocked while monitoring; only live data mutates nodes.
 - **Rework links use a manual detour** — ng-diagram has no obstacle-avoiding
   router, so the loopback path is computed from live node bounds.
+- **Zoneless** — the app runs without `zone.js`
+  ([`provideZonelessChangeDetection`](src/app/app.config.ts)). Every UI-driving value
+  is a signal — ng-diagram's model, the sparkline history, the connection status and
+  the app mode — so the live Monitor feed's model writes schedule change detection on
+  their own, no manual plumbing.
 - Unit tests (Vitest) cover the pure geometry/routing logic; there is no e2e suite.
 
 ## Tech Stack
 
-- [Angular 21](https://angular.dev/) — standalone components, signals, `OnPush`
+- [Angular 21](https://angular.dev/) — standalone components, signals, zoneless, `OnPush`
 - [ng-diagram](https://www.npmjs.com/package/ng-diagram) — the diagram engine
 - [@ngx-formly/core](https://formly.dev/) — the schema-driven properties panel
 - [RxJS](https://rxjs.dev/) — the data bus
