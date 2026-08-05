@@ -1,24 +1,15 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  HostListener,
-  inject,
-  signal,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { provideNgDiagram } from 'ng-diagram';
 import { provideFormlyCore } from '@ngx-formly/core';
 import { provideAssemblyLineConfig } from '../../assembly-line.config';
 import { AlarmFilterService, HistoryService, ViewConfigService } from '../../shared';
 import { DiagramComponent } from '../../diagram/canvas/diagram.component';
+import { HeaderComponent } from '../../components/header/header.component';
 import { PaletteComponent } from '../../components/palette/palette.component';
 import { PropertiesPanelComponent } from '../../components/properties-panel/properties-panel.component';
 import { NodeInspectorComponent } from '../../components/node-inspector/node-inspector.component';
 import { FlowFormlyInputType } from '../../components/properties-panel/formly/flow-input.type';
 import { FlowFormlyThresholdType } from '../../components/properties-panel/formly/flow-threshold.type';
-import { ThemeToggleComponent } from '../../components/theme-toggle/theme-toggle.component';
-import { ExportMenuComponent } from '../../components/export-menu/export-menu.component';
-import { IconComponent } from '../../shared/icon/icon.component';
 import { DiagramStore } from '../../state/diagram-store.service';
 import { ModeService } from '../../state/mode.service';
 import { SelectionService } from '../../state/selection.service';
@@ -29,13 +20,11 @@ import { DiagramExportService } from '../../services/diagram-export';
 @Component({
   selector: 'app-assembly-line-page',
   imports: [
+    HeaderComponent,
     DiagramComponent,
     PaletteComponent,
     PropertiesPanelComponent,
     NodeInspectorComponent,
-    ThemeToggleComponent,
-    ExportMenuComponent,
-    IconComponent,
   ],
   providers: [
     provideAssemblyLineConfig(),
@@ -62,50 +51,6 @@ import { DiagramExportService } from '../../services/diagram-export';
 })
 export class AssemblyLinePageComponent {
   private readonly modeService = inject(ModeService);
-  private readonly connection = inject(DataConnectionService);
-  private readonly alarmFilter = inject(AlarmFilterService);
-  private readonly store = inject(DiagramStore);
 
   protected readonly mode = this.modeService.mode;
-  protected readonly connected = this.connection.connected;
-  protected readonly alarmFilterActive = this.alarmFilter.active;
-  protected readonly errorsEnabled = this.alarmFilter.errorsEnabled;
-  protected readonly warningsEnabled = this.alarmFilter.warningsEnabled;
-  protected readonly filterMenuOpen = signal(false);
-  protected readonly alarmCount = computed(() => {
-    // re-run when category toggles change
-    this.alarmFilter.errorsEnabled();
-    this.alarmFilter.warningsEnabled();
-    return this.store.nodes().filter((n) => this.alarmFilter.isAlarmStatus(n.data.status)).length;
-  });
-
-  toggleAlarmFilter() {
-    this.alarmFilter.toggle();
-  }
-
-  toggleFilterMenu(event: MouseEvent) {
-    event.stopPropagation();
-    this.filterMenuOpen.update((v) => !v);
-  }
-
-  toggleErrors(event: MouseEvent) {
-    event.stopPropagation();
-    this.alarmFilter.toggleErrors();
-  }
-
-  toggleWarnings(event: MouseEvent) {
-    event.stopPropagation();
-    this.alarmFilter.toggleWarnings();
-  }
-
-  @HostListener('document:click')
-  protected closeFilterMenu() {
-    if (this.filterMenuOpen()) {
-      this.filterMenuOpen.set(false);
-    }
-  }
-
-  setMode(next: 'edit' | 'monitor') {
-    this.modeService.setMode(next);
-  }
 }

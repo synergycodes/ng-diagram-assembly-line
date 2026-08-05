@@ -1,0 +1,299 @@
+:host {
+  display: contents;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 0 20px;
+  background: var(--al-sem-color-bg-raised);
+  border-bottom: 1px solid var(--al-border-subtle);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  .mark {
+    display: inline-flex;
+    align-items: center;
+    height: 28px;
+    transition: opacity 0.15s ease;
+
+    img {
+      display: block;
+      height: 28px;
+      width: auto;
+    }
+
+    &:hover {
+      opacity: 0.85;
+    }
+  }
+
+  .title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--al-sem-color-text-primary);
+  }
+
+  .subtitle {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--al-sem-color-text-tertiary);
+    letter-spacing: 0.55px;
+  }
+}
+
+.persona {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  background: var(--al-sem-color-bg-sunken);
+  border: 1px solid var(--al-border-strong);
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--al-sem-color-text-primary);
+
+  .avatar {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--al-color-blue-400), var(--al-color-violet-400));
+  }
+}
+
+.modes {
+  display: inline-flex;
+  background: var(--al-sem-color-bg-sunken);
+  border: 1px solid var(--al-border-strong);
+  border-radius: 6px;
+  padding: 2px;
+  gap: 2px;
+}
+
+.mode-btn {
+  padding: 4px 12px;
+  border-radius: 4px;
+  border: none;
+  background: transparent;
+  color: var(--al-sem-color-text-tertiary);
+  font-family: var(--al-font-family);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-family: inherit;
+}
+
+.mode-btn.active {
+  background: var(--al-accent-blue);
+  color: var(--al-color-gray-100);
+}
+
+.spacer {
+  flex: 1;
+}
+
+.status-pill,
+.alarm-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  border-radius: 100px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.22px;
+
+  .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+  }
+}
+
+.alarm-cluster {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.alarm-pill {
+  background: color-mix(in srgb, var(--al-sem-color-alarm) 18%, transparent);
+  border: 1px solid color-mix(in srgb, var(--al-sem-color-alarm) 55%, transparent);
+  /* Brighter red so the label reads clearly on the dark translucent pill bg
+   * (Figma node 33:32 uses a light red — the AA-friendly tone for this surface). */
+  color: var(--al-sem-color-alarm-text);
+  font-family: inherit;
+  cursor: pointer;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease;
+
+  .dot {
+    background: var(--al-sem-color-alarm-text);
+  }
+
+  &:hover {
+    background: color-mix(in srgb, var(--al-sem-color-alarm) 28%, transparent);
+    border-color: color-mix(in srgb, var(--al-sem-color-alarm) 75%, transparent);
+  }
+
+  &.active {
+    background: var(--al-danger-red);
+    border-color: var(--al-danger-red);
+    color: var(--al-color-gray-100);
+
+    .dot {
+      background: var(--al-color-gray-100);
+      box-shadow: 0 0 6px rgba(255, 255, 255, 0.6);
+    }
+  }
+}
+
+.alarm-filter-btn {
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  background: var(--al-sem-color-bg-sunken);
+  border: 1px solid var(--al-border-strong);
+  color: var(--al-sem-color-text-tertiary);
+  border-radius: 100px;
+  cursor: pointer;
+  transition:
+    border-color 0.15s ease,
+    color 0.15s ease;
+  font-family: inherit;
+  padding: 0;
+
+  &:hover {
+    color: var(--al-sem-color-text-primary);
+    border-color: var(--al-color-gray-500);
+  }
+
+  &.open {
+    color: var(--al-sem-color-text-primary);
+    border-color: var(--al-color-blue-400);
+  }
+}
+
+.alarm-filter-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 200px;
+  background: var(--al-sem-color-bg-raised);
+  border: 1px solid var(--al-sem-color-stroke-default);
+  border-radius: 8px;
+  padding: 10px;
+  box-shadow: var(--al-shadow-menu);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  z-index: 1000;
+  font-family: inherit;
+}
+
+.menu-kicker {
+  font-family: var(--al-font-mono, 'JetBrains Mono', monospace);
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 1.33px;
+  color: var(--al-sem-color-text-tertiary);
+  padding: 4px 8px 6px;
+  border-bottom: 1px solid var(--al-sem-color-stroke-subtle);
+  margin-bottom: 4px;
+}
+
+.menu-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.12s ease;
+
+  &:hover {
+    background: var(--al-sem-color-bg-sunken);
+  }
+}
+
+.menu-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  &[data-tone='error'] {
+    background: var(--al-danger-red);
+  }
+  &[data-tone='warning'] {
+    background: var(--al-warning-amber);
+  }
+}
+
+.menu-label {
+  flex: 1;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--al-sem-color-text-primary);
+}
+
+/* Local copy of the iOS-style switch (matches properties panel). */
+.menu-switch {
+  width: 32px;
+  height: 18px;
+  border-radius: 100px;
+  background: var(--al-color-gray-650);
+  border: none;
+  padding: 0;
+  position: relative;
+  cursor: pointer;
+  transition: background-color 0.18s ease;
+  flex-shrink: 0;
+}
+.menu-switch.on {
+  background: var(--al-color-blue-400);
+}
+.menu-switch .thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--al-color-gray-100);
+  transition: transform 0.18s ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+}
+.menu-switch.on .thumb {
+  transform: translateX(14px);
+}
+
+.status-pill {
+  background: color-mix(in srgb, var(--al-sem-color-alarm) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--al-sem-color-alarm) 40%, transparent);
+  color: var(--al-sem-color-text-danger);
+
+  .dot {
+    background: var(--al-danger-red);
+  }
+
+  &.connected {
+    background: color-mix(in srgb, var(--al-sem-color-connected) 12%, transparent);
+    border-color: color-mix(in srgb, var(--al-sem-color-connected) 40%, transparent);
+    color: var(--al-sem-color-connected);
+    .dot {
+      background: var(--al-sem-color-connected);
+    }
+  }
+}
