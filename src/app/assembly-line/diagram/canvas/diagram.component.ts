@@ -38,6 +38,7 @@ import { SelectionService } from '../../state/selection.service';
 import { DiagramExportService } from '../../services/diagram-export';
 import { EdgeReshapeOverlayComponent } from '../features/edge-reshape';
 import { MinimapPanelComponent } from '../../components/minimap-panel/minimap-panel.component';
+import { ASSEMBLY_LINE_CONFIG } from '../../assembly-line.config';
 import { applyEdgeStretchOnSelectionMoved } from '../features/edge-routing';
 import { ReworkRouting } from '../core/edges/rework-routing';
 import { createDiagramConfig } from './diagram-config';
@@ -72,6 +73,7 @@ export class DiagramComponent {
   private readonly groupsService = inject(NgDiagramGroupsService);
   private readonly viewport = inject(NgDiagramViewportService);
   protected readonly mode = inject(ModeService).mode;
+  private readonly appConfig = inject(ASSEMBLY_LINE_CONFIG);
   private readonly feed = inject(LiveFeedService);
   private readonly destroyRef = inject(DestroyRef);
   private readonly elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
@@ -88,7 +90,7 @@ export class DiagramComponent {
   ]);
   protected readonly edgeTemplateMap = new NgDiagramEdgeTemplateMap([['flow', FlowEdgeComponent]]);
 
-  protected readonly config = computed(() => createDiagramConfig(this.mode()));
+  protected readonly config = computed(() => createDiagramConfig(this.mode(), this.appConfig));
 
   protected readonly middlewares = createReadOnlyMiddlewares(() => this.mode() === 'monitor');
 
@@ -170,7 +172,7 @@ export class DiagramComponent {
     for (const { targetGroup } of event.grouped) {
       // Children are usually measured by the time membership settles, so this
       // fits on the first pass; the rAF poll inside is only a defensive retry.
-      fitAreaWhenReady(this.modelService, targetGroup.id);
+      fitAreaWhenReady(this.modelService, targetGroup.id, this.appConfig.area);
     }
   }
 
@@ -179,7 +181,7 @@ export class DiagramComponent {
     if (explicitGroupId) {
       // The library added the node to the group before this event fired, so
       // there is no mutation of ours to wrap — poll until the child is measured.
-      fitAreaWhenReady(this.modelService, explicitGroupId);
+      fitAreaWhenReady(this.modelService, explicitGroupId, this.appConfig.area);
       return;
     }
     const area = this.modelService.getNodesInRange(event.dropPosition, 1).find(isAreaNode);
@@ -195,6 +197,6 @@ export class DiagramComponent {
       },
       { waitForMeasurements: true },
     );
-    fitAreaToChildren(this.modelService, area.id);
+    fitAreaToChildren(this.modelService, area.id, this.appConfig.area);
   }
 }

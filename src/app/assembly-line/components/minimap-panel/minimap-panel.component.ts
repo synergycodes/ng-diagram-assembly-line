@@ -12,8 +12,8 @@ import {
   NgDiagramViewportService,
 } from 'ng-diagram';
 import { IconComponent } from '../../shared/icon/icon.component';
+import { ASSEMBLY_LINE_CONFIG } from '../../assembly-line.config';
 
-const ZOOM_STEP = 0.1;
 const DEFER_NODE_THRESHOLD = 200;
 
 @Component({
@@ -26,6 +26,7 @@ const DEFER_NODE_THRESHOLD = 200;
 export class MinimapPanelComponent {
   private readonly modelService = inject(NgDiagramModelService);
   private readonly viewport = inject(NgDiagramViewportService);
+  private readonly zoomStep = inject(ASSEMBLY_LINE_CONFIG).viewport.zoomStep;
 
   protected readonly isReady = signal(false);
   protected readonly isExpanded = signal(false);
@@ -42,12 +43,12 @@ export class MinimapPanelComponent {
 
   protected zoomIn(): void {
     const scale = this.viewport.scale();
-    this.viewport.zoom((scale + ZOOM_STEP) / scale);
+    this.viewport.zoom((scale + this.zoomStep) / scale);
   }
 
   protected zoomOut(): void {
     const scale = this.viewport.scale();
-    this.viewport.zoom((scale - ZOOM_STEP) / scale);
+    this.viewport.zoom((scale - this.zoomStep) / scale);
   }
 
   protected toggleExpanded(): void {

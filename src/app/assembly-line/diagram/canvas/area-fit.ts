@@ -1,8 +1,8 @@
 import { NgDiagramModelService } from 'ng-diagram';
 import { NODE_TYPES, type AssemblyNodeData } from '../../model';
+import type { AssemblyLineConfig } from '../../assembly-line.config';
 
-const AREA_PADDING = 16;
-const AREA_PADDING_TOP = 28;
+type AreaPadding = AssemblyLineConfig['area'];
 
 /**
  * Defensive fallback for the drop paths where we can't await measurements
@@ -12,12 +12,13 @@ const AREA_PADDING_TOP = 28;
 export function fitAreaWhenReady(
   modelService: NgDiagramModelService,
   groupId: string,
+  area: AreaPadding,
   attempt = 0,
 ): void {
-  if (fitAreaToChildren(modelService, groupId) || attempt > 10) {
+  if (fitAreaToChildren(modelService, groupId, area) || attempt > 10) {
     return;
   }
-  requestAnimationFrame(() => fitAreaWhenReady(modelService, groupId, attempt + 1));
+  requestAnimationFrame(() => fitAreaWhenReady(modelService, groupId, area, attempt + 1));
 }
 
 /**
@@ -25,7 +26,11 @@ export function fitAreaWhenReady(
  * when a child has no measured size yet, so callers can retry; `true` once the
  * fit has been applied — or there was nothing to fit.
  */
-export function fitAreaToChildren(modelService: NgDiagramModelService, groupId: string): boolean {
+export function fitAreaToChildren(
+  modelService: NgDiagramModelService,
+  groupId: string,
+  area: AreaPadding,
+): boolean {
   const group = modelService.getNodeById<AssemblyNodeData>(groupId);
   if (group?.type !== NODE_TYPES.AREA || !group.size) {
     return true;
@@ -52,10 +57,10 @@ export function fitAreaToChildren(modelService: NgDiagramModelService, groupId: 
     if (!child.size) {
       continue;
     }
-    const cLeft = child.position.x - AREA_PADDING;
-    const cTop = child.position.y - AREA_PADDING_TOP;
-    const cRight = child.position.x + child.size.width + AREA_PADDING;
-    const cBottom = child.position.y + child.size.height + AREA_PADDING;
+    const cLeft = child.position.x - area.padding;
+    const cTop = child.position.y - area.paddingTop;
+    const cRight = child.position.x + child.size.width + area.padding;
+    const cBottom = child.position.y + child.size.height + area.padding;
     if (cLeft < left) {
       left = cLeft;
     }

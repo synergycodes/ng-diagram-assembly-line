@@ -8,6 +8,7 @@ import {
 } from '@angular/core';
 import { provideNgDiagram } from 'ng-diagram';
 import { provideFormlyCore } from '@ngx-formly/core';
+import { provideAssemblyLineConfig } from '../../assembly-line.config';
 import { AlarmFilterService, HistoryService, ViewConfigService } from '../../shared';
 import { DiagramComponent } from '../../diagram/canvas/diagram.component';
 import { PaletteComponent } from '../../components/palette/palette.component';
@@ -37,6 +38,7 @@ import { DiagramExportService } from '../../services/diagram-export';
     IconComponent,
   ],
   providers: [
+    provideAssemblyLineConfig(),
     provideNgDiagram(),
     provideFormlyCore({
       types: [

@@ -23,14 +23,12 @@ import { DiagramStore } from './diagram-store.service';
 import { MockProductionEngine } from './mock-feed/mock-production-engine';
 import type { ProductionSnapshot } from './mock-feed/mock-feed-types';
 import { getUpdateGenerator } from './mock-feed/generators';
-
-const GENERATE_INTERVAL_MS = 100;
-const STATUS_INTERVAL_MS = 10000;
-const TICK_INTERVAL_MS = 1000;
+import { ASSEMBLY_LINE_CONFIG } from '../assembly-line.config';
 
 @Injectable()
 export class DataConnectionService {
   private readonly store = inject(DiagramStore);
+  private readonly feed = inject(ASSEMBLY_LINE_CONFIG).feed;
 
   readonly connected = signal(false);
   private activeCount = 0;
@@ -42,9 +40,11 @@ export class DataConnectionService {
       engine.init(this.buildScopedSnapshot(ids));
       this.setActive(this.activeCount + 1);
 
-      const generate$ = interval(GENERATE_INTERVAL_MS).pipe(tap(() => engine.generateStep()));
-      const status$ = interval(STATUS_INTERVAL_MS).pipe(tap(() => engine.statusStep()));
-      const tick$ = interval(TICK_INTERVAL_MS).pipe(
+      const generate$ = interval(this.feed.generateIntervalMs).pipe(
+        tap(() => engine.generateStep()),
+      );
+      const status$ = interval(this.feed.statusIntervalMs).pipe(tap(() => engine.statusStep()));
+      const tick$ = interval(this.feed.tickIntervalMs).pipe(
         concatMap(() => engine.drain()),
         map((update) => toDataUpdate(update)),
       );

@@ -1,5 +1,6 @@
 import type { Edge, NgDiagramConfig } from 'ng-diagram';
 import type { AppMode } from '../../state/mode.service';
+import type { AssemblyLineConfig } from '../../assembly-line.config';
 import { REWORK_ROUTING_NAME } from '../core/edges/rework-routing';
 
 /**
@@ -7,7 +8,7 @@ import { REWORK_ROUTING_NAME } from '../core/edges/rework-routing';
  * locked down (no dragging/resize/linking); edit mode adds grid snapping and the
  * rework-edge builder. Routing, background and zoom-to-fit are shared by both.
  */
-export function createDiagramConfig(mode: AppMode): NgDiagramConfig {
+export function createDiagramConfig(mode: AppMode, config: AssemblyLineConfig): NgDiagramConfig {
   // Orthogonal (right-angle) routing suits conveyor flows and gives the
   // edge-reshape feature straight segments to drag. Applied in both modes.
   const edgeRouting = {
@@ -15,17 +16,16 @@ export function createDiagramConfig(mode: AppMode): NgDiagramConfig {
     orthogonal: { maxCornerRadius: 0 },
   } as const;
 
-  // Snap node drag/resize to a 20px grid, matched to the background dot
-  // spacing so nodes align to the visible dots. (Distinct from geometry's
-  // GRID=8 reshape snap.)
-  const CANVAS_SNAP_PX = 20;
-  const background = { dotSpacing: CANVAS_SNAP_PX };
+  // Snap node drag/resize to the grid, matched to the background dot spacing so
+  // nodes align to the visible dots. (Distinct from geometry's GRID=8 reshape snap.)
+  const snapPx = config.snapping.gridSize;
+  const background = { dotSpacing: snapPx };
   const zoom = { zoomToFit: { onInit: true } };
   const snapping = {
     shouldSnapDragForNode: () => true,
-    computeSnapForNodeDrag: () => ({ width: CANVAS_SNAP_PX, height: CANVAS_SNAP_PX }),
+    computeSnapForNodeDrag: () => ({ width: snapPx, height: snapPx }),
     shouldSnapResizeForNode: () => true,
-    computeSnapForNodeSize: () => ({ width: CANVAS_SNAP_PX, height: CANVAS_SNAP_PX }),
+    computeSnapForNodeSize: () => ({ width: snapPx, height: snapPx }),
   };
 
   if (mode === 'monitor') {
