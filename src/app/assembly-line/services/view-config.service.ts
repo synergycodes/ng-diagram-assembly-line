@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { persistedSignal } from '../shared/browser-storage';
 
-const STORAGE_KEY = 'assemblyflow:view-config:v1';
+const STORAGE_KEY = 'assembly-line:view-config:v1';
 
 export interface PropertyViewConfig {
   visible: boolean;

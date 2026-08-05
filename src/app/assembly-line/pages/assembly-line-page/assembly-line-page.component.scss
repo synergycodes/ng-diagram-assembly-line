@@ -4,10 +4,6 @@
   width: 100vw;
   overflow: hidden;
   background: var(--al-sem-color-bg-default);
-
-  /* Brand monogram chip — a fixed light-on-dark mark, theme-independent. Local. */
-  --brand-mark-bg: #e5e8eb;
-  --brand-mark-text: #131619;
 }
 
 .shell {
@@ -31,17 +27,20 @@
   gap: 10px;
 
   .mark {
-    width: auto;
-    height: 26px;
-    padding: 0 8px;
-    background: var(--brand-mark-bg);
-    color: var(--brand-mark-text);
-    font-family: var(--al-font-mono, 'JetBrains Mono', monospace);
-    font-size: 11px;
-    font-weight: 700;
-    border-radius: 4px;
-    display: grid;
-    place-items: center;
+    display: inline-flex;
+    align-items: center;
+    height: 28px;
+    transition: opacity 0.15s ease;
+
+    img {
+      display: block;
+      height: 28px;
+      width: auto;
+    }
+
+    &:hover {
+      opacity: 0.85;
+    }
   }
 
   .title {
