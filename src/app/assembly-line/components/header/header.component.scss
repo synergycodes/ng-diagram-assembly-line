@@ -1,11 +1,12 @@
 :host {
-  display: contents;
+  display: block;
 }
 
 .topbar {
   display: flex;
   align-items: center;
   gap: 24px;
+  height: 56px;
   padding: 0 20px;
   background: var(--al-sem-color-bg-raised);
   border-bottom: 1px solid var(--al-border-subtle);

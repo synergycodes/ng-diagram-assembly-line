@@ -7,29 +7,41 @@
 }
 
 .shell {
-  display: grid;
-  grid-template-rows: 56px 1fr;
+  position: relative;
   height: 100%;
+  width: 100%;
 }
 
-.layout {
-  display: grid;
-  grid-template-columns: 220px 1fr 280px;
-  height: 100%;
+.canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: var(--al-sem-color-bg-default);
+}
+
+.header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 20;
+}
+
+.left,
+.right {
+  position: absolute;
+  top: 56px;
+  bottom: 0;
+  z-index: 10;
   overflow: hidden;
-}
-
-.layout[data-mode='monitor'] {
-  grid-template-columns: 1fr 280px;
 }
 
 .left {
-  overflow: hidden;
+  left: 0;
+  width: 220px;
 }
-.center {
-  overflow: hidden;
-  background: var(--al-sem-color-bg-default);
-}
+
 .right {
-  overflow: hidden;
+  right: 0;
+  width: 280px;
 }

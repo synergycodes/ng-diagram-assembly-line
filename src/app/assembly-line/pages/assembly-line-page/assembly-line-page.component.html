@@ -1,15 +1,15 @@
-<div class="shell">
-  <app-header />
+<div class="shell" [attr.data-mode]="mode()">
+  <app-diagram class="canvas" />
 
-  <div class="layout" [attr.data-mode]="mode()">
-    @if (mode() === 'edit') {
-      <app-palette class="left" />
-    }
-    <app-diagram class="center" />
-    @if (mode() === 'edit') {
-      <app-properties-panel class="right" />
-    } @else {
-      <app-node-inspector class="right" />
-    }
-  </div>
+  <app-header class="header" />
+
+  @if (mode() === 'edit') {
+    <app-palette class="left" />
+  }
+
+  @if (mode() === 'edit') {
+    <app-properties-panel class="right" />
+  } @else {
+    <app-node-inspector class="right" />
+  }
 </div>
