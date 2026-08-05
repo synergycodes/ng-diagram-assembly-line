@@ -90,6 +90,11 @@ export const ICONS = {
     strokeWidth: 2,
     path: 'M1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2ZM8 2v16M16 6v16',
   },
+  /** Hidden-node indicator on the reveal button (eye with a slash). */
+  'eye-slash': {
+    strokeWidth: 2,
+    path: 'M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24M1 1 23 23',
+  },
 } as const satisfies Record<string, IconDef>;
 
 export type IconName = keyof typeof ICONS;

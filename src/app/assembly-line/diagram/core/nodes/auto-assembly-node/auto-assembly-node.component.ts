@@ -9,10 +9,11 @@ import type { AutoAssemblyNodeData } from '../../../../model';
 import { formatCount, formatDuration, formatHoursMinutes } from '../../../../shared/format';
 import { BaseNode } from '../shared/base-node';
 import { NodeIconComponent } from '../shared/node-icon/node-icon.component';
+import { IconComponent } from '../../../../shared/icon/icon.component';
 
 @Component({
   selector: 'app-auto-assembly-node',
-  imports: [NgDiagramPortComponent, NodeIconComponent],
+  imports: [NgDiagramPortComponent, NodeIconComponent, IconComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   hostDirectives: [{ directive: NgDiagramNodeSelectedDirective, inputs: ['node'] }],
   host: {

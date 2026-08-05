@@ -11,10 +11,11 @@ import { deriveBufferLevel, deriveMetrics, statusFooter } from '../../../../shar
 import { BaseNode } from '../shared/base-node';
 import { SparklineComponent } from '../shared/sparkline/sparkline.component';
 import { NodeIconComponent } from '../shared/node-icon/node-icon.component';
+import { IconComponent } from '../../../../shared/icon/icon.component';
 
 @Component({
   selector: 'app-assembly-node',
-  imports: [NgDiagramPortComponent, SparklineComponent, NodeIconComponent],
+  imports: [NgDiagramPortComponent, SparklineComponent, NodeIconComponent, IconComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   hostDirectives: [{ directive: NgDiagramNodeSelectedDirective, inputs: ['node'] }],
   host: {

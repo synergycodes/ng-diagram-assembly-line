@@ -229,7 +229,7 @@ the trigger lives in [`components/export-menu/`](src/app/assembly-line/component
 - [html-to-image](https://github.com/bubkoo/html-to-image) — PNG/SVG diagram export
 - [Vitest](https://vitest.dev/) (via the built-in `@angular/build:unit-test` builder) — unit tests
 - Plain SCSS with an `--al-*` design-token system (light/dark)
-- [Phosphor Icons](https://phosphoricons.com/), Poppins + JetBrains Mono fonts
+- Inline SVG icons via a small in-app `<app-icon>` registry; Poppins + JetBrains Mono fonts
 
 ## Contributing
 
