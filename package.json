@@ -34,6 +34,7 @@
     "test": "ng test --no-watch",
     "test:watch": "ng test",
     "lint": "ng lint",
+    "type-check": "tsc -b --noEmit",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },

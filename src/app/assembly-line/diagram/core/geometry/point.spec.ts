@@ -1,11 +1,4 @@
-import {
-  clonePoint,
-  clonePoints,
-  isOrthogonalPolyline,
-  near,
-  sameX,
-  sameY,
-} from './point';
+import { clonePoint, clonePoints, isOrthogonalPolyline, near, sameX, sameY } from './point';
 
 describe('clonePoint / clonePoints', () => {
   it('copies coords into a fresh object', () => {
