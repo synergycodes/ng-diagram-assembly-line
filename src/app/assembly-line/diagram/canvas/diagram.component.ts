@@ -38,6 +38,7 @@ import { ModeService } from '../../state/mode.service';
 import { SelectionService } from '../../state/selection.service';
 import { DiagramExportService } from '../../services/diagram-export';
 import { EdgeReshapeOverlayComponent } from '../features/edge-reshape';
+import { MinimapPanelComponent } from '../../components/minimap-panel/minimap-panel.component';
 import { applyEdgeStretchOnSelectionMoved } from '../features/edge-routing';
 import { ReworkRouting } from '../core/edges/rework-routing';
 import { createDiagramConfig } from './diagram-config';
@@ -53,7 +54,12 @@ import { LiveFeedService } from './live-feed.service';
  */
 @Component({
   selector: 'app-diagram',
-  imports: [NgDiagramComponent, NgDiagramBackgroundComponent, EdgeReshapeOverlayComponent],
+  imports: [
+    NgDiagramComponent,
+    NgDiagramBackgroundComponent,
+    EdgeReshapeOverlayComponent,
+    MinimapPanelComponent,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [LiveFeedService],
   templateUrl: './diagram.component.html',

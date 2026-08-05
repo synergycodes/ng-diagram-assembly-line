@@ -1,0 +1,44 @@
+<div class="panel" [class.collapsed]="!isExpanded()" [class.animate]="isReady()">
+  <div class="minimap-canvas">
+    <ng-diagram-minimap
+      [showZoomControls]="false"
+      [width]="200"
+      [height]="140"
+      [deferNodeUpdates]="deferNodeUpdates()"
+    />
+  </div>
+  <div class="minimap-actions">
+    <button
+      type="button"
+      class="action-button"
+      [disabled]="!canZoomOut()"
+      (click)="zoomOut()"
+      aria-label="Zoom out"
+      title="Zoom out"
+    >
+      <app-icon name="minus" [size]="20" />
+    </button>
+    <span class="zoom-level">{{ zoomPercent() }}</span>
+    <button
+      type="button"
+      class="action-button"
+      [disabled]="!canZoomIn()"
+      (click)="zoomIn()"
+      aria-label="Zoom in"
+      title="Zoom in"
+    >
+      <app-icon name="plus" [size]="20" />
+    </button>
+    <button
+      type="button"
+      class="action-button"
+      [class.active]="isExpanded()"
+      [attr.aria-label]="isExpanded() ? 'Hide minimap' : 'Show minimap'"
+      [attr.aria-pressed]="isExpanded()"
+      (click)="toggleExpanded()"
+      title="Toggle minimap"
+    >
+      <app-icon name="minimap" [size]="20" />
+    </button>
+  </div>
+</div>

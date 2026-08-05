@@ -121,7 +121,7 @@ src/
    ├─ app.config.ts, app.routes.ts      # providers, single lazy route
    └─ assembly-line/                    # domain root — feature-sliced ng-diagram layout
       ├─ pages/assembly-line-page/      # page shell: provideNgDiagram + Formly, top bar
-      ├─ components/                    # chrome: palette, properties-panel (Formly), node-inspector, export-menu, theme-toggle
+      ├─ components/                    # chrome: palette, properties-panel (Formly), node-inspector, export-menu, minimap-panel, theme-toggle
       ├─ diagram/
       │  ├─ canvas/                     # ng-diagram host + template maps; diagram-config, read-only.middleware, area-fit, live-feed.service
       │  ├─ core/

@@ -75,6 +75,21 @@ export const ICONS = {
     strokeWidth: 2,
     path: 'M8 8 12 4 16 8M8 16 12 20 16 16M12 4V20',
   },
+  /** Zoom in. */
+  plus: {
+    strokeWidth: 2,
+    path: 'M12 5v14M5 12h14',
+  },
+  /** Zoom out. */
+  minus: {
+    strokeWidth: 2,
+    path: 'M5 12h14',
+  },
+  /** Minimap toggle — a trifold map. */
+  minimap: {
+    strokeWidth: 2,
+    path: 'M1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2ZM8 2v16M16 6v16',
+  },
 } as const satisfies Record<string, IconDef>;
 
 export type IconName = keyof typeof ICONS;
