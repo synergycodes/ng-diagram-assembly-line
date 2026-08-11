@@ -1,0 +1,67 @@
+.icon[data-type='buffer'] .bin {
+  position: absolute;
+  bottom: 1px;
+  left: 2px;
+  right: 2px;
+  top: 4px;
+  border: 1.5px solid var(--metal-light);
+  border-top: none;
+  border-radius: 0 0 2px 2px;
+}
+.icon[data-type='buffer'] .box {
+  position: absolute;
+  left: 5px;
+  right: 5px;
+  height: 3px;
+  background: var(--metal-light);
+  border-radius: 0.5px;
+  opacity: 0.25;
+}
+.icon[data-type='buffer'] .box-1 {
+  bottom: 3px;
+}
+.icon[data-type='buffer'] .box-2 {
+  bottom: 7.5px;
+}
+.icon[data-type='buffer'] .box-3 {
+  bottom: 12px;
+}
+.icon[data-type='buffer'][data-active='true'] .box-1 {
+  animation: buffer-fill 2.4s linear infinite;
+}
+.icon[data-type='buffer'][data-active='true'] .box-2 {
+  animation: buffer-fill 2.4s linear 0.8s infinite;
+}
+.icon[data-type='buffer'][data-active='true'] .box-3 {
+  animation: buffer-fill 2.4s linear 1.6s infinite;
+}
+
+@keyframes buffer-fill {
+  0%,
+  9% {
+    opacity: 0.25;
+    transform: scaleY(1);
+  }
+  10% {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+  90% {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+  100% {
+    opacity: 0.25;
+    transform: scaleY(1);
+  }
+}
+
+.icon[data-pose='mid'][data-type='buffer'] .box-1 {
+  animation: buffer-fill 2.4s linear -1.2s infinite paused;
+}
+.icon[data-pose='mid'][data-type='buffer'] .box-2 {
+  animation: buffer-fill 2.4s linear -0.4s infinite paused;
+}
+.icon[data-pose='mid'][data-type='buffer'] .box-3 {
+  animation: buffer-fill 2.4s linear 0.4s infinite paused;
+}

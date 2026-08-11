@@ -1,0 +1,47 @@
+.icon[data-type='quality-control'] .frame {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  right: 2px;
+  bottom: 2px;
+  border: 1.5px solid var(--metal-light);
+  border-radius: 2px;
+}
+.icon[data-type='quality-control'] .part {
+  position: absolute;
+  top: 7px;
+  left: 7px;
+  width: 8px;
+  height: 8px;
+  background: var(--metal-dark);
+  border-radius: 1px;
+}
+.icon[data-type='quality-control'] .beam {
+  position: absolute;
+  top: 4px;
+  left: 3px;
+  right: 3px;
+  height: 1.5px;
+  background: var(--al-color-success-300);
+  box-shadow: 0 0 4px var(--al-color-success-300);
+  border-radius: 1px;
+}
+.icon[data-type='quality-control'][data-active='true'] .beam {
+  animation: scan-beam 1.8s ease-in-out infinite;
+}
+
+@keyframes scan-beam {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.9;
+  }
+  50% {
+    transform: translateY(13px);
+    opacity: 0.6;
+  }
+}
+
+.icon[data-pose='mid'][data-type='quality-control'] .beam {
+  animation: scan-beam 1.8s ease-in-out -0.9s infinite paused;
+}
