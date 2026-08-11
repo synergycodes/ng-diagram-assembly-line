@@ -352,7 +352,8 @@ function realignEndpointNeighbor(
   }
 }
 
-// PointerUp collapse later folds any bend that turns out collinear.
+// Rewrites any diagonal as an L-bend; the pointerUp collapse then folds bends
+// that turn out collinear.
 function orthogonalizePolyline(
   points: readonly { readonly x: number; readonly y: number }[],
 ): { x: number; y: number }[] {

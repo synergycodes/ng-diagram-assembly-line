@@ -169,8 +169,7 @@ export class DiagramComponent {
 
   onGroupMembershipChanged(event: GroupMembershipChangedEvent) {
     for (const { targetGroup } of event.grouped) {
-      // Children are usually measured by the time membership settles, so this
-      // fits on the first pass; the rAF poll inside is only a defensive retry.
+      // Children are usually already measured here — the poll is a defensive retry.
       fitAreaWhenReady(this.modelService, targetGroup.id, this.appConfig.area);
     }
   }
@@ -178,8 +177,7 @@ export class DiagramComponent {
   async onPaletteItemDropped(event: PaletteItemDroppedEvent) {
     const explicitGroupId = event.node.groupId;
     if (explicitGroupId) {
-      // The library added the node to the group before this event fired, so
-      // there is no mutation of ours to wrap — poll until the child is measured.
+      // The drop mutation was the library's — nothing to await; see fitAreaWhenReady.
       fitAreaWhenReady(this.modelService, explicitGroupId, this.appConfig.area);
       return;
     }

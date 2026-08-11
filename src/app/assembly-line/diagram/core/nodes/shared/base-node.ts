@@ -9,8 +9,8 @@ import { STATUS_GLYPH, deriveValueColor, nodeShortId } from '../../../../shared/
  * Shared state + behaviour for the ng-diagram node templates (module, paint
  * shop, auto-assembly): live data, node type, short id, status glyph, alarm
  * dimming + reveal, and the per-node view config. Generic over the `data`
- * payload so each concrete node narrows it. The node wrapper's `type` is the
- * type — ng-diagram types it as `string`, so `type` asserts it to `NodeType`.
+ * payload so each concrete node narrows it. ng-diagram types `node.type` as
+ * `string`; the `type` computed narrows it to `NodeType`.
  * Not an Angular directive — a plain base whose `inject()` runs in the subclass
  * component's injection context.
  */

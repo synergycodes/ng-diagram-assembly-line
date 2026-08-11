@@ -54,7 +54,7 @@ export const LINE_WEIGHT = {
   SPARK: 13,
 } as const;
 
-/** DXF millimetres per one diagram unit. Fixed (not paper-fitted), as in the reference. */
+/** DXF millimetres per one diagram unit. Fixed scale — the drawing is not fitted to a paper size. */
 export const DXF_SCALE_MM_PER_PX = 0.3;
 
 /** Padding around the drawing, in diagram units. */

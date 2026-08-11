@@ -47,7 +47,6 @@ export class FlowEdgeComponent implements NgDiagramEdgeTemplate {
     }
     // Touch the nodes signal so dimming re-evaluates when the live feed changes
     // an endpoint's status — getNodeEnds itself is a non-reactive map lookup.
-    // With that dependency registered it resolves both ends in one O(1) call.
     this.modelService.nodes();
     const ends = this.modelService.getNodeEnds<AssemblyNodeData, AssemblyNodeData>(this.edge().id);
     if (!ends) {

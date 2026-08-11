@@ -102,7 +102,7 @@ describe('deriveBufferLevel', () => {
     expect(level.pct).toBe(95);
     expect(level.available).toBe(true);
     expect(level.text).toBe('38/40');
-    // 95% with default currentCount thresholds (warn 80, crit 95) → danger.
+    // pct 95 sits above the currentCount critical default → danger.
     expect(level.tone).toBe('danger');
   });
 

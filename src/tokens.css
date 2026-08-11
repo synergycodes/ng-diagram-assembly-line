@@ -88,7 +88,7 @@
   --al-badge-border: #c7c7c7;
   --al-badge-text: #f2f2f2;
 
-  /* Legacy aliases used in existing components — keep them mapped */
+  /* Short aliases kept for readability in component styles. */
   --al-border-subtle: var(--al-sem-color-stroke-subtle);
   --al-border-strong: var(--al-sem-color-stroke-default);
   --al-accent-blue: var(--al-color-blue-400);

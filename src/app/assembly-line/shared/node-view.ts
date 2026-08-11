@@ -184,8 +184,8 @@ const BUFFER_UNAVAILABLE: BufferLevel = {
 };
 
 /**
- * The `currentCount` meta ranges 0–100, so `pct` (current/capacity × 100) is fed
- * into `computeTone`, making the user-configurable thresholds act as percentages.
+ * `pct` (current/capacity × 100) is compared by `computeTone` against the
+ * `currentCount` thresholds, so those act on the percentage scale.
  * The reading is only shown when both current and capacity are known; otherwise
  * the whole value reads `N/A` (never a half-reading like `N/A/30`).
  */

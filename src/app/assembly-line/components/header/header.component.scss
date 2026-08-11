@@ -134,8 +134,7 @@
 .alarm-pill {
   background: color-mix(in srgb, var(--al-sem-color-alarm) 18%, transparent);
   border: 1px solid color-mix(in srgb, var(--al-sem-color-alarm) 55%, transparent);
-  /* Brighter red so the label reads clearly on the dark translucent pill bg
-   * (Figma node 33:32 uses a light red — the AA-friendly tone for this surface). */
+  /* Brighter red than the alarm surface so the label stays legible on the pill. */
   color: var(--al-sem-color-alarm-text);
   font-family: inherit;
   cursor: pointer;

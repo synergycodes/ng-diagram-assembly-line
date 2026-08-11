@@ -76,7 +76,7 @@ describe('stretchPolyline', () => {
   it('returns null when a 2-point straight segment is broken off-axis', () => {
     // Horizontal segment (0,0)→(100,0). Source moves down with target stationary.
     // No interior bend to absorb the perpendicular shift → stretch can't keep
-    // it orthogonal. Caller falls back to a full re-route.
+    // it orthogonal — the bend-insertion variant handles this case instead.
     const before: Point[] = [
       { x: 0, y: 0 },
       { x: 100, y: 0 },
@@ -219,7 +219,7 @@ describe('stretchPolylineWithBendInsertion', () => {
   it('preserves the reshape as an overlapping U-turn when a moved node aligns two verticals (regression)', () => {
     // Regression: an "n"-shape whose bottom endpoint is dragged until its
     // vertical lands on the other (x=120). The collapsed connector must survive
-    // as an overlapping U-turn, not straighten (the old reset bug).
+    // as an overlapping U-turn, not straighten.
     const nShape: Point[] = [
       { x: 120, y: 290 },
       { x: 120, y: 64 },

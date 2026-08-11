@@ -34,10 +34,8 @@ export const READ_ONLY_BLOCKED_ACTIONS = new Set<string>([
 ]);
 
 /**
- * Read-only guard: in monitor mode the diagram is view-only, so every user
- * structural edit is cancelled before it reaches the model. Runs ahead of the
- * default chain; live data-bus updates (`updateNode`) are not in the block set,
- * so they still flow through.
+ * Read-only guard: cancels every blocked structural edit while `isMonitor`
+ * returns true. Runs ahead of the default chain.
  *
  * @param isMonitor Reactive predicate — read afresh on every action so the guard
  *   follows the live mode without rebuilding the middleware chain.

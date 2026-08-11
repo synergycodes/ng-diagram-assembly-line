@@ -12,7 +12,7 @@ diagram/
                (monitor-mode edit guard), area-fit (grow Area to fit children),
                live-feed.service (apply the monitor data feed to the model).
   core/        shared infrastructure (NOT a feature):
-    geometry/          pure math + domain types (node-types, constants,
+    geometry/          pure math + domain types (constants, point,
                        port-position, edge-stretch)
     ng-diagram-bridge/ adapters over the ng-diagram API (pointer-drag)
     nodes/  edges/     node & edge render components (module, area, paint-shop,

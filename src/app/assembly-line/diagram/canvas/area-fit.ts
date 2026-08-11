@@ -5,7 +5,7 @@ import type { AssemblyLineConfig } from '../../assembly-line.config';
 type AreaPadding = AssemblyLineConfig['area'];
 
 /**
- * Defensive fallback for the drop paths where we can't await measurements
+ * Defensive fallback for the drop paths where measurements can't be awaited
  * (a direct drop into a group, whose mutation the library already made): retry
  * the fit across a few frames until the children report a measured size.
  */
@@ -46,8 +46,9 @@ export function fitAreaToChildren(
 
   // Union of the group's current rect with each child's padded rect. Seeding
   // from the group's own edges is what keeps the Area from ever shrinking.
-  // (NB: `computePartsBounds` is unusable here — it unions with an origin
-  // sentinel for the empty edge list, dragging a subset's bounds back to 0,0.)
+  // The manual loop is a workaround: `computePartsBounds` currently includes
+  // the origin when querying a subset of nodes; switch over once that is
+  // fixed in ng-diagram.
   let left = group.position.x;
   let top = group.position.y;
   let right = left + group.size.width;

@@ -74,9 +74,8 @@ export function stretchPolyline(
     }
   }
 
-  // Reject any middle-seam diagonal — without this guard a degenerate
-  // bend can leak through and get cached. Zero-length segments are kept
-  // and folded later by `collapseCollinearBends`.
+  // Reject any middle-seam diagonal. Zero-length segments are kept and
+  // folded later by `collapseCollinearBends`.
   for (let i = 0; i < result.length - 1; i++) {
     const sameX = Math.abs(result[i].x - result[i + 1].x) < COLLINEAR_TOL;
     const sameY = Math.abs(result[i].y - result[i + 1].y) < COLLINEAR_TOL;

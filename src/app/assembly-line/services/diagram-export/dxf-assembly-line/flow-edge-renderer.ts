@@ -19,9 +19,7 @@ import {
  * chevron markers `FlowEdgeComponent` places on the on-screen detour. Forward
  * flow edges are a plain polyline on the FLOW layer.
  *
- * `edge.points` already holds the rendered route: forward edges are routed
- * orthogonally and rework loop-backs through the registered `ReworkRouting`, and
- * ng-diagram writes both into the model — so the points are drawn as-is.
+ * The points are drawn as-is — `edge.points` holds the rendered route (see `edge-geometry.ts`).
  */
 export const renderFlowEdge: DxfEdgeRenderer = (ctx, edge) => {
   const points = edge.points ?? [];

@@ -60,11 +60,7 @@ describe('findReshapeableSegments', () => {
       'anchored',
       'anchored',
     );
-    // Indices 0..4. Index 1: (50,0)→(80,30) diagonal, skip.
-    // Index 2: (80,30)→(100,30) horizontal, keep.
-    // Index 3: (100,30)→(100,60) vertical, keep.
-    // Index 0: (0,0)→(50,0) horizontal, keep.
-    // Index 4: (100,60)→(200,60) horizontal, keep.
+    // Only index 1 ((50,0)→(80,30)) is diagonal — 0, 2, 3, 4 survive.
     expect(r.map((s) => s.segmentIndex)).toEqual([0, 2, 3, 4]);
   });
 

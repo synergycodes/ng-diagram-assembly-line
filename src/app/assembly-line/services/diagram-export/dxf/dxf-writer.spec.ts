@@ -226,11 +226,9 @@ describe('DxfWriter AutoCAD skeleton', () => {
     expect(records.length).toBe(1);
     const record = records[0];
     expect(record.find((pair) => pair.code === 2)?.value).toBe('Standard');
-    // DIMSTYLE records carry their handle in group 105, not 5.
     expect(record.some((pair) => pair.code === 105)).toBe(true);
     expect(record.some((pair) => pair.code === 5)).toBe(false);
-    // DIMTXSTY (340) points at the style named Standard (the fixture
-    // registers BOLD first).
+    // DIMTXSTY (340) points at the style named Standard.
     const styles = recordsOf(tableOf(tables, 'STYLE'), 'STYLE');
     const standard = styles.find((r) => r.find((pair) => pair.code === 2)?.value === 'STANDARD');
     const standardHandle = standard?.find((pair) => pair.code === 5)?.value;

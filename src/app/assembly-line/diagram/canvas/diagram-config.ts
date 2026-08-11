@@ -4,13 +4,10 @@ import type { AssemblyLineConfig } from '../../assembly-line.config';
 import { REWORK_ROUTING_NAME } from '../core/edges/rework-routing';
 
 /**
- * Padding (screen px, `[top, right, bottom, left]`) that keeps zoom-to-fit content
- * inside the visible canvas gap between the floating panels rather than underneath
- * them. Reads the chrome dimensions from the app config (the single source of truth
- * shared with the page shell's CSS). The palette (left) only exists in edit mode, so
- * its inset drops to a plain margin in monitor mode. The right inset always reserves
- * the collapse tab (which sits on the panel's left edge, protruding into the canvas);
- * when the panel is collapsed only the tab remains, docked at the viewport edge.
+ * Zoom-to-fit padding (screen px, `[top, right, bottom, left]`) that keeps the
+ * fitted content clear of the floating panels, computed from the chrome
+ * dimensions in the app config. The palette inset applies in edit mode only;
+ * the right inset always reserves the collapse tab.
  */
 export function fitPadding(
   mode: AppMode,

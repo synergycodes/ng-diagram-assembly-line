@@ -20,7 +20,6 @@ export function applyEdgeStretchOnSelectionMoved(
     if (!edge.points || edge.points.length < 2) {
       continue;
     }
-    // Skip before the getNodeById + portWorldPosition probe below.
     if (!movedNodeIds.has(edge.source) && !movedNodeIds.has(edge.target)) {
       continue;
     }

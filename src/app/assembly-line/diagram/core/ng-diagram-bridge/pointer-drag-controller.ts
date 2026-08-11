@@ -42,8 +42,8 @@ export class PointerDragController<TState> {
       // Best-effort; the listeners drive the gesture either way.
     }
     handleEl.classList.add('is-dragging');
-    // Cast: the keyed EventMap overloads collapse on the Document|HTMLElement union.
     this.listenerEl = this.options.listenerTarget === 'document' ? document : handleEl;
+    // Cast: the keyed EventMap overloads collapse on the Document|HTMLElement union.
     this.listenerEl.addEventListener('pointermove', this.onPointerMove as EventListener);
     this.listenerEl.addEventListener('pointerup', this.onPointerUp as EventListener);
     this.listenerEl.addEventListener('pointercancel', this.onPointerUp as EventListener);

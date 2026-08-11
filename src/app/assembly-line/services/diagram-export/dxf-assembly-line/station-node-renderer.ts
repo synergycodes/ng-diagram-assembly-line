@@ -43,7 +43,7 @@ export type SeriesReader = (nodeId: string, key: string) => number[];
 /**
  * Node types whose on-screen KPI cells carry sparklines (the AssemblyNode
  * family, minus buffer which shows a capacity bar). Paint-shop and auto-assembly
- * use bespoke templates with no sparklines, so we don't draw them there even
+ * use bespoke templates with no sparklines, so none are drawn for them even
  * though history exists — the DXF should match what's rendered.
  */
 const SPARKLINE_TYPES: ReadonlySet<NodeType> = new Set([
@@ -60,20 +60,15 @@ interface KpiCell {
 }
 
 /**
- * Builds the station-node renderer, closing over `readSeries` so KPI cells can
- * draw their sparklines. Handles buffer, servo-press, welding-cell,
- * quality-control, paint-shop and auto-assembly.
+ * Builds the shared renderer for all six station types, closing over
+ * `readSeries` for the KPI sparklines.
  *
  * The card frame is drawn from the node's MEASURED size/position so it lines up
- * exactly with what ng-diagram rendered and with the edges routed to its ports.
- * Its interior mirrors the shared node-card layout — a header band (name +
- * short id) over a body over a status footer. The body is either the buffer's
- * capacity bar or a KPI grid built from the node type's `property-meta`; each
- * chartable KPI on a sparkline-capable type gets its history trace. The richer
- * bespoke dashboards (paint-shop swatches, auto-assembly task list) are
- * represented by their KPIs rather than reproduced pixel-for-pixel — the DXF is
- * a CAD schematic, not a screenshot. To specialize a type, register a dedicated
- * renderer for it in `assembly-dxf-config.ts`.
+ * with what ng-diagram rendered and with the edges routed to its ports. Bespoke
+ * dashboards (paint-shop, auto-assembly) are represented by their KPIs rather
+ * than reproduced pixel-for-pixel — the DXF is a CAD schematic, not a
+ * screenshot. To specialize a type, register a dedicated renderer for it in
+ * `assembly-dxf-config.ts`.
  */
 export const createStationNodeRenderer = (readSeries: SeriesReader): DxfNodeRenderer => {
   return (ctx, node) => {

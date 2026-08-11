@@ -10,8 +10,8 @@ export const POSITION_TOLERANCE_PX = 1;
 // Back `reworkDetourPoints`, the detour shape `ReworkRouting` computes on screen
 // (and writes into the model, so the DXF exporter reads the same points).
 
-// Horizontal step out from the port before the detour turns down/up. One grid cell
-// is enough to clear the port itself.
+// Horizontal step out from the port before the detour turns down/up — 2.5 grid cells
+// clear the port and its hit area.
 export const REWORK_PORT_STANDOFF = GRID * 2.5; // 20
 
 // Vertical gap the loop-back keeps below the lowest machine it passes under.
