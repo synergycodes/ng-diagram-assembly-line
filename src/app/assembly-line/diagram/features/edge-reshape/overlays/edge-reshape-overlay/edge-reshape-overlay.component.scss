@@ -19,7 +19,7 @@
   width: 22px;
   height: 22px;
   background: transparent;
-  color: var(--al-sem-color-text-primary, #e6e8ef); // arrow stroke (currentColor)
+  color: var(--al-sem-color-text-primary); // arrow stroke (currentColor)
   pointer-events: auto;
   transform: translate(-50%, -50%);
   touch-action: none;
@@ -35,7 +35,7 @@
   &::after {
     content: '';
     position: absolute;
-    background: var(--al-color-purple-400, #8b93ff);
+    background: var(--al-color-purple-400);
     border-radius: 9999px;
     transition: opacity 120ms ease;
   }
@@ -79,7 +79,7 @@
     transition: opacity 120ms ease;
     pointer-events: none;
     // Halo keeps the arrow legible over the selected edge.
-    filter: drop-shadow(0 0 1.5px var(--al-color-gray-900, #0b0b0f));
+    filter: drop-shadow(0 0 1.5px var(--al-color-gray-900));
   }
   // Vertical segment drags horizontally → rotate the ↕ glyph to ↔.
   &.is-vertical .reshape-overlay__arrow {

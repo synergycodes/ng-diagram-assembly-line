@@ -101,10 +101,10 @@
   color: var(--al-sem-color-text-tertiary);
 }
 .state-line[data-tone='warn'] {
-  color: var(--al-sem-color-text-warning, #d99100);
+  color: var(--al-sem-color-text-warning);
 }
 .state-line[data-tone='danger'] {
-  color: var(--al-sem-color-text-danger, #d32f2f);
+  color: var(--al-sem-color-text-danger);
 }
 
 .alarm-badge {
@@ -115,7 +115,7 @@
   font-weight: 700;
   letter-spacing: 0.8px;
   color: var(--al-color-gray-100);
-  background: var(--al-color-error-500, #b12424);
+  background: var(--al-color-error-500);
   padding: 2px 7px;
   border-radius: 3px;
 }
@@ -237,7 +237,7 @@
 }
 
 .rework-defect {
-  color: var(--al-sem-color-text-warning, #d99100);
+  color: var(--al-sem-color-text-warning);
   text-align: right;
 }
 

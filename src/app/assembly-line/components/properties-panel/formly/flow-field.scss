@@ -15,7 +15,7 @@
     gap: 8px;
     font-size: 10px;
     letter-spacing: 0.02em;
-    color: var(--al-sem-color-text-secondary, #9aa1b2);
+    color: var(--al-sem-color-text-secondary);
   }
 
   &__label-text {
@@ -27,7 +27,7 @@
   &__unit {
     font-family: var(--al-font-mono, ui-monospace, monospace);
     font-size: 10px;
-    color: var(--al-sem-color-text-tertiary, #6b7180);
+    color: var(--al-sem-color-text-tertiary);
     flex-shrink: 0;
   }
 

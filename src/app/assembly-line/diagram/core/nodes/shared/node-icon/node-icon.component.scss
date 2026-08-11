@@ -57,7 +57,7 @@
   left: 5px;
   width: 12px;
   height: 1.5px;
-  background: var(--al-color-warning-400, #d99100);
+  background: var(--al-color-warning-400);
   border-radius: 0.5px;
   opacity: 0;
   filter: blur(0.5px);
@@ -151,7 +151,7 @@
   left: 10px;
   width: 2px;
   height: 2px;
-  background: var(--al-color-warning-400, #d99100);
+  background: var(--al-color-warning-400);
   border-radius: 50%;
   opacity: 0;
   filter: blur(0.4px);
@@ -254,7 +254,7 @@
   left: 10px;
   width: 2px;
   height: 2px;
-  background: var(--al-color-purple-400, #b550fc);
+  background: var(--al-color-purple-400);
   border-radius: 50%;
   opacity: 0;
   filter: blur(0.3px);
@@ -268,7 +268,7 @@
   background: linear-gradient(
     90deg,
     var(--metal-dark) 0%,
-    var(--al-color-purple-400, #b550fc) 50%,
+    var(--al-color-purple-400) 50%,
     var(--metal-dark) 100%
   );
   border-radius: 0.5px;

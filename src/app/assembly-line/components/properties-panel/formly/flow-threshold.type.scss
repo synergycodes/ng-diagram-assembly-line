@@ -32,11 +32,11 @@
   transition: color 0.12s ease;
 
   &:hover {
-    color: var(--al-color-blue-400, #4a90e2);
+    color: var(--al-color-blue-400);
   }
 
   &:focus-visible {
-    outline: 2px solid var(--al-color-blue-400, #4a90e2);
+    outline: 2px solid var(--al-color-blue-400);
     outline-offset: 4px;
   }
 }
@@ -75,7 +75,7 @@
   width: 32px;
   height: 18px;
   border-radius: 100px;
-  background: var(--al-color-gray-650, #3a3d47);
+  background: var(--al-color-gray-650);
   border: none;
   padding: 0;
   position: relative;
@@ -166,7 +166,7 @@
   height: 18px;
   border-radius: 50%;
   background: var(--al-sem-color-bg-raised);
-  border: 2px solid var(--al-color-gray-450, #6b7180);
+  border: 2px solid var(--al-color-gray-450);
   transform: translateX(-9px);
   cursor: grab;
   z-index: 2;

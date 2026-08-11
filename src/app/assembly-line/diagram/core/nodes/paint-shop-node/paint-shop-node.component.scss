@@ -11,16 +11,16 @@
 .card {
   position: relative;
   width: 340px;
-  background: var(--al-sem-color-bg-raised, #151516);
-  border: 2px solid var(--al-sem-color-stroke-default, #3e4348);
+  background: var(--al-sem-color-bg-raised);
+  border: 2px solid var(--al-sem-color-stroke-default);
   border-radius: 8px;
   font-family: var(--al-font-family, 'Poppins', system-ui, sans-serif);
-  color: var(--al-sem-color-text-secondary, #d4d7da);
+  color: var(--al-sem-color-text-secondary);
 }
 
 .section {
   padding: 12px 15px 14px;
-  border-top: 1px solid var(--al-sem-color-stroke-subtle, #2c3137);
+  border-top: 1px solid var(--al-sem-color-stroke-subtle);
 
   &:first-of-type {
     border-top: none;
@@ -32,7 +32,7 @@
   font-size: 9px;
   font-weight: 500;
   letter-spacing: 0.8px;
-  color: var(--al-sem-color-text-tertiary, #8a8e93);
+  color: var(--al-sem-color-text-tertiary);
   text-transform: uppercase;
 }
 
@@ -51,7 +51,7 @@
 .paint-name {
   font-size: 11px;
   font-weight: 400;
-  color: var(--al-sem-color-text-secondary, #d4d7da);
+  color: var(--al-sem-color-text-secondary);
 }
 
 .paint-pct {
@@ -66,7 +66,7 @@
   grid-column: 1 / -1;
   height: 6px;
   border-radius: 3px;
-  background: var(--al-sem-color-stroke-default, #3e4348);
+  background: var(--al-sem-color-stroke-default);
   overflow: hidden;
 }
 
@@ -93,19 +93,19 @@
   font-size: 28px;
   font-weight: 700;
   line-height: 1;
-  color: var(--al-sem-color-text-secondary, #d4d7da);
+  color: var(--al-sem-color-text-secondary);
   font-variant-numeric: tabular-nums;
 }
 
 .kpi[data-tone='muted'] .kpi-num {
-  color: var(--al-sem-color-text-tertiary, #8a8e93);
+  color: var(--al-sem-color-text-tertiary);
 }
 
 .kpi-label {
   font-size: 9px;
   font-weight: 400;
   letter-spacing: 0.5px;
-  color: var(--al-sem-color-text-tertiary, #8a8e93);
+  color: var(--al-sem-color-text-tertiary);
 }
 
 .yield-row {
@@ -118,13 +118,13 @@
 .yield-label {
   font-size: 10px;
   font-weight: 400;
-  color: var(--al-sem-color-text-tertiary, #8a8e93);
+  color: var(--al-sem-color-text-tertiary);
 }
 
 .yield-pct {
   font-size: 10px;
   font-weight: 600;
-  color: var(--al-sem-color-text-secondary, #d4d7da);
+  color: var(--al-sem-color-text-secondary);
   font-variant-numeric: tabular-nums;
 }
 
@@ -138,7 +138,7 @@
   justify-content: space-between;
   gap: 8px;
   padding: 8px 12px;
-  background: var(--al-sem-color-bg-sunken, #1a1d21);
+  background: var(--al-sem-color-bg-sunken);
   border-radius: 4px;
   margin-bottom: 8px;
 
@@ -157,13 +157,13 @@
 .rework-part {
   font-size: 11px;
   font-weight: 500;
-  color: var(--al-sem-color-text-secondary, #d4d7da);
+  color: var(--al-sem-color-text-secondary);
 }
 
 .rework-color {
   font-size: 9px;
   font-weight: 400;
-  color: var(--al-sem-color-text-tertiary, #8a8e93);
+  color: var(--al-sem-color-text-tertiary);
 }
 
 .rework-defect {
