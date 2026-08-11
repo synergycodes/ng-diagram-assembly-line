@@ -3,7 +3,7 @@ import { writeStorageRaw } from '../shared/browser-storage';
 
 export type Theme = 'light' | 'dark';
 
-const STORAGE_KEY = 'assembly-line-theme';
+const STORAGE_KEY = 'assembly-line:theme';
 
 @Injectable()
 export class ThemeService {

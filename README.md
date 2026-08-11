@@ -121,7 +121,7 @@ src/
    ├─ app.config.ts, app.routes.ts      # providers, single lazy route
    └─ assembly-line/                    # domain root — feature-sliced ng-diagram layout
       ├─ pages/assembly-line-page/      # page shell: provideNgDiagram + Formly, top bar
-      ├─ components/                    # chrome: palette, properties-panel (Formly), node-inspector, export-menu, minimap-panel, theme-toggle
+      ├─ components/                    # chrome: header, palette, properties-panel (Formly), node-inspector, export-menu, minimap-panel, right-panel, theme-toggle
       ├─ diagram/
       │  ├─ canvas/                     # ng-diagram host + template maps; diagram-config, read-only.middleware, area-fit, live-feed.service
       │  ├─ core/
@@ -134,8 +134,8 @@ src/
       │     └─ edge-routing/            # keep links attached on node move
       ├─ model/                         # node-data types, typed node union, node registry, property metadata
       ├─ services/                      # diagram-export (PNG/SVG/DXF), history (sparklines), view-config, alarm filter, theme
-      ├─ shared/                        # barrel for node/edge components + view services
-      └─ state/                         # diagram store, mode/selection
+      ├─ shared/                        # icon registry (<app-icon>), node-view helpers, format/storage utils, barrel
+      └─ state/                         # diagram store, mode/selection, data-connection (the RxJS data bus)
          └─ mock-feed/                  # in-browser production engine + per-type generators
 ```
 
@@ -238,17 +238,17 @@ the trigger lives in [`components/export-menu/`](src/app/assembly-line/component
 3. Before opening a PR, make sure `npm run lint`, `npm run format:check`, and
    `npm test` all pass, and that `npm run build` succeeds.
 
-## ngDiagram Documentation
+## ng-diagram Documentation
 
-For comprehensive ngDiagram documentation, examples, and API reference, visit
+For comprehensive ng-diagram documentation, examples, and API reference, visit
 **[ngdiagram.dev/docs](https://www.ngdiagram.dev/docs)**.
 
 ## Support
 
 - **Issues**: [GitHub Issues](https://github.com/synergycodes/ng-diagram-assembly-line/issues)
 - **Discussions**: [GitHub Discussions](https://github.com/synergycodes/ng-diagram-assembly-line/discussions)
-- **ngDiagram Discussions**: [GitHub Discussions](https://github.com/synergycodes/ng-diagram/discussions), [Discord](https://discord.gg/FDMjRuarFb)
-- **ngDiagram Documentation**: [ngdiagram.dev/docs](https://www.ngdiagram.dev/docs)
+- **ng-diagram Discussions**: [GitHub Discussions](https://github.com/synergycodes/ng-diagram/discussions), [Discord](https://discord.gg/FDMjRuarFb)
+- **ng-diagram Documentation**: [ngdiagram.dev/docs](https://www.ngdiagram.dev/docs)
 
 ## License
 
