@@ -62,7 +62,7 @@ jobs:
             echo "::error::HUBSPOT_PORTAL_ID and HUBSPOT_FORM_ID must be set as Actions variables"
             exit 1
           fi
-          index="dist/assembly-flow/browser/index.html"
+          index="dist/assembly-line/browser/index.html"
           tag="<script src=\"contact-form.js\""
           tag+=" data-portal-id=\"$HUBSPOT_PORTAL_ID\""
           tag+=" data-form-id=\"$HUBSPOT_FORM_ID\""
@@ -71,7 +71,7 @@ jobs:
           tag+=" data-description=\"Leave your details and we'll get back within 24 hours.\""
           tag+=" data-footer=\"Using ngDiagram in your project?\""
           tag+=" data-footer-link-label=\"GitHub\""
-          tag+=" data-footer-link-url=\"https://github.com/synergycodes/ng-diagram-assembly-flow\""
+          tag+=" data-footer-link-url=\"https://github.com/synergycodes/ng-diagram-assembly-line\""
           tag+=" data-arm-delay=\"5\""
           tag+=" defer></script>"
           node -e '
