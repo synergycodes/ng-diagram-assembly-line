@@ -8,9 +8,7 @@ export function thresholdProps(type: NodeType): PropertyMeta[] {
 }
 
 export function fieldsForNodeType(type: NodeType): FormlyFieldConfig[] {
-  const fields: FormlyFieldConfig[] = [
-    { key: 'name', type: 'al-input', props: { label: 'Name' } },
-  ];
+  const fields: FormlyFieldConfig[] = [{ key: 'name', type: 'al-input', props: { label: 'Name' } }];
   for (const m of thresholdProps(type)) {
     fields.push({
       key: m.key,

@@ -1,9 +1,3 @@
-:host {
-  /* Status-badge chrome — a fixed light-metal chip, not theme-driven. Local. */
-  --badge-border: #c7c7c7;
-  --badge-text: #f2f2f2;
-}
-
 .panel {
   background: var(--al-sem-color-bg-raised);
   height: 100%;
@@ -77,8 +71,8 @@
   font-size: 9px;
   font-weight: 700;
   line-height: 1;
-  color: var(--badge-text);
-  border: 1px solid var(--badge-border);
+  color: var(--al-badge-text);
+  border: 1px solid var(--al-badge-border);
 }
 .status-badge[data-status='working'] {
   background: var(--al-status-working);
