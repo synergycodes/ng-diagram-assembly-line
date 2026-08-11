@@ -59,7 +59,7 @@
     "@eslint/js": "^9.8.0",
     "@types/node": "20.19.9",
     "@vitest/coverage-v8": "4.0.9",
-    "angular-eslint": "21.3.1",
+    "angular-eslint": "22.1.0",
     "eslint": "^9.8.0",
     "eslint-config-prettier": "^10.0.0",
     "jsdom": "~22.1.0",
