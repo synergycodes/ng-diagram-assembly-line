@@ -11,7 +11,9 @@ export function applyEdgeStretchOnSelectionMoved(
   movedNodeIds: ReadonlySet<string>,
 ): void {
   const patches: { id: string; points: Point[] }[] = [];
-  for (const edge of modelService.edges()) {
+  // Committed model, not the edges() signal — safe when a caller runs this
+  // right after an awaited edge write, which the signal won't show yet.
+  for (const edge of modelService.getModel().getEdges()) {
     if (edge.routingMode !== 'manual') {
       continue;
     }

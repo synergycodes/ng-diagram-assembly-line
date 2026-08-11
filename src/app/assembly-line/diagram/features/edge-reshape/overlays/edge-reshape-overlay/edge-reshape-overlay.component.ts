@@ -247,8 +247,6 @@ export class EdgeReshapeOverlayComponent {
         this.extension!.apply(drag.propagation, drag, orthoPoints);
       });
     } else {
-      // Direct commit — a transaction wrap has been observed to detach
-      // manual endpoints from their ports under continuous drag.
       this.modelService.updateEdge(drag.edgeId, {
         points: orthoPoints,
         routingMode: 'manual',
