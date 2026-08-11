@@ -60,7 +60,7 @@
 
 .pill-manual {
   background: color-mix(in srgb, var(--al-color-amber-400) 15%, transparent);
-  color: var(--al-color-warning-400, #f4b942);
+  color: var(--al-color-amber-400);
 }
 
 .pill-marker {
@@ -127,7 +127,7 @@
 
 .detail-target {
   margin-left: 4px;
-  color: var(--al-color-warning-400, #f4b942);
+  color: var(--al-color-amber-400);
   font-weight: 500;
 }
 
