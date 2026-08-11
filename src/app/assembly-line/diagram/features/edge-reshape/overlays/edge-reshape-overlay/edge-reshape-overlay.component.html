@@ -1,0 +1,15 @@
+<div class="reshape-overlay__layer" [style.transform]="transform()">
+  @for (h of handles(); track h.edgeId + ':' + h.segmentIndex) {
+    <span
+      class="reshape-overlay__handle"
+      [class.is-horizontal]="h.axis === 'horizontal'"
+      [class.is-vertical]="h.axis === 'vertical'"
+      [style.left.px]="h.midpoint.x"
+      [style.top.px]="h.midpoint.y"
+      (pointerdown)="onPointerDown($event, h)"
+      aria-hidden="true"
+    >
+      <app-icon class="reshape-overlay__arrow" name="reshape" />
+    </span>
+  }
+</div>

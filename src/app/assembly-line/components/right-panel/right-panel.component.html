@@ -1,0 +1,18 @@
+<div class="card">
+  @if (mode() === 'edit') {
+    <app-properties-panel />
+  } @else {
+    <app-node-inspector />
+  }
+</div>
+
+<button
+  type="button"
+  class="toggle"
+  (click)="toggle()"
+  [attr.aria-expanded]="!collapsed()"
+  [attr.aria-label]="collapsed() ? 'Expand panel' : 'Collapse panel'"
+  [attr.title]="collapsed() ? 'Expand panel' : 'Collapse panel'"
+>
+  <app-icon name="chevron" [size]="12" />
+</button>

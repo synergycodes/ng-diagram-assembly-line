@@ -1,0 +1,178 @@
+@use '../shared/node-card';
+
+:host {
+  display: block;
+  position: relative;
+
+  /* Neutral fill for the yield bar — a card illustration detail, kept local. */
+  --yield-fill: #c8c8c8;
+}
+
+.card {
+  position: relative;
+  width: 340px;
+  background: var(--al-sem-color-bg-raised);
+  border: 2px solid var(--al-sem-color-stroke-default);
+  border-radius: 8px;
+  font-family: var(--al-font-family, 'Poppins', system-ui, sans-serif);
+  color: var(--al-sem-color-text-secondary);
+}
+
+.section {
+  padding: 12px 15px 14px;
+  border-top: 1px solid var(--al-sem-color-stroke-subtle);
+
+  &:first-of-type {
+    border-top: none;
+  }
+}
+
+.section-title {
+  margin: 0 0 12px;
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.8px;
+  color: var(--al-sem-color-text-tertiary);
+  text-transform: uppercase;
+}
+
+.paint-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  row-gap: 4px;
+  margin-bottom: 10px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.paint-name {
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--al-sem-color-text-secondary);
+}
+
+.paint-pct {
+  font-size: 11px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.bar {
+  position: relative;
+  grid-column: 1 / -1;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--al-sem-color-stroke-default);
+  overflow: hidden;
+}
+
+.bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.4s ease;
+}
+
+.kpi-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  margin-bottom: 12px;
+}
+
+.kpi {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.kpi-num {
+  font-family: var(--al-font-family, 'Poppins', system-ui, sans-serif);
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--al-sem-color-text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+.kpi[data-tone='muted'] .kpi-num {
+  color: var(--al-sem-color-text-tertiary);
+}
+
+.kpi-label {
+  font-size: 9px;
+  font-weight: 400;
+  letter-spacing: 0.5px;
+  color: var(--al-sem-color-text-tertiary);
+}
+
+.yield-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  row-gap: 4px;
+}
+
+.yield-label {
+  font-size: 10px;
+  font-weight: 400;
+  color: var(--al-sem-color-text-tertiary);
+}
+
+.yield-pct {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--al-sem-color-text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+.bar-fill-yield {
+  background: var(--yield-fill);
+}
+
+.rework-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 12px;
+  background: var(--al-sem-color-bg-sunken);
+  border-radius: 4px;
+  margin-bottom: 8px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.rework-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.rework-part {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--al-sem-color-text-secondary);
+}
+
+.rework-color {
+  font-size: 9px;
+  font-weight: 400;
+  color: var(--al-sem-color-text-tertiary);
+}
+
+.rework-defect {
+  flex-shrink: 0;
+  padding: 3px 12px;
+  background: color-mix(in srgb, var(--al-sem-color-accent-warn) 15%, transparent);
+  border-radius: 9px;
+  font-size: 8px;
+  font-weight: 400;
+  color: var(--al-sem-color-accent-warn);
+  white-space: nowrap;
+}

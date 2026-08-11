@@ -48,4 +48,6 @@ vitest.config.*.timestamp*
 .DS_Store
 Thumbs.db
 
+# AI tooling (local config)
+.mcp.json
 .claude/

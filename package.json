@@ -1,9 +1,31 @@
 {
-  "name": "assembly-flow",
+  "name": "ng-diagram-assembly-line",
   "version": "1.0.0",
-  "description": "Assembly-line production monitor / diagram editor built with Angular and ng-diagram",
+  "description": "Interactive assembly-line monitoring template built with Angular and ng-diagram",
   "license": "MIT",
   "private": true,
+  "keywords": [
+    "visualization",
+    "open-source",
+    "angular",
+    "typescript",
+    "graph",
+    "drag-and-drop",
+    "diagram",
+    "diagramming",
+    "node-editor",
+    "node-based-ui",
+    "ng-diagram",
+    "assembly-line",
+    "manufacturing",
+    "production-monitoring"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/synergycodes/ng-diagram-assembly-line.git"
+  },
+  "homepage": "https://www.ngdiagram.dev",
+  "packageManager": "npm@10.9.2",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -12,6 +34,7 @@
     "test": "ng test --no-watch",
     "test:watch": "ng test",
     "lint": "ng lint",
+    "type-check": "tsc -b --noEmit",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },
@@ -24,10 +47,9 @@
     "@angular/router": "21.2.9",
     "@ngx-formly/core": "^7.1.0",
     "html-to-image": "^1.11.13",
-    "ng-diagram": "^1.2.3",
+    "ng-diagram": "^1.3.0",
     "rxjs": "~7.8.0",
-    "tslib": "^2.3.0",
-    "zone.js": "0.16.0"
+    "tslib": "^2.3.0"
   },
   "devDependencies": {
     "@angular/build": "21.2.7",

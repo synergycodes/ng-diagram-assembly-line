@@ -1,0 +1,88 @@
+:host {
+  /* Layout/position is owned by the consumer (the page shell). */
+  display: block;
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  border-radius: 8px;
+  border: 1px solid var(--al-sem-color-stroke-default);
+  background: var(--al-sem-color-bg-raised);
+  box-shadow: var(--al-shadow-menu);
+  overflow: hidden;
+}
+
+.minimap-canvas {
+  display: grid;
+  grid-template-rows: 1fr;
+
+  .animate & {
+    transition: grid-template-rows 0.2s ease;
+  }
+  .collapsed & {
+    grid-template-rows: 0fr;
+  }
+
+  ng-diagram-minimap {
+    position: static;
+    overflow: hidden;
+    min-height: 0;
+    --ngd-minimap-background: transparent;
+    --ngd-minimap-border-color: transparent;
+    --ngd-minimap-shadow-color: transparent;
+    --ngd-minimap-border-radius: 0;
+    --ngd-minimap-margin: 0;
+    --ngd-minimap-node-color: var(--al-sem-color-text-disabled);
+    --ngd-minimap-viewport-stroke-color: var(--al-sem-color-text-secondary);
+  }
+}
+
+.minimap-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px;
+}
+
+.action-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--al-sem-color-text-tertiary);
+  cursor: pointer;
+  transition:
+    background-color 0.12s ease,
+    color 0.12s ease;
+
+  &:hover:not(:disabled) {
+    background: var(--al-sem-color-bg-sunken);
+    color: var(--al-sem-color-text-primary);
+  }
+
+  &.active {
+    color: var(--al-color-blue-400);
+  }
+
+  &:disabled {
+    color: var(--al-sem-color-text-disabled);
+    cursor: default;
+  }
+}
+
+.zoom-level {
+  flex: 1;
+  min-width: 48px;
+  text-align: center;
+  font-family: var(--al-font-mono, 'JetBrains Mono', monospace);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--al-sem-color-text-secondary);
+  user-select: none;
+}

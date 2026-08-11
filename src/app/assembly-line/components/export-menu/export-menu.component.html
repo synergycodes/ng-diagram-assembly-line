@@ -1,0 +1,56 @@
+<button
+  type="button"
+  class="export-btn"
+  [class.open]="menuOpen()"
+  [disabled]="!canExport() || exporting()"
+  aria-haspopup="menu"
+  [attr.aria-expanded]="menuOpen()"
+  (click)="toggleMenu($event)"
+  title="Export diagram"
+>
+  <app-icon name="export" [size]="14" />
+  <span class="label">Export</span>
+  <app-icon class="caret" name="caret" [size]="12" />
+</button>
+
+@if (menuOpen()) {
+  <div
+    class="export-menu"
+    role="menu"
+    tabindex="-1"
+    (click)="$event.stopPropagation()"
+    (keydown)="$event.stopPropagation()"
+  >
+    <div class="menu-kicker">EXPORT AS</div>
+    <button
+      type="button"
+      class="menu-row"
+      role="menuitem"
+      [disabled]="exporting()"
+      (click)="exportPng($event)"
+    >
+      <app-icon class="menu-icon" name="image" [size]="15" />
+      <span class="menu-label">PNG image</span>
+    </button>
+    <button
+      type="button"
+      class="menu-row"
+      role="menuitem"
+      [disabled]="exporting()"
+      (click)="exportSvg($event)"
+    >
+      <app-icon class="menu-icon" name="file" [size]="15" />
+      <span class="menu-label">SVG image</span>
+    </button>
+    <button
+      type="button"
+      class="menu-row"
+      role="menuitem"
+      [disabled]="exporting()"
+      (click)="exportDxf($event)"
+    >
+      <app-icon class="menu-icon" name="file-dxf" [size]="15" />
+      <span class="menu-label">DXF drawing</span>
+    </button>
+  </div>
+}

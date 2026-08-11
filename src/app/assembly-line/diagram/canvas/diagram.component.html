@@ -1,0 +1,19 @@
+<div class="canvas" [attr.data-mode]="mode()">
+  <ng-diagram
+    [model]="model"
+    [config]="config()"
+    [middlewares]="middlewares"
+    [nodeTemplateMap]="nodeTemplateMap"
+    [edgeTemplateMap]="edgeTemplateMap"
+    (diagramInit)="onDiagramInit()"
+    (selectionChanged)="onSelectionChanged($event)"
+    (selectionMoved)="onSelectionMoved($event)"
+    (groupMembershipChanged)="onGroupMembershipChanged($event)"
+    (paletteItemDropped)="onPaletteItemDropped($event)"
+  >
+    <ng-diagram-background />
+  </ng-diagram>
+  @if (mode() === 'edit') {
+    <app-edge-reshape-overlay />
+  }
+</div>

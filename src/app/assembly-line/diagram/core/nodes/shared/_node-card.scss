@@ -1,0 +1,120 @@
+:host.dimmed .card {
+  opacity: 0.25;
+  filter: grayscale(0.8);
+  transition:
+    opacity 0.2s ease,
+    filter 0.2s ease;
+}
+:host.dimmed .status-badge {
+  opacity: 0.4;
+}
+
+:host([data-status='error']) .card {
+  border: 2px solid var(--al-status-error);
+}
+:host([data-status='idle']) .card {
+  border: 2px solid var(--al-status-idle);
+}
+:host([data-status='disconnected']) .card {
+  border: 2px dashed var(--al-status-disconnected);
+}
+
+.reveal-btn {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 44px;
+  height: 30px;
+  border-radius: 6px;
+  display: grid;
+  place-items: center;
+  background: rgba(20, 22, 25, 0.78);
+  border: none;
+  color: var(--al-sem-color-text-secondary);
+  cursor: pointer;
+  z-index: 4;
+  padding: 0;
+  font-family: inherit;
+  line-height: 1;
+  backdrop-filter: blur(2px);
+  transition:
+    background-color 0.12s ease,
+    transform 0.12s ease;
+
+  &:hover {
+    background: rgba(36, 40, 45, 0.9);
+    color: var(--al-sem-color-text-primary);
+    transform: translate(-50%, -50%) scale(1.05);
+  }
+
+  &:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2);
+  }
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  padding-right: 24px; /* room for the status badge */
+  border-bottom: 1px solid var(--al-sem-color-stroke-subtle);
+}
+
+.status-badge {
+  position: absolute;
+  top: -7px;
+  right: 8px;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--al-badge-border);
+  filter: drop-shadow(0 1px 1.7px rgba(51, 56, 61, 0.45));
+  z-index: 3;
+  pointer-events: none;
+  font-family: var(--al-font-family);
+  font-weight: 700;
+  font-size: 8px;
+  line-height: 1;
+  color: var(--al-badge-text);
+  user-select: none;
+}
+
+.status-badge[data-status='working'] {
+  background: var(--al-status-working);
+}
+
+.status-badge[data-status='idle'] {
+  background: var(--al-status-idle);
+  color: var(--al-status-idle-text);
+}
+
+.status-badge[data-status='error'] {
+  background: var(--al-status-error);
+}
+
+.status-badge[data-status='disconnected'] {
+  background: var(--al-status-disconnected);
+}
+
+.name {
+  flex: 1;
+  min-width: 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--al-sem-color-text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.code {
+  font-family: var(--al-font-mono, 'JetBrains Mono', monospace);
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--al-sem-color-text-tertiary);
+}

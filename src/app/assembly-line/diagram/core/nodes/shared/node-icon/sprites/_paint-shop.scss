@@ -1,0 +1,78 @@
+.icon[data-type='paint-shop'] .nozzle {
+  position: absolute;
+  top: 1px;
+  left: 7px;
+  width: 8px;
+  height: 5px;
+  background: var(--metal-light);
+  border-radius: 1px;
+}
+.icon[data-type='paint-shop'] .nozzle::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 3px;
+  width: 2px;
+  height: 2px;
+  background: var(--metal-mid);
+  border-radius: 0 0 1px 1px;
+}
+.icon[data-type='paint-shop'] .spray {
+  position: absolute;
+  top: 9px;
+  left: 10px;
+  width: 2px;
+  height: 2px;
+  background: var(--al-color-purple-400);
+  border-radius: 50%;
+  opacity: 0;
+  filter: blur(0.3px);
+}
+.icon[data-type='paint-shop'] .surface {
+  position: absolute;
+  bottom: 1px;
+  left: 2px;
+  right: 2px;
+  height: 3px;
+  background: linear-gradient(
+    90deg,
+    var(--metal-dark) 0%,
+    var(--al-color-purple-400) 50%,
+    var(--metal-dark) 100%
+  );
+  border-radius: 0.5px;
+}
+.icon[data-type='paint-shop'][data-active='true'] .spray-1 {
+  animation: paint-drip 1s linear infinite;
+}
+.icon[data-type='paint-shop'][data-active='true'] .spray-2 {
+  animation: paint-drip 1s linear 0.33s infinite;
+}
+.icon[data-type='paint-shop'][data-active='true'] .spray-3 {
+  animation: paint-drip 1s linear 0.66s infinite;
+}
+
+@keyframes paint-drip {
+  0% {
+    opacity: 0;
+    transform: translateY(0);
+  }
+  20% {
+    opacity: 1;
+    transform: translateY(2px);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+
+.icon[data-pose='mid'][data-type='paint-shop'] .spray-1 {
+  animation: paint-drip 1s linear -0.5s infinite paused;
+}
+.icon[data-pose='mid'][data-type='paint-shop'] .spray-2 {
+  animation: paint-drip 1s linear -0.17s infinite paused;
+}
+.icon[data-pose='mid'][data-type='paint-shop'] .spray-3 {
+  animation: paint-drip 1s linear 0.16s infinite paused;
+}

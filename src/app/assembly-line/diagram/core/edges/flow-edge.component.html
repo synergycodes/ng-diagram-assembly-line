@@ -1,0 +1,21 @@
+<ng-diagram-base-edge
+  class="flow-edge"
+  [class]="
+    'flow-edge state-' + state() + (isRework() ? ' rework' : '') + (isDimmed() ? ' dimmed' : '')
+  "
+  [edge]="edge()"
+>
+  @if (isRework()) {
+    @for (marker of markers(); track marker.id) {
+      <ng-diagram-base-edge-label [id]="marker.id" [positionOnEdge]="marker.pos">
+        <span
+          class="rework-marker"
+          aria-hidden="true"
+          [style.transform]="'rotate(' + marker.angle + 'deg)'"
+        >
+          <app-icon name="rework" [size]="14" />
+        </span>
+      </ng-diagram-base-edge-label>
+    }
+  }
+</ng-diagram-base-edge>

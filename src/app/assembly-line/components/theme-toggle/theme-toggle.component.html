@@ -1,0 +1,22 @@
+<div class="theme-toggle" role="group" aria-label="Colour theme">
+  <button
+    type="button"
+    class="seg"
+    [class.active]="theme() === 'light'"
+    [attr.aria-pressed]="theme() === 'light'"
+    (click)="set('light')"
+    title="Light theme"
+  >
+    <app-icon name="sun" [size]="15" />
+  </button>
+  <button
+    type="button"
+    class="seg"
+    [class.active]="theme() === 'dark'"
+    [attr.aria-pressed]="theme() === 'dark'"
+    (click)="set('dark')"
+    title="Dark theme"
+  >
+    <app-icon name="moon" [size]="15" />
+  </button>
+</div>

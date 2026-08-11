@@ -1,114 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap');
-@import url('https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.2/src/regular/style.css');
-@import url('https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.2/src/bold/style.css');
 @import 'ng-diagram/styles.css';
 
-:root {
-  --ngd-color-gray-100: #ffffff;
-  --ngd-color-gray-200: #f5f5f7;
-  --ngd-color-gray-300: #edeff3;
-  --ngd-color-gray-400: #d5d8e0;
-  --ngd-color-gray-450: #bdc1cc;
-  --ngd-color-gray-500: #6f7480;
-  --ngd-color-gray-600: #4d5059;
-  --ngd-color-gray-650: #383a40;
-  --ngd-color-gray-700: #27282b;
-  --ngd-color-gray-800: #151516;
-  --ngd-color-gray-900: #070708;
-
-  --ngd-color-purple-100: #f5e7ff;
-  --ngd-color-purple-400: #b550fc;
-  --ngd-color-purple-600: #761dac;
-
-  --ngd-color-blue-400: #4a90e2;
-
-  --ngd-color-success-100: #e9f7ee;
-  --ngd-color-success-400: #007c29;
-  --ngd-color-warning-100: #fff0d3;
-  --ngd-color-warning-400: #d99100;
-  --ngd-color-error-100: #fde3e3;
-  --ngd-color-error-500: #b12424;
-  --ngd-color-error-600: #7a2222;
-
-  --ngd-sem-color-bg-default: var(--ngd-color-gray-900);
-  --ngd-sem-color-bg-raised: var(--ngd-color-gray-800);
-  --ngd-sem-color-bg-subtle: var(--ngd-color-gray-800);
-  --ngd-sem-color-bg-sunken: var(--ngd-color-gray-900);
-  --ngd-sem-color-bg-elevated: var(--ngd-color-gray-700);
-
-  --ngd-sem-color-text-primary: var(--ngd-color-gray-100);
-  --ngd-sem-color-text-secondary: var(--ngd-color-gray-300);
-  --ngd-sem-color-text-tertiary: var(--ngd-color-gray-450);
-  --ngd-sem-color-text-disabled: var(--ngd-color-gray-500);
-
-  --ngd-sem-color-stroke-subtle: var(--ngd-color-gray-700);
-  --ngd-sem-color-stroke-default: var(--ngd-color-gray-650);
-  --ngd-sem-color-stroke-strong: var(--ngd-color-gray-600);
-
-  --ngd-sem-color-text-accent: var(--ngd-color-purple-400);
-  --ngd-sem-color-bg-accent: var(--ngd-color-purple-600);
-  --ngd-sem-color-text-success: var(--ngd-color-success-400);
-  --ngd-sem-color-text-warning: var(--ngd-color-warning-400);
-  --ngd-sem-color-text-danger: var(--ngd-color-error-500);
-
-  /* Node status colors — shared by node-card badges and the inspector badge so
-   * the two never drift. */
-  --ngd-status-working: #0f7d1c;
-  --ngd-status-idle: var(--ngd-color-warning-400);
-  --ngd-status-idle-text: #131619;
-  --ngd-status-error: var(--ngd-color-error-500);
-  --ngd-status-disconnected: #565c64;
-
-  --ngd-font-family: 'Poppins', system-ui, sans-serif;
-  --ngd-font-mono: 'JetBrains Mono', ui-monospace, monospace;
-
-  --ngd-font-h4-size: 24px;
-  --ngd-font-h4-line: 1.3;
-  --ngd-font-h4-weight: 600;
-  --ngd-font-h10-size: 12px;
-  --ngd-font-h10-line: 1.4;
-  --ngd-font-h10-weight: 600;
-  --ngd-font-p11-size: 10px;
-  --ngd-font-p11-line: 1.4;
-  --ngd-font-p11-weight: 400;
-
-  /* Legacy aliases used in existing components — keep them mapped */
-  --ngd-border-subtle: var(--ngd-sem-color-stroke-subtle);
-  --ngd-border-strong: var(--ngd-sem-color-stroke-default);
-  --ngd-accent-blue: var(--ngd-color-blue-400);
-  --ngd-warning-amber: var(--ngd-color-warning-400);
-  --ngd-danger-red: var(--ngd-color-error-500);
-  --ngd-text-muted: var(--ngd-color-gray-500);
-
-  /* ng-diagram canvas bg — follows the semantic bg so it flips with the theme */
-  --ng-diagram-background-color: var(--ngd-sem-color-bg-default);
-  --ngd-diagram-background-color: var(--ngd-sem-color-bg-default);
-}
-
-/* Light theme — override only the semantic (tier-2) tokens; primitives and the
- * canvas token above resolve through these. `data-theme` is set on <html> by
- * the pre-paint script in index.html and toggled by ThemeService. */
-:root[data-theme='light'] {
-  --ngd-sem-color-bg-default: var(--ngd-color-gray-200);
-  --ngd-sem-color-bg-raised: var(--ngd-color-gray-100);
-  --ngd-sem-color-bg-subtle: var(--ngd-color-gray-300);
-  --ngd-sem-color-bg-sunken: var(--ngd-color-gray-300);
-  --ngd-sem-color-bg-elevated: var(--ngd-color-gray-100);
-
-  --ngd-sem-color-text-primary: var(--ngd-color-gray-900);
-  --ngd-sem-color-text-secondary: var(--ngd-color-gray-700);
-  --ngd-sem-color-text-tertiary: var(--ngd-color-gray-500);
-  --ngd-sem-color-text-disabled: var(--ngd-color-gray-450);
-
-  --ngd-sem-color-stroke-subtle: var(--ngd-color-gray-300);
-  --ngd-sem-color-stroke-default: var(--ngd-color-gray-400);
-  --ngd-sem-color-stroke-strong: var(--ngd-color-gray-450);
-}
+@import './tokens.css';
 
 /* Force ng-diagram canvas to use the (theme-aware) design-system bg */
 ng-diagram {
-  --ng-diagram-background-color: var(--ngd-sem-color-bg-default);
-  background: var(--ngd-sem-color-bg-default);
+  --ng-diagram-background-color: var(--al-sem-color-bg-default);
+  background: var(--al-sem-color-bg-default);
 }
 
 @keyframes dash-flow {
@@ -120,10 +18,10 @@ ng-diagram {
 @keyframes alarm-pulse {
   0%,
   100% {
-    box-shadow: 0 0 0 4px rgba(214, 69, 69, 0.12);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--al-sem-color-alarm) 12%, transparent);
   }
   50% {
-    box-shadow: 0 0 0 8px rgba(214, 69, 69, 0.06);
+    box-shadow: 0 0 0 8px color-mix(in srgb, var(--al-sem-color-alarm) 6%, transparent);
   }
 }
 
@@ -141,7 +39,7 @@ ng-diagram {
 
 ng-diagram-base-edge.default-edge,
 ng-diagram-base-edge.flow-edge {
-  --edge-stroke: #8a9099;
+  --edge-stroke: var(--al-sem-color-flow-default);
   --edge-stroke-width: 2;
   --edge-stroke-dasharray: 6 8;
 }
@@ -171,14 +69,14 @@ ng-diagram-base-edge.flow-edge.state-slow path {
 }
 
 ng-diagram-base-edge.flow-edge.state-warn {
-  --edge-stroke: #f4b942;
+  --edge-stroke: var(--al-sem-color-flow-warn);
 }
 ng-diagram-base-edge.flow-edge.state-warn path {
   animation-duration: 4s;
 }
 
 ng-diagram-base-edge.flow-edge.state-stopped {
-  --edge-stroke: #d64545;
+  --edge-stroke: var(--al-sem-color-flow-stopped);
   --edge-stroke-dasharray: 4 4;
 }
 ng-diagram-base-edge.flow-edge.state-stopped path {
@@ -187,11 +85,11 @@ ng-diagram-base-edge.flow-edge.state-stopped path {
 }
 
 ng-diagram-base-edge.flow-edge.rework {
-  --edge-stroke: #f4b942;
+  --edge-stroke: var(--al-sem-color-flow-warn);
 }
 
 ng-diagram-base-edge.flow-edge.selected {
-  --edge-stroke: #4a90e2;
+  --edge-stroke: var(--al-sem-color-flow-selected);
   --edge-stroke-width: 2.5;
 }
 
@@ -204,10 +102,10 @@ html,
 body {
   margin: 0;
   padding: 0;
-  font-family: var(--ngd-font-family);
+  font-family: var(--al-font-family);
   font-weight: 400;
-  background: var(--ngd-sem-color-bg-default);
-  color: var(--ngd-sem-color-text-primary);
+  background: var(--al-sem-color-bg-default);
+  color: var(--al-sem-color-text-primary);
   -webkit-font-smoothing: antialiased;
 }
 

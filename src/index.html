@@ -2,15 +2,19 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>Production Monitor</title>
+    <title>Assembly Line Template</title>
     <base href="/" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Interactive production-line monitor for automotive assembly plants, built with Angular and ng-diagram. A starter kit for live monitoring dashboards: drag-and-drop line editing, real-time status, threshold-colored KPIs and sparklines."
+    />
     <link rel="icon" type="image/x-icon" href="favicon.ico" />
     <script>
       // Set the theme before first paint to avoid a flash. Defaults to dark.
       (function () {
         try {
-          var t = localStorage.getItem('assemblyflow-theme');
+          var t = localStorage.getItem('assembly-line:theme');
           document.documentElement.dataset.theme = t === 'light' || t === 'dark' ? t : 'dark';
         } catch (e) {
           document.documentElement.dataset.theme = 'dark';
