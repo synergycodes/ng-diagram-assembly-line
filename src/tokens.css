@@ -68,6 +68,11 @@
   --al-sem-color-alarm-text: var(--al-color-red-300);
   --al-sem-color-connected: var(--al-color-success-300);
 
+  /* Card accents that must stay readable on the card surface: bright on dark
+   * cards, deeper on light ones (overridden below). */
+  --al-sem-color-accent-warn: var(--al-color-amber-400);
+  --al-sem-color-accent-success: var(--al-color-success-300);
+
   /* Node status colors — shared by node-card badges and the inspector badge so
    * the two never drift. */
   --al-status-working: #0f7d1c;
@@ -117,4 +122,7 @@
   --al-sem-color-stroke-subtle: var(--al-color-gray-300);
   --al-sem-color-stroke-default: var(--al-color-gray-400);
   --al-sem-color-stroke-strong: var(--al-color-gray-450);
+
+  --al-sem-color-accent-warn: var(--al-color-warning-400);
+  --al-sem-color-accent-success: var(--al-color-success-400);
 }

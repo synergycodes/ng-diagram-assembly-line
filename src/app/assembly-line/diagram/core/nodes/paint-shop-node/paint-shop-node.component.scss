@@ -169,10 +169,10 @@
 .rework-defect {
   flex-shrink: 0;
   padding: 3px 12px;
-  background: color-mix(in srgb, var(--al-color-amber-400) 15%, transparent);
+  background: color-mix(in srgb, var(--al-sem-color-accent-warn) 15%, transparent);
   border-radius: 9px;
   font-size: 8px;
   font-weight: 400;
-  color: var(--al-color-amber-400);
+  color: var(--al-sem-color-accent-warn);
   white-space: nowrap;
 }
