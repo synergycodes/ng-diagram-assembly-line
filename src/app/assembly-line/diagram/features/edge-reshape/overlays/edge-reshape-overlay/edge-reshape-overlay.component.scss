@@ -12,8 +12,6 @@
   will-change: transform;
 }
 
-// NOTE: colour literals are placeholders; Phase 5 re-tokenises these to the
-// three-tier design tokens.
 .reshape-overlay__handle {
   position: absolute;
   width: 22px;

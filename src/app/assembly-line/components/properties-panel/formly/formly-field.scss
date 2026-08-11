@@ -1,9 +1,8 @@
-// Colour/spacing literals are placeholders; Phase 5 re-tokenises these.
 :host {
   display: block;
 }
 
-.flow-field {
+.formly-field {
   display: flex;
   flex-direction: column;
   gap: 4px;

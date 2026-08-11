@@ -20,7 +20,7 @@ import { DiagramStore } from '../../state/diagram-store.service';
 import { ModeService } from '../../state/mode.service';
 import { SelectionService } from '../../state/selection.service';
 import { fieldsForNodeType, thresholdProps } from './formly/field-from-property-def';
-import type { ThresholdConfig } from './formly/flow-threshold.type';
+import type { ThresholdConfig } from './formly/formly-threshold.component';
 
 type PanelModel = Record<string, unknown>;
 
@@ -46,7 +46,7 @@ export class PropertiesPanelComponent {
   protected readonly fields = signal<FormlyFieldConfig[]>([]);
   protected readonly model = signal<PanelModel>({});
   protected readonly hasThresholds = computed(() =>
-    this.fields().some((f) => f.type === 'flow-threshold'),
+    this.fields().some((f) => f.type === 'al-threshold'),
   );
 
   protected readonly selectedData = computed<AssemblyNodeData | null>(() => {

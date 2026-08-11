@@ -3,10 +3,10 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { FieldType, FieldTypeConfig, FormlyAttributes } from '@ngx-formly/core';
 
 @Component({
-  selector: 'flow-formly-input',
+  selector: 'app-formly-input',
   imports: [ReactiveFormsModule, FormlyAttributes],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  templateUrl: './flow-input.type.html',
-  styleUrl: './flow-field.scss',
+  templateUrl: './formly-input.component.html',
+  styleUrl: './formly-field.scss',
 })
-export class FlowFormlyInputType extends FieldType<FieldTypeConfig> {}
+export class FormlyInputComponent extends FieldType<FieldTypeConfig> {}

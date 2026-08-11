@@ -9,12 +9,12 @@ export function thresholdProps(type: NodeType): PropertyMeta[] {
 
 export function fieldsForNodeType(type: NodeType): FormlyFieldConfig[] {
   const fields: FormlyFieldConfig[] = [
-    { key: 'name', type: 'flow-input', props: { label: 'Name' } },
+    { key: 'name', type: 'al-input', props: { label: 'Name' } },
   ];
   for (const m of thresholdProps(type)) {
     fields.push({
       key: m.key,
-      type: 'flow-threshold',
+      type: 'al-threshold',
       props: {
         label: m.label,
         unit: m.unit,

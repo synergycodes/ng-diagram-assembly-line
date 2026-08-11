@@ -50,13 +50,6 @@ module.exports = tseslint.config(
     extends: [...angular.configs.templateRecommended, ...angular.configs.templateAccessibility],
     rules: {},
   },
-  {
-    files: ['**/properties-panel/formly/*.type.ts'],
-    rules: {
-      '@angular-eslint/component-selector': 'off',
-      '@angular-eslint/component-class-suffix': 'off',
-    },
-  },
   eslintConfigPrettier,
   {
     // eslint-config-prettier turns `curly` off; re-enable it afterwards so

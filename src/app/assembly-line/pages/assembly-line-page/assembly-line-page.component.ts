@@ -8,8 +8,8 @@ import { HeaderComponent } from '../../components/header/header.component';
 import { PaletteComponent } from '../../components/palette/palette.component';
 import { RightPanelComponent } from '../../components/right-panel/right-panel.component';
 import { MinimapPanelComponent } from '../../components/minimap-panel/minimap-panel.component';
-import { FlowFormlyInputType } from '../../components/properties-panel/formly/flow-input.type';
-import { FlowFormlyThresholdType } from '../../components/properties-panel/formly/flow-threshold.type';
+import { FormlyInputComponent } from '../../components/properties-panel/formly/formly-input.component';
+import { FormlyThresholdComponent } from '../../components/properties-panel/formly/formly-threshold.component';
 import { DiagramStore } from '../../state/diagram-store.service';
 import { ModeService } from '../../state/mode.service';
 import { SelectionService } from '../../state/selection.service';
@@ -31,8 +31,8 @@ import { DiagramExportService } from '../../services/diagram-export';
     provideNgDiagram(),
     provideFormlyCore({
       types: [
-        { name: 'flow-input', component: FlowFormlyInputType },
-        { name: 'flow-threshold', component: FlowFormlyThresholdType },
+        { name: 'al-input', component: FormlyInputComponent },
+        { name: 'al-threshold', component: FormlyThresholdComponent },
       ],
     }),
     DiagramStore,

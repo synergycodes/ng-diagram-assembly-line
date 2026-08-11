@@ -45,13 +45,13 @@ type DragType = 'warn' | 'critical';
  * without rebuilding the form.
  */
 @Component({
-  selector: 'flow-formly-threshold',
+  selector: 'app-formly-threshold',
   imports: [FormsModule, IconComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  templateUrl: './flow-threshold.type.html',
-  styleUrl: './flow-threshold.type.scss',
+  templateUrl: './formly-threshold.component.html',
+  styleUrl: './formly-threshold.component.scss',
 })
-export class FlowFormlyThresholdType extends FieldType<FieldTypeConfig> implements OnInit {
+export class FormlyThresholdComponent extends FieldType<FieldTypeConfig> implements OnInit {
   private readonly selection = inject(SelectionService);
   private readonly store = inject(DiagramStore);
 
