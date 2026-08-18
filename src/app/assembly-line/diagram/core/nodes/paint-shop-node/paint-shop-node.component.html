@@ -10,7 +10,7 @@
   </header>
 
   <section class="section">
-    <h4 class="section-title">PAINT LEVELS</h4>
+    <h4 class="section-title">POWDER HOPPERS</h4>
     @for (paint of data().paintLevels ?? []; track paint.name) {
       <div class="paint-row">
         <span class="paint-name">{{ paint.name }}</span>
@@ -77,7 +77,7 @@
 
   @if (data().reworkQueue?.length) {
     <section class="section">
-      <h4 class="section-title">REPAINT QUEUE</h4>
+      <h4 class="section-title">RECOAT QUEUE</h4>
       @for (item of data().reworkQueue ?? []; track item.partName) {
         <div class="rework-item">
           <div class="rework-text">

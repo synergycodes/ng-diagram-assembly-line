@@ -76,7 +76,7 @@ function initNodeData(node: AssemblyNode): AssemblyNodeData {
         partsPressed: randomInt(1200, 3200),
       };
     case NODE_TYPES.WELDING_CELL: {
-      const totalRobots = 6;
+      const totalRobots = 2;
       return {
         ...node.data,
         cycleTimeSec: boot('cycleTimeSec'),
@@ -92,7 +92,7 @@ function initNodeData(node: AssemblyNode): AssemblyNodeData {
         partsRemaining: randomInt(60, 180),
         partsToLoad: boot('partsToLoad'),
         cycleTimeSec: boot('cycleTimeSec'),
-        targetCycleTimeSec: 150,
+        targetCycleTimeSec: 28,
         nextRefillMin: randomInt(8, 28),
         manualWorkers: boot('manualWorkers'),
         inspectionTimeMin: boot('inspectionTimeMin'),

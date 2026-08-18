@@ -4,9 +4,10 @@
 
 **Live demo:** https://www.ngdiagram.dev/templates/assembly-line/
 
-Interactive production-line monitor for automotive assembly plants. A starter kit
-for building your own domain-specific live monitoring dashboard. Lay out servo
-presses, buffers, welding cells, paint booths, and QC stations, connect them with
+Interactive production-line monitor for manufacturing plants — the demo line
+presses, welds, powder-coats and assembles sheet-metal appliance cabinets. A starter
+kit for building your own domain-specific live monitoring dashboard. Lay out servo
+presses, buffers, welding cells, coating booths, and QC stations, connect them with
 directed conveyor and rework-loop flows, and configure every module through a
 schema-driven properties panel — then switch to Monitor mode to watch the line run
 live, with real-time status, threshold-colored KPIs, and sparklines.
@@ -54,7 +55,7 @@ diagram tool.
 | **Buffers**    | **Buffer**          | Inventory store — capacity fill bar                                          |
 | **Processing** | **Welding Cell**    | Robotic welding — cycle time, active robots, welds completed                 |
 | **Processing** | **Assembly**        | Final assembly — parts remaining, cycle time, current tasks                  |
-| **Processing** | **Paint Shop**      | Paint booth — per-color tank levels, first-pass yield                        |
+| **Processing** | **Powder Coating**  | Coating booth — per-color powder hopper levels, first-pass yield             |
 | **Quality**    | **Quality Control** | Inspection — pass rate, rejects, plus a **rework loopback** port             |
 
 The catalog is data-driven and built on ng-diagram's own node types. Each kind and its
