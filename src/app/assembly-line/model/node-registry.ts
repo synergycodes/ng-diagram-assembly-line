@@ -7,9 +7,9 @@ interface Size {
 }
 
 export const DEFAULT_PAINT_LEVELS: readonly PaintLevel[] = [
-  { name: 'Pure White', color: '#e8e6e0' },
-  { name: 'Inox Silver', color: '#9aa3ad' },
-  { name: 'Matte Black', color: '#3a3f45' },
+  { name: 'Pearl White', color: '#e8e6e0' },
+  { name: 'Graphite Grey', color: '#4a4d52' },
+  { name: 'Racing Red', color: '#c0392b' },
 ];
 
 interface BaseDescriptor<TNodeType extends NodeType> {
@@ -65,10 +65,10 @@ export const NODE_REGISTRY: NodeRegistry = {
   },
   [NODE_TYPES.PAINT_SHOP]: {
     type: NODE_TYPES.PAINT_SHOP,
-    label: 'Powder Coating',
+    label: 'Paint Shop',
     properties: PROPERTIES[NODE_TYPES.PAINT_SHOP],
     createDefault: () => ({
-      name: 'Powder Coat Booth',
+      name: 'Paint Shop',
       status: 'disconnected',
       paintLevels: DEFAULT_PAINT_LEVELS.map((paint) => ({ ...paint })),
     }),

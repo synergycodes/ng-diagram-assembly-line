@@ -82,7 +82,7 @@ export class DataConnectionService {
           target: edge.target,
           type: data.type ?? 'flow',
           flowState: data.flowState,
-          unitsInTransit: [],
+          carsInTransit: [],
         };
       });
 

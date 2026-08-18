@@ -104,7 +104,7 @@ export interface NodeDataByType {
 
 export type AssemblyNodeData = NodeDataByType[NodeType];
 
-export interface UnitInTransit {
+export interface CarInTransit {
   id: string;
   progress: number;
 }
@@ -119,7 +119,7 @@ export interface EdgeState {
   target: string;
   type: EdgeType;
   flowState?: EdgeFlowState;
-  unitsInTransit: UnitInTransit[];
+  carsInTransit: CarInTransit[];
 }
 
 export type NodeMetrics<TNodeData extends AssemblyNodeData> = Partial<
