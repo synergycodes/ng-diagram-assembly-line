@@ -6,13 +6,16 @@ export function formatCount(value: number | undefined): string {
   return value === undefined ? NOT_AVAILABLE : value.toLocaleString('en-US');
 }
 
-/** `Xm SSs` from seconds, or `N/A`. */
+/** `Xm SSs` from seconds (`Ss` under a minute), or `N/A`. */
 export function formatDuration(seconds: number | undefined): string {
   if (seconds === undefined) {
     return NOT_AVAILABLE;
   }
   const m = Math.floor(seconds / 60);
   const s = seconds % 60;
+  if (m === 0) {
+    return `${s}s`;
+  }
   return `${m}m ${String(s).padStart(2, '0')}s`;
 }
 
