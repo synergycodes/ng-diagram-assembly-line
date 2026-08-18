@@ -21,7 +21,7 @@
 
       @if (paint(); as p) {
         <section class="section">
-          <h4 class="section-title">PAINT LEVELS</h4>
+          <h4 class="section-title">POWDER HOPPERS</h4>
           @for (tank of p.paintLevels ?? []; track tank.name) {
             <div class="tank-row">
               <span class="tank-name">{{ tank.name }}</span>
@@ -74,7 +74,7 @@
       @if (paint(); as p) {
         @if (p.reworkQueue?.length) {
           <section class="section">
-            <h4 class="section-title">REPAINT QUEUE</h4>
+            <h4 class="section-title">RECOAT QUEUE</h4>
             @for (item of p.reworkQueue ?? []; track item.partName) {
               <div class="rework-item">
                 <span class="rework-part">{{ item.partName }}</span>

@@ -8,7 +8,7 @@ import {
 } from './node-view';
 
 const servoPress = (overrides: Partial<ServoPressNodeData> = {}): ServoPressNodeData => ({
-  name: 'Bodyside Press',
+  name: 'Side Panel Press',
   status: 'working',
   ...overrides,
 });

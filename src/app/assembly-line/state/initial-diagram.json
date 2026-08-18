@@ -14,12 +14,12 @@
         "height": 800
       },
       "data": {
-        "name": "Stamping",
+        "name": "Metal Forming",
         "status": "disconnected"
       }
     },
     {
-      "id": "press-bodyside",
+      "id": "press-side-panel",
       "type": "servo-press",
       "position": {
         "x": 40,
@@ -31,12 +31,12 @@
         "height": 300
       },
       "data": {
-        "name": "Bodyside Press",
+        "name": "Wrapper Press",
         "status": "disconnected"
       }
     },
     {
-      "id": "press-floorpan",
+      "id": "press-base-panel",
       "type": "servo-press",
       "position": {
         "x": 40,
@@ -48,12 +48,12 @@
         "height": 300
       },
       "data": {
-        "name": "Floor Pan Press",
+        "name": "Base Frame Press",
         "status": "disconnected"
       }
     },
     {
-      "id": "buffer-bodyside",
+      "id": "buffer-side-panel",
       "type": "buffer",
       "position": {
         "x": 360,
@@ -65,13 +65,13 @@
         "height": 120
       },
       "data": {
-        "name": "Bodyside Panel Store",
+        "name": "Wrapper Store",
         "status": "disconnected",
         "capacity": 30
       }
     },
     {
-      "id": "buffer-floorpan",
+      "id": "buffer-base-panel",
       "type": "buffer",
       "position": {
         "x": 360,
@@ -83,13 +83,13 @@
         "height": 120
       },
       "data": {
-        "name": "Floor Pan Store",
+        "name": "Base Frame Store",
         "status": "disconnected",
         "capacity": 30
       }
     },
     {
-      "id": "area-body",
+      "id": "area-weld",
       "type": "area",
       "position": {
         "x": 680,
@@ -102,41 +102,41 @@
         "height": 360
       },
       "data": {
-        "name": "Body Shop (BIW)",
+        "name": "Cabinet Fabrication",
         "status": "disconnected"
       }
     },
     {
-      "id": "weld-underbody",
+      "id": "weld-cabinet",
       "type": "welding-cell",
       "position": {
         "x": 720,
         "y": 260
       },
-      "groupId": "area-body",
+      "groupId": "area-weld",
       "size": {
         "width": 240,
         "height": 240
       },
       "data": {
-        "name": "Underbody Cell",
+        "name": "Cabinet Welding Cell",
         "status": "disconnected"
       }
     },
     {
-      "id": "weld-framing",
+      "id": "weld-seam",
       "type": "welding-cell",
       "position": {
         "x": 1040,
         "y": 260
       },
-      "groupId": "area-body",
+      "groupId": "area-weld",
       "size": {
         "width": 240,
         "height": 240
       },
       "data": {
-        "name": "Framing Station",
+        "name": "Rear Panel Welding Cell",
         "status": "disconnected"
       }
     },
@@ -154,7 +154,7 @@
         "height": 500
       },
       "data": {
-        "name": "Paint Shop",
+        "name": "Finishing",
         "status": "disconnected"
       }
     },
@@ -171,20 +171,22 @@
         "height": 560
       },
       "data": {
-        "name": "Paint Booth",
+        "name": "Powder Coat Booth",
         "status": "disconnected",
+        "shiftLabel": "B",
+        "shiftRange": "14:00–22:00",
         "paintLevels": [
           {
-            "name": "Pearl White",
+            "name": "Pure White",
             "color": "#e8e6e0"
           },
           {
-            "name": "Graphite Grey",
-            "color": "#4a4d52"
+            "name": "Inox Silver",
+            "color": "#9aa3ad"
           },
           {
-            "name": "Racing Red",
-            "color": "#c0392b"
+            "name": "Matte Black",
+            "color": "#3a3f45"
           }
         ]
       }
@@ -202,7 +204,7 @@
         "height": 200
       },
       "data": {
-        "name": "Paint Inspection",
+        "name": "Finish Inspection",
         "status": "disconnected"
       }
     },
@@ -220,7 +222,7 @@
         "height": 500
       },
       "data": {
-        "name": "General Assembly",
+        "name": "Final Assembly",
         "status": "disconnected"
       }
     },
@@ -237,7 +239,7 @@
         "height": 560
       },
       "data": {
-        "name": "Assembly Line",
+        "name": "Cabinet Assembly",
         "status": "disconnected"
       }
     },
@@ -254,16 +256,16 @@
         "height": 200
       },
       "data": {
-        "name": "Final Inspection",
+        "name": "End-of-Line Test",
         "status": "disconnected"
       }
     }
   ],
   "edges": [
     {
-      "id": "e-bodyside-buffer",
-      "source": "press-bodyside",
-      "target": "buffer-bodyside",
+      "id": "e-side-panel-buffer",
+      "source": "press-side-panel",
+      "target": "buffer-side-panel",
       "sourcePort": "port-right",
       "targetPort": "port-left",
       "type": "flow",
@@ -272,9 +274,9 @@
       }
     },
     {
-      "id": "e-floorpan-buffer",
-      "source": "press-floorpan",
-      "target": "buffer-floorpan",
+      "id": "e-base-panel-buffer",
+      "source": "press-base-panel",
+      "target": "buffer-base-panel",
       "sourcePort": "port-right",
       "targetPort": "port-left",
       "type": "flow",
@@ -283,9 +285,9 @@
       }
     },
     {
-      "id": "e-bodyside-underbody",
-      "source": "buffer-bodyside",
-      "target": "weld-underbody",
+      "id": "e-side-panel-cabinet",
+      "source": "buffer-side-panel",
+      "target": "weld-cabinet",
       "sourcePort": "port-right",
       "targetPort": "port-left",
       "type": "flow",
@@ -294,9 +296,9 @@
       }
     },
     {
-      "id": "e-floorpan-underbody",
-      "source": "buffer-floorpan",
-      "target": "weld-underbody",
+      "id": "e-base-panel-cabinet",
+      "source": "buffer-base-panel",
+      "target": "weld-cabinet",
       "sourcePort": "port-right",
       "targetPort": "port-left",
       "type": "flow",
@@ -305,9 +307,9 @@
       }
     },
     {
-      "id": "e-underbody-framing",
-      "source": "weld-underbody",
-      "target": "weld-framing",
+      "id": "e-cabinet-seam",
+      "source": "weld-cabinet",
+      "target": "weld-seam",
       "sourcePort": "port-right",
       "targetPort": "port-left",
       "type": "flow",
@@ -316,8 +318,8 @@
       }
     },
     {
-      "id": "e-framing-paint",
-      "source": "weld-framing",
+      "id": "e-seam-paint",
+      "source": "weld-seam",
       "target": "paint-booth",
       "sourcePort": "port-right",
       "targetPort": "port-left",
